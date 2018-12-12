@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimaryDark"
+        android:padding="16dp">
+
+    <CheckBox
+            android:id="@+id/santaStatusDetailed1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/textColor"
+            android:buttonTint="@color/colorAccent"
+            android:enabled="false"
+            android:clickable="false"
+            android:focusable="false"
+            tools:text="Awaiting"/>
+
+    <CheckBox
+            android:id="@+id/santaStatusDetailed2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/textColor"
+            android:buttonTint="@color/colorAccent"
+            android:enabled="false"
+            android:clickable="false"
+            android:focusable="false"
+            tools:text="Awaiting"/>
+
+    <CheckBox
+            android:id="@+id/santaStatusDetailed3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/textColor"
+            android:buttonTint="@color/colorAccent"
+            android:enabled="false"
+            android:clickable="false"
+            android:focusable="false"
+            tools:text="Awaiting"/>
+
+    <CheckBox
+            android:id="@+id/santaStatusDetailed4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/textColor"
+            android:buttonTint="@color/colorAccent"
+            android:enabled="false"
+            android:clickable="false"
+            android:focusable="false"
+            tools:text="Awaiting"/>
+
+    <CheckBox
+            android:id="@+id/santaStatusDetailed5"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/textColor"
+            android:buttonTint="@color/colorAccent"
+            android:enabled="false"
+            android:clickable="false"
+            android:focusable="false"
+            tools:text="Awaiting"/>
+
+    <CheckBox
+            android:id="@+id/santaStatusDetailed6"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/textColor"
+            android:buttonTint="@color/colorAccent"
+            android:enabled="false"
+            android:clickable="false"
+            android:focusable="false"
+            tools:text="Awaiting"/>
+
+    <CheckBox
+            android:id="@+id/santaStatusDetailed7"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/textColor"
+            android:buttonTint="@color/colorAccent"
+            android:enabled="false"
+            android:clickable="false"
+            android:focusable="false"
+            tools:text="Awaiting"/>
+
+</LinearLayout>

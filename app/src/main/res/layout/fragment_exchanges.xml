@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" xmlns:tools="http://schemas.android.com/tools"
+        android:background="@color/colorPrimaryDark">
+
+    <WebView
+            android:id="@+id/webView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="invisible"/>
+
+    <include
+            layout="@layout/cell_loader" />
+
+    <Button
+            android:id="@+id/exchangesLogin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/main_login"
+            android:textColor="@color/textColor"
+            android:backgroundTint="@color/colorAccent"
+            android:visibility="invisible" />
+
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+        <TextView
+                android:id="@+id/exchangesCredits"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/textColor"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
+                android:gravity="center"
+                android:padding="8dp"
+                tools:text="0 credits"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/exchangesList"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+    </LinearLayout>
+
+</FrameLayout>

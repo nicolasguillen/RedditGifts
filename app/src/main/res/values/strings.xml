@@ -1,0 +1,25 @@
+<resources>
+    <string name="app_name">RedditGifts</string>
+    <!-- MAIN -->
+    <string name="main_exchanges">Exchanges</string>
+    <string name="main_gallery">Gallery</string>
+    <string name="main_account">Account</string>
+    <string name="main_login">Please login</string>
+    <string name="main_loading">Loading…</string>
+    <!-- EXCHANGES -->
+    <string name="exchanges_credits">Credits: %d</string>
+    <!-- STATUS -->
+    <string name="state_santa">Your Santa\'s Gift to You</string>
+    <string name="state_giftee">Your Gift to Your Match</string>
+    <string name="state_1">1</string>
+    <string name="state_2">2</string>
+    <string name="state_3">3</string>
+    <string name="state_4">4</string>
+    <string name="state_5">5</string>
+    <string name="state_6">6</string>
+    <string name="state_7">7</string>
+    <string name="state_8">8</string>
+    <!-- ERRORS -->
+    <string name="error_load_html">Whoops! Please try again later</string>
+    <string name="error_unknown">Unknown error</string>
+</resources>

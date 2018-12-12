@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".ui.activities.GiftActivity">
+
+    <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/colorPrimaryDark"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <WebView
+                android:id="@+id/webView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="invisible"/>
+
+        <include
+                layout="@layout/cell_loader" />
+
+        <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+            <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="300dp">
+                    <androidx.viewpager.widget.ViewPager
+                            android:id="@+id/giftImages"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:contentDescription="@null"/>
+                </RelativeLayout>
+
+                <TextView
+                        android:id="@+id/giftTitle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/textColor"
+                        android:padding="8dp"
+                        android:gravity="center"
+                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
+                        tools:text="MERRY CHRISTMAS!"/>
+
+                <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                    <TextView
+                            android:id="@+id/giftUpvotes"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/textColorDark"
+                            android:layout_alignParentEnd="true"
+                            android:padding="8dp"
+                            android:gravity="end"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                            tools:text="+1"/>
+
+                    <TextView
+                            android:id="@+id/giftTime"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/textColorDark"
+                            android:padding="8dp"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                            android:layout_toStartOf="@id/giftUpvotes"
+                            android:layout_alignParentStart="true"
+                            tools:text="4 minutes ago"/>
+
+                </RelativeLayout>
+
+                <TextView
+                        android:id="@+id/giftDescription"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/textColorDark"
+                        android:padding="8dp"
+                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Subhead"
+                        tools:text="I received a very warm and cozy Swedish Christmas postcard, which I now put on my fridge panel! I look at it every day and it makes me very happy and creates Christmas mood in the entire house!"/>
+            </LinearLayout>
+
+        </ScrollView>
+
+    </RelativeLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
