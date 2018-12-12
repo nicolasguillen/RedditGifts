@@ -19,6 +19,8 @@
     <string name="state_6">6</string>
     <string name="state_7">7</string>
     <string name="state_8">8</string>
+    <!-- ACCOUNT -->
+    <string name="account_logout">Sign out</string>
     <!-- ERRORS -->
     <string name="error_load_html">Whoops! Please try again later</string>
     <string name="error_unknown">Unknown error</string>

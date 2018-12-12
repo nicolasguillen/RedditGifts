@@ -1,7 +1,11 @@
 package com.redditgifts.mobile.ui.fragments
 
 import android.annotation.SuppressLint
+import android.app.Activity
+import android.content.Intent
+import android.graphics.drawable.AnimationDrawable
 import android.os.Bundle
+import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,11 +14,18 @@ import android.webkit.WebView
 import android.webkit.WebViewClient
 import com.redditgifts.mobile.R
 import com.redditgifts.mobile.RedditGiftsApp
+import com.redditgifts.mobile.libs.ActivityRequestCodes
+import com.redditgifts.mobile.libs.utils.loadUrlIntoImage
 import com.redditgifts.mobile.models.AccountViewModel
+import com.redditgifts.mobile.ui.activities.LoginActivity
+import com.squareup.picasso.Picasso
 import io.reactivex.android.schedulers.AndroidSchedulers
+import kotlinx.android.synthetic.main.cell_loader.*
 import kotlinx.android.synthetic.main.fragment_account.*
 
 class AccountFragment : BaseFragment<AccountViewModel>() {
+
+    private var loaderAnimation: AnimationDrawable? = null
 
     @SuppressLint("InflateParams")
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -25,15 +36,54 @@ class AccountFragment : BaseFragment<AccountViewModel>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         loadViews()
 
+        viewModel.outputs.isLoading()
+            .observeOn(AndroidSchedulers.mainThread())
+            .crashingSubscribe { isLoading ->
+                if(isLoading){
+                    loader.visibility = View.VISIBLE
+                    loader.apply {
+                        setBackgroundResource(R.drawable.loader)
+                        loaderAnimation = background as AnimationDrawable
+                    }
+                    loaderAnimation?.start()
+                } else {
+                    loader.visibility = View.GONE
+                    loaderAnimation?.stop()
+                }
+            }
+
         viewModel.outputs.loadHTML()
             .observeOn(AndroidSchedulers.mainThread())
             .crashingSubscribe { url ->
                 this.loadUrl(url)
             }
 
-        accountLogout.setOnClickListener {
-            viewModel.inputs.didPressLogout()
+        viewModel.outputs.mustLogin()
+            .observeOn(AndroidSchedulers.mainThread())
+            .crashingSubscribe {
+                accountData.visibility = View.GONE
+                accountLogin.visibility = View.VISIBLE
+            }
+
+        viewModel.outputs.accountModel()
+            .observeOn(AndroidSchedulers.mainThread())
+            .crashingSubscribe { data ->
+                accountData.visibility = View.VISIBLE
+                accountLogin.visibility = View.GONE
+                Picasso.get().loadUrlIntoImage(accountImage, data.imageURL)
+                accountName.text = data.name
+                accountDescription.text = data.description
+            }
+
+//        accountLogout.setOnClickListener {
+//            viewModel.inputs.didPressLogout()
+//        }
+
+        accountLogin.setOnClickListener {
+            startActivityForResult(Intent(context, LoginActivity::class.java), ActivityRequestCodes.LOGIN_WORKFLOW)
         }
+
+        viewModel.inputs.onCreate()
     }
 
     @SuppressLint("SetJavaScriptEnabled")
@@ -42,16 +92,44 @@ class AccountFragment : BaseFragment<AccountViewModel>() {
     }
 
     private fun loadUrl(url: String) {
-        webView.webViewClient = null
         webView.removeJavascriptInterface("HTMLOUT")
-        webView.loadUrl("about:blank")
         webView.loadUrl(url)
 
+        val handler = Handler()
+        webView.addJavascriptInterface(MyJavaScriptInterface(), "HTMLOUT")
         webView.webViewClient = object : WebViewClient() {
             override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest?): Boolean = true
+            override fun onPageFinished(view: WebView, url: String) {
+                if(!isAdded) return
+                handler.postDelayed({
+                    webView.loadUrl("javascript:window.HTMLOUT.processHTML('<html>'+document.getElementsByTagName('html')[0].innerHTML+'</html>');")
+                }, 2000)
+            }
         }
     }
 
+    internal inner class MyJavaScriptInterface {
+        @Suppress("unused")
+        @android.webkit.JavascriptInterface
+        fun processHTML(html: String) {
+            viewModel.inputs.didLoadHtml(html)
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        when (requestCode) {
+            ActivityRequestCodes.LOGIN_WORKFLOW -> {
+                when (resultCode) {
+                    Activity.RESULT_OK -> {
+                        webView.reload()
+                        accountLogin.visibility = View.INVISIBLE
+                    }
+                    else ->
+                        accountLogin.visibility = View.VISIBLE
+                }
+            }
+        }
+    }
 
 
 }

@@ -28,8 +28,8 @@ class MainActivity: AppCompatActivity() {
                     changeFragment(exchangesFragment)
                 R.id.bottomBarGallery ->
                     changeFragment(galleryFragment)
-//                R.id.bottomBarAccount ->
-//                    changeFragment(accountFragment)
+                R.id.bottomBarAccount ->
+                    changeFragment(accountFragment)
             }
             true
         }

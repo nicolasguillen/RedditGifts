@@ -11,9 +11,9 @@
             android:icon="@drawable/ic_gallery"
             android:title="@string/main_gallery"/>
 
-    <!--<item-->
-            <!--android:id="@+id/bottomBarAccount"-->
-            <!--android:icon="@drawable/ic_account"-->
-            <!--android:title="@string/main_account"/>-->
+    <item
+            android:id="@+id/bottomBarAccount"
+            android:icon="@drawable/ic_account"
+            android:title="@string/main_account"/>
 
 </menu>

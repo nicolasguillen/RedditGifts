@@ -28,7 +28,8 @@ open class ModelModule {
                                         localizedErrorMessages: LocalizedErrorMessages): GiftViewModel =
         GiftViewModel(htmlParser, localizedErrorMessages)
 
-    @Provides fun providesAccountViewModel(): AccountViewModel =
-        AccountViewModel()
+    @Provides fun providesAccountViewModel(htmlParser: HTMLParser,
+                                           localizedErrorMessages: LocalizedErrorMessages): AccountViewModel =
+        AccountViewModel(htmlParser, localizedErrorMessages)
 
 }

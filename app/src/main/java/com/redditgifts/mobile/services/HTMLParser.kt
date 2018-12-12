@@ -1,9 +1,6 @@
 package com.redditgifts.mobile.services
 
-import com.redditgifts.mobile.services.models.DetailedGiftModel
-import com.redditgifts.mobile.services.models.ExchangeOverviewModel
-import com.redditgifts.mobile.services.models.ExchangeStatusModel
-import com.redditgifts.mobile.services.models.GiftModel
+import com.redditgifts.mobile.services.models.*
 import io.reactivex.Single
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Element
@@ -14,6 +11,7 @@ interface HTMLParser {
     fun parseStatuses(html: String): Single<ExchangeStatusModel>
     fun parseGallery(html: String): Single<List<GiftModel>>
     fun parseGift(html: String): Single<DetailedGiftModel>
+    fun parseAccount(html: String): Single<AccountModel>
 }
 
 class JsoupHTMLParser: HTMLParser {
@@ -142,6 +140,24 @@ class JsoupHTMLParser: HTMLParser {
             } catch (e: Exception) {  }
         }
         return data
+    }
+
+    override fun parseAccount(html: String): Single<AccountModel> {
+        val document = Jsoup.parse(html)
+        val welcomeMessage = document.select("span[class=welcome-msg]").first()
+            ?: return Single.error(HTMLError.LoadHTMLError)
+        val needsLogin = welcomeMessage.text() == "Welcome to redditgifts!"
+        if(needsLogin){
+            return Single.error(HTMLError.NeedsLogin)
+        }
+
+        val title = welcomeMessage.text().replace("Welcome ", "").replace("!", "")
+        val imageURL = document.select("img[class=profile-form__pic]").attr("src")
+        val description = document.select("textarea[class=profile-form__text-area]").text()
+        if(title.isEmpty() || imageURL.isEmpty() || description.isEmpty()) {
+            return Single.error(HTMLError.LoadHTMLError)
+        }
+        return Single.just(AccountModel(title, imageURL, description))
     }
 
 }

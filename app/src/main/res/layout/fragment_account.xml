@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/colorPrimaryDark">
@@ -11,11 +12,68 @@
             android:layout_height="wrap_content"
             android:visibility="invisible"/>
 
+    <include
+            layout="@layout/cell_loader" />
+
     <Button
-            android:id="@+id/accountLogout"
+            android:id="@+id/accountLogin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="LOG OUT"
-            android:layout_gravity="center"/>
+            android:layout_gravity="center"
+            android:text="@string/main_login"
+            android:textColor="@color/textColor"
+            android:backgroundTint="@color/colorAccent"
+            android:visibility="invisible" />
+
+    <RelativeLayout
+            android:id="@+id/accountData"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:visibility="invisible" >
+
+        <ImageView
+                android:id="@+id/accountImage"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:contentDescription="@null"
+                android:scaleType="centerCrop"
+                android:adjustViewBounds="true"
+                tools:src="@drawable/ic_splash"/>
+
+        <TextView
+                android:id="@+id/accountName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/textColor"
+                android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+                android:layout_toEndOf="@id/accountImage"
+                android:layout_alignBottom="@+id/accountImage"
+                android:layout_alignTop="@+id/accountImage"
+                android:gravity="center_vertical"
+                android:padding="8dp"
+                tools:text="Name!"/>
+
+        <TextView
+                android:id="@+id/accountDescription"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/textColor"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:layout_below="@+id/accountImage"
+                android:paddingTop="8dp"
+                tools:text="Description!"/>
+
+        <!--<Button-->
+                <!--android:id="@+id/accountLogout"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_gravity="center"-->
+                <!--android:text="@string/account_logout"-->
+                <!--android:textColor="@color/textColor"-->
+                <!--android:layout_alignParentBottom="true"-->
+                <!--android:backgroundTint="@color/colorAccent"/>-->
+
+    </RelativeLayout>
 
 </FrameLayout>
