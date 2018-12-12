@@ -20,7 +20,9 @@ class JsoupHTMLParser: HTMLParser {
 
     override fun parseExchanges(html: String): Single<ExchangeOverviewModel> {
         val document = Jsoup.parse(html)
-        val needsLogin = document.select("span[class=welcome-msg]").first().text() == "Welcome to redditgifts!"
+        val welcomeMessage = document.select("span[class=welcome-msg]").first()
+            ?: return Single.error(HTMLError.LoadHTMLError)
+        val needsLogin = welcomeMessage.text() == "Welcome to redditgifts!"
         if(needsLogin){
             return Single.error(HTMLError.NeedsLogin)
         }
@@ -59,8 +61,8 @@ class JsoupHTMLParser: HTMLParser {
     }
 
     override fun parseGallery(html: String): Single<List<GiftModel>> {
-        val gifts = mutableListOf<GiftModel>()
         val document = Jsoup.parse(html)
+        val gifts = mutableListOf<GiftModel>()
         val links = document.select("a[href]")
         for (i in links.indices) {
             try {
