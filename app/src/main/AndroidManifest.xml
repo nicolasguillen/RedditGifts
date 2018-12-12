@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          xmlns:tools="http://schemas.android.com/tools"
+          package="com.redditgifts.mobile">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <application
+            android:name=".RedditGiftsApp"
+            android:allowBackup="false"
+            android:icon="@mipmap/ic_launcher"
+            android:label="@string/app_name"
+            android:supportsRtl="true"
+            android:theme="@style/Base.Theme.RedditGifts"
+            tools:ignore="GoogleAppIndexingWarning">
+
+        <meta-data
+                android:name="io.fabric.ApiKey"
+                android:value="" />
+
+        <activity
+                android:name=".ui.activities.SplashActivity"
+                android:theme="@style/Theme.RedditGifts.SplashActivity"
+                android:screenOrientation="portrait" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+
+        <activity
+                android:name=".ui.activities.MainActivity"
+                android:theme="@style/Theme.RedditGifts.MainActivity"
+                android:screenOrientation="portrait" />
+
+        <activity
+                android:name=".ui.activities.LoginActivity"
+                android:screenOrientation="portrait" />
+
+        <activity
+                android:name=".ui.activities.GiftActivity"
+                android:screenOrientation="portrait" />
+
+    </application>
+
+</manifest>
