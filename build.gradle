@@ -29,10 +29,10 @@ buildscript {
 
     dependencies {
         //noinspection GradleDependency
-        classpath 'com.android.tools.build:gradle:3.3.0-rc02'
+        classpath "com.android.tools.build:gradle:3.3.0-rc02"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${versions.kotlin}"
-        classpath 'io.fabric.tools:gradle:1.27.0'
-        classpath 'com.google.gms:google-services:4.0.1'
+        classpath "io.fabric.tools:gradle:1.27.0"
+        classpath "com.google.gms:google-services:4.0.1"
     }
 }
 
@@ -40,7 +40,6 @@ allprojects {
     repositories {
         google()
         jcenter()
-        
     }
 }
 
