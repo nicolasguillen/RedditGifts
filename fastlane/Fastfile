@@ -5,6 +5,10 @@ platform :android do
 
   lane :beta do
     gradle(
+      task: 'test'
+    )
+
+    gradle(
       task: 'bundle',
       build_type: 'Release'
     )
@@ -21,6 +25,27 @@ platform :android do
       skip_upload_images: true,
       skip_upload_apk: true,
       skip_upload_aab: false
+    )
+  end
+
+  desc "Move the release notes to the correct location"
+  lane :prepare_release_notes do
+    gradle(
+      task: 'assemble',
+      build_type: 'Release'
+    )
+    androidVersion = get_android_version(apk: "app/build/outputs/apk/release/app-release.apk")
+    code = lane_context[SharedValues::GET_ANDROID_VERSION_CODE]
+    metadata_dir="metadata/android/en-GB/changelogs"
+    sh("cp ../CHANGELOG.md #{metadata_dir}/#{code}.txt")
+  end
+
+  lane :prepare_release_notes2 do
+    androidVersion = get_android_version(apk: "app/build/outputs/apk/release/app-release.apk")
+    name = lane_context[SharedValues::GET_ANDROID_VERSION_NAME]
+    stamp_changelog(
+      section_identifier: name, # Specify identifier to stamp the Unreleased section with
+      git_tag: 'test' # Specify reference to git tag associated with this section
     )
   end
 
