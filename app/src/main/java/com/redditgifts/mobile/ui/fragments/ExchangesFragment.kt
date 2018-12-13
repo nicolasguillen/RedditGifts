@@ -21,6 +21,7 @@ import com.redditgifts.mobile.models.ExchangesViewModel
 import com.redditgifts.mobile.ui.views.ExchangeBottomSheet
 import com.redditgifts.mobile.ui.activities.LoginActivity
 import com.redditgifts.mobile.ui.adapters.ExchangeAdapter
+import com.redditgifts.mobile.ui.views.StatisticsBottomSheet
 import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.cell_loader.*
 import kotlinx.android.synthetic.main.fragment_exchanges.*
@@ -79,6 +80,14 @@ class ExchangesFragment : BaseFragment<ExchangesViewModel>() {
             .crashingSubscribe { exchange ->
                 if(isAdded) {
                     ExchangeBottomSheet(context!!, exchange).show()
+                }
+            }
+
+        viewModel.outputs.showStatistics()
+            .observeOn(AndroidSchedulers.mainThread())
+            .crashingSubscribe { exchange ->
+                if(isAdded) {
+                    StatisticsBottomSheet(context!!, exchange).show()
                 }
             }
 

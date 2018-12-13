@@ -9,6 +9,7 @@ import com.redditgifts.mobile.ui.fragments.AccountFragment
 import com.redditgifts.mobile.ui.fragments.GalleryFragment
 import com.redditgifts.mobile.ui.fragments.ExchangesFragment
 import com.redditgifts.mobile.ui.views.ExchangeBottomSheet
+import com.redditgifts.mobile.ui.views.StatisticsBottomSheet
 import dagger.Component
 import javax.inject.Singleton
 
@@ -21,4 +22,5 @@ interface ApplicationComponent {
     fun inject(accountFragment: AccountFragment)
     fun inject(giftActivity: GiftActivity)
     fun inject(exchangeBottomSheet: ExchangeBottomSheet)
+    fun inject(statisticsBottomSheet: StatisticsBottomSheet)
 }

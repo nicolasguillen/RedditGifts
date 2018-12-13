@@ -10,6 +10,14 @@
     <string name="exchanges_credits">Credits: %d</string>
     <string name="exchanges_status">Status</string>
     <string name="exchanges_statistics">Statistics</string>
+    <!-- STATISTICS -->
+    <string name="statistics_participants">Participants</string>
+    <string name="statistics_matches">Matches</string>
+    <string name="statistics_retrieved">Retrieved</string>
+    <string name="statistics_shipped">Shipped</string>
+    <string name="statistics_gift">Gift in Gallery</string>
+    <string name="statistics_rematch_signups">Rematch Signups</string>
+    <string name="statistics_rematch_done">Rematches</string>
     <!-- STATUS -->
     <string name="state_santa">Your Santa\'s Gift to You</string>
     <string name="state_giftee">Your Gift to Your Match</string>

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorPrimaryDark">
+
+    <TextView
+            android:id="@+id/statisticsLoading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/textColor"
+            android:layout_gravity="center"
+            android:visibility="gone"
+            android:text="@string/main_loading"/>
+
+    <WebView
+            android:id="@+id/webView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"/>
+
+    <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+        <LinearLayout
+                android:id="@+id/statisticsList"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="invisible"
+                android:orientation="vertical">
+
+            <include
+                    android:id="@+id/statisticsParticipants"
+                    layout="@layout/cell_statistics_item" />
+
+            <include
+                    android:id="@+id/statisticsMatches"
+                    layout="@layout/cell_statistics_item" />
+
+            <include
+                    android:id="@+id/statisticsRetrieved"
+                    layout="@layout/cell_statistics_item" />
+
+            <include
+                    android:id="@+id/statisticsShipped"
+                    layout="@layout/cell_statistics_item" />
+
+            <include
+                    android:id="@+id/statisticsGiftInGallery"
+                    layout="@layout/cell_statistics_item" />
+
+            <Space
+                    android:layout_width="wrap_content"
+                    android:layout_height="20dp"/>
+
+            <include
+                    android:id="@+id/statisticsRematchSignups"
+                    layout="@layout/cell_statistics_item" />
+
+            <include
+                    android:id="@+id/statisticsRematches"
+                    layout="@layout/cell_statistics_item" />
+
+            <Space
+                    android:layout_width="wrap_content"
+                    android:layout_height="20dp"/>
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+</FrameLayout>

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools"
+        android:background="@color/colorPrimaryDark"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="8dp">
+
+    <TextView
+            android:id="@+id/statisticsDataTitle"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            tools:text="Matches"
+            android:textColor="@color/textColor"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body2"/>
+
+    <ProgressBar
+            android:id="@+id/statisticsDataProgress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@+id/statisticsDataTitle"
+            android:layout_toStartOf="@id/statisticsDataPercentage"
+            android:progressTint="@color/colorAccent"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_gravity="center"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
+
+    <TextView
+            android:id="@+id/statisticsDataProgressValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="200.000"
+            android:layout_toEndOf="@+id/statisticsDataTitle"
+            android:layout_toStartOf="@id/statisticsDataPercentage"
+            android:layout_below="@id/statisticsDataProgress"
+            android:textColor="@color/textColor"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"/>
+
+    <TextView
+            android:id="@+id/statisticsDataPercentage"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            tools:text="100%"
+            android:gravity="end"
+            android:textColor="@color/textColor"
+            android:layout_alignParentEnd="true"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
+
+</RelativeLayout>

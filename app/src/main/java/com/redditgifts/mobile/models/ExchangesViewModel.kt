@@ -21,6 +21,7 @@ interface ExchangesViewModelOutputs {
     fun exchangeOverview(): Observable<ExchangeOverviewModel>
     fun mustLogin(): Observable<Unit>
     fun showExchange(): Observable<ExchangeOverviewModel.Exchange>
+    fun showStatistics(): Observable<ExchangeOverviewModel.Exchange>
 }
 
 class ExchangesViewModel(private val htmlParser: HTMLParser,
@@ -36,6 +37,7 @@ class ExchangesViewModel(private val htmlParser: HTMLParser,
     private val exchangeOverview = PublishSubject.create<ExchangeOverviewModel>()
     private val mustLogin = PublishSubject.create<Unit>()
     private val showExchange = PublishSubject.create<ExchangeOverviewModel.Exchange>()
+    private val showStatistics = PublishSubject.create<ExchangeOverviewModel.Exchange>()
 
     val inputs: ExchangesViewModelInputs = this
     val outputs: ExchangesViewModelOutputs = this
@@ -68,9 +70,11 @@ class ExchangesViewModel(private val htmlParser: HTMLParser,
     override fun didLoadHtml(html: String) = this.didLoadHtml.onNext(html)
     override fun isLoading(): Observable<Boolean> = this.isLoading
     override fun loadHTML(): Observable<String> = this.loadHTML
-    override fun didSelectExchange(exchange: ExchangeOverviewModel.Exchange) = this.showExchange.onNext(exchange)
+    override fun didSelectOpenStatus(exchange: ExchangeOverviewModel.Exchange) = this.showExchange.onNext(exchange)
+    override fun didSelectOpenStatistics(exchange: ExchangeOverviewModel.Exchange) = this.showStatistics.onNext(exchange)
     override fun exchangeOverview(): Observable<ExchangeOverviewModel> = this.exchangeOverview
     override fun mustLogin(): Observable<Unit> = this.mustLogin
     override fun showExchange(): Observable<ExchangeOverviewModel.Exchange> = this.showExchange
+    override fun showStatistics(): Observable<ExchangeOverviewModel.Exchange> = this.showStatistics
 
 }

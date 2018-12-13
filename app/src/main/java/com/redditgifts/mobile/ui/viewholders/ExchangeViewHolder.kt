@@ -26,11 +26,17 @@ class ExchangeViewHolder(view: View,
 
         val exchangeStatus = view().findViewById<AppCompatButton>(R.id.exchangeStatus)
         exchangeStatus.setOnClickListener {
-            delegate?.didSelectExchange(exchange!!)
+            delegate?.didSelectOpenStatus(exchange!!)
+        }
+
+        val exchangeStatistics = view().findViewById<AppCompatButton>(R.id.exchangeStatistics)
+        exchangeStatistics.setOnClickListener {
+            delegate?.didSelectOpenStatistics(exchange!!)
         }
     }
 
     interface Delegate : BaseViewHolderDelegate {
-        fun didSelectExchange(exchange: ExchangeOverviewModel.Exchange)
+        fun didSelectOpenStatus(exchange: ExchangeOverviewModel.Exchange)
+        fun didSelectOpenStatistics(exchange: ExchangeOverviewModel.Exchange)
     }
 }

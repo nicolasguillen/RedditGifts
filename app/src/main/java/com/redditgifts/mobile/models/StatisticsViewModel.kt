@@ -4,25 +4,25 @@ import com.redditgifts.mobile.libs.GenericResult
 import com.redditgifts.mobile.libs.LocalizedErrorMessages
 import com.redditgifts.mobile.libs.operators.Operators
 import com.redditgifts.mobile.services.HTMLParser
-import com.redditgifts.mobile.services.models.ExchangeStatusModel
+import com.redditgifts.mobile.services.models.StatisticsModel
 import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
 
-interface ExchangeStatusViewModelInputs {
+interface StatisticsViewModelInputs {
     fun onCreate()
     fun exchangeId(id: String)
     fun didLoadHtml(html: String)
 }
 
-interface ExchangeStatusViewModelOutputs {
+interface StatisticsViewModelOutputs {
     fun isLoading(): Observable<Boolean>
     fun loadHTML(): Observable<String>
-    fun exchangeStatus(): Observable<ExchangeStatusModel>
+    fun statistics(): Observable<StatisticsModel>
     fun error(): Observable<String>
 }
 
-class ExchangeStatusViewModel(private val htmlParser: HTMLParser,
-                              private val localizedErrorMessages: LocalizedErrorMessages): DisposableViewModel(), ExchangeStatusViewModelInputs, ExchangeStatusViewModelOutputs {
+class StatisticsViewModel(private val htmlParser: HTMLParser,
+                          private val localizedErrorMessages: LocalizedErrorMessages): DisposableViewModel(), StatisticsViewModelInputs, StatisticsViewModelOutputs {
 
     //INPUTS
     private val onCreate = PublishSubject.create<Unit>()
@@ -32,27 +32,27 @@ class ExchangeStatusViewModel(private val htmlParser: HTMLParser,
     //OUTPUTS
     private val isLoading = PublishSubject.create<Boolean>()
     private val loadHTML = PublishSubject.create<String>()
-    private val exchangeStatus = PublishSubject.create<ExchangeStatusModel>()
+    private val statistics = PublishSubject.create<StatisticsModel>()
     private val error = PublishSubject.create<String>()
 
-    val inputs: ExchangeStatusViewModelInputs = this
-    val outputs: ExchangeStatusViewModelOutputs = this
+    val inputs: StatisticsViewModelInputs = this
+    val outputs: StatisticsViewModelOutputs = this
 
     init {
         this.exchangeId
-            .map { "https://www.redditgifts.com/exchanges/#/status/$it" }
+            .map { "https://www.redditgifts.com/exchanges/#/stats/$it" }
             .doOnNext { this.isLoading.onNext(true) }
             .crashingSubscribe { this.loadHTML.onNext(it) }
 
         this.didLoadHtml
             .switchMapSingle { html ->
-                this.htmlParser.parseStatuses(html)
+                this.htmlParser.parseStatistics(html)
                     .lift(Operators.genericResult(this.localizedErrorMessages))
                     .doOnSuccess { this.isLoading.onNext(false) }
             }
             .crashingSubscribe { when(it) {
                 is GenericResult.Successful ->
-                    this.exchangeStatus.onNext(it.result)
+                    this.statistics.onNext(it.result)
                 is GenericResult.Failed ->
                     this.error.onNext(it.errorMessage)
             } }
@@ -64,7 +64,7 @@ class ExchangeStatusViewModel(private val htmlParser: HTMLParser,
     override fun didLoadHtml(html: String) = this.didLoadHtml.onNext(html)
     override fun isLoading(): Observable<Boolean> = this.isLoading
     override fun loadHTML(): Observable<String> = this.loadHTML
-    override fun exchangeStatus(): Observable<ExchangeStatusModel> = this.exchangeStatus
+    override fun statistics(): Observable<StatisticsModel> = this.statistics
     override fun error(): Observable<String> = this.error
 
 }

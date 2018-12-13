@@ -48,14 +48,14 @@
                 style="@style/ActionButton"
                 android:text="@string/exchanges_status"/>
 
-        <!--<androidx.appcompat.widget.AppCompatButton-->
-                <!--android:id="@+id/exchangeStatistics"-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_below="@+id/exchangeTitle"-->
-                <!--android:layout_toEndOf="@id/exchangeDetails"-->
-                <!--style="@style/ActionButton"-->
-                <!--android:text="@string/exchanges_statistics"/>-->
+        <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/exchangeStatistics"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/exchangeTitle"
+                android:layout_toEndOf="@id/exchangeStatus"
+                style="@style/ActionButton"
+                android:text="@string/exchanges_statistics"/>
 
     </RelativeLayout>
 </androidx.cardview.widget.CardView>
