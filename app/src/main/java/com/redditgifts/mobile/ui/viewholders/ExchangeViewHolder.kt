@@ -2,6 +2,7 @@ package com.redditgifts.mobile.ui.viewholders
 
 import android.view.View
 import android.widget.TextView
+import androidx.appcompat.widget.AppCompatButton
 import com.redditgifts.mobile.R
 import com.redditgifts.mobile.libs.utils.loadUrlIntoImage
 import com.redditgifts.mobile.services.models.ExchangeOverviewModel
@@ -22,10 +23,11 @@ class ExchangeViewHolder(view: View,
             view().findViewById(R.id.exchangeImage),
             exchange?.imageURL!!
         )
-    }
 
-    override fun onClick(v: View) {
-        delegate?.didSelectExchange(exchange!!)
+        val exchangeStatus = view().findViewById<AppCompatButton>(R.id.exchangeStatus)
+        exchangeStatus.setOnClickListener {
+            delegate?.didSelectExchange(exchange!!)
+        }
     }
 
     interface Delegate : BaseViewHolderDelegate {

@@ -5,16 +5,15 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:foreground="?android:attr/selectableItemBackground"
-        android:clickable="true"
-        android:focusable="true"
+        android:clickable="false"
         app:cardBackgroundColor="@color/colorPrimary"
         app:cardUseCompatPadding="true"
         tools:ignore="UnusedAttribute">
 
     <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:padding="8dp">
 
         <ImageView
                 android:id="@+id/exchangeImage"
@@ -22,6 +21,7 @@
                 android:layout_height="80dp"
                 android:scaleType="fitCenter"
                 android:adjustViewBounds="true"
+                android:layout_centerVertical="true"
                 tools:src="@mipmap/ic_launcher"
                 android:contentDescription="@null"/>
 
@@ -32,11 +32,30 @@
                 android:padding="8dp"
                 android:layout_toEndOf="@+id/exchangeImage"
                 android:layout_alignTop="@+id/exchangeImage"
-                android:layout_alignBottom="@+id/exchangeImage"
                 android:gravity="center_vertical"
                 android:textColor="@color/textColor"
+                android:paddingEnd="8dp"
+                android:paddingStart="8dp"
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
                 tools:text="Secret Santa!"/>
+
+        <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/exchangeStatus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/exchangeTitle"
+                android:layout_toEndOf="@+id/exchangeImage"
+                style="@style/ActionButton"
+                android:text="@string/exchanges_status"/>
+
+        <!--<androidx.appcompat.widget.AppCompatButton-->
+                <!--android:id="@+id/exchangeStatistics"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_below="@+id/exchangeTitle"-->
+                <!--android:layout_toEndOf="@id/exchangeDetails"-->
+                <!--style="@style/ActionButton"-->
+                <!--android:text="@string/exchanges_statistics"/>-->
 
     </RelativeLayout>
 </androidx.cardview.widget.CardView>

@@ -28,11 +28,20 @@
         <item name="android:windowMinWidthMinor">100%</item>
     </style>
 
-    <!--<style name="AppTheme.NoActionBar">-->
-        <!--<item name="windowActionBar">false</item>-->
-        <!--<item name="windowNoTitle">true</item>-->
-    <!--</style>-->
-    <!--<style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>-->
-    <!--<style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>-->
+    <style name="SelectableTheme">
+        <item name="colorControlHighlight">@color/colorAccent</item>
+    </style>
+
+    <style name="ActionButton">
+        <item name="android:theme">@style/SelectableTheme</item>
+        <item name="android:textColor">@color/colorAccent</item>
+        <item name="android:background">@drawable/background_action_button</item>
+        <item name="android:foreground">?attr/selectableItemBackground</item>
+        <item name="android:paddingEnd">16dp</item>
+        <item name="android:paddingStart">16dp</item>
+        <item name="android:layout_marginEnd">8dp</item>
+        <item name="android:layout_marginStart">8dp</item>
+
+    </style>
 
 </resources>

@@ -8,6 +8,8 @@
     <string name="main_loading">Loading…</string>
     <!-- EXCHANGES -->
     <string name="exchanges_credits">Credits: %d</string>
+    <string name="exchanges_status">Status</string>
+    <string name="exchanges_statistics">Statistics</string>
     <!-- STATUS -->
     <string name="state_santa">Your Santa\'s Gift to You</string>
     <string name="state_giftee">Your Gift to Your Match</string>
