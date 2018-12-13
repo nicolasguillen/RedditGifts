@@ -1,0 +1,27 @@
+
+default_platform :android
+
+platform :android do
+
+  lane :beta do
+    gradle(
+      task: 'bundle',
+      build_type: 'Release'
+    )
+
+    puts "AABs: #{Actions.lane_context[SharedValues::GRADLE_ALL_AAB_OUTPUT_PATHS]}"
+    puts "AAB: #{Actions.lane_context[SharedValues::GRADLE_AAB_OUTPUT_PATH]}"
+
+    supply(
+      package_name: "com.redditgifts.mobile",
+      track: "beta",
+      json_key: "app/upload.json",
+      aab: "app/build/outputs/bundle/release/app.aab",
+      skip_upload_metadata: true,
+      skip_upload_images: true,
+      skip_upload_apk: true,
+      skip_upload_aab: false
+    )
+  end
+
+end
