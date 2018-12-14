@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">RedditGifts</string>
     <!-- MAIN -->
-    <string name="main_exchanges">Exchanges</string>
+    <string name="main_home">Home</string>
     <string name="main_gallery">Gallery</string>
     <string name="main_account">Account</string>
     <string name="main_login">Please login</string>
@@ -10,6 +10,7 @@
     <string name="exchanges_credits">Credits: %d</string>
     <string name="exchanges_status">Status</string>
     <string name="exchanges_statistics">Statistics</string>
+    <string name="exchanges_gallery">Gallery</string>
     <!-- STATISTICS -->
     <string name="statistics_participants">Participants</string>
     <string name="statistics_matches">Matches</string>

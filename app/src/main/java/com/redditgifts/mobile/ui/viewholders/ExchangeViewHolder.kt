@@ -3,6 +3,7 @@ package com.redditgifts.mobile.ui.viewholders
 import android.view.View
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatButton
+import androidx.appcompat.widget.Toolbar
 import com.redditgifts.mobile.R
 import com.redditgifts.mobile.libs.utils.loadUrlIntoImage
 import com.redditgifts.mobile.services.models.ExchangeOverviewModel
@@ -12,6 +13,10 @@ class ExchangeViewHolder(view: View,
                          private val delegate: Delegate?) : BaseViewHolder(view) {
 
     private var currentExchange: ExchangeOverviewModel.CurrentExchange? = null
+
+    init {
+        initToolbar()
+    }
 
     override fun bindData(data: Any) {
         currentExchange = data as ExchangeOverviewModel.CurrentExchange
@@ -29,14 +34,25 @@ class ExchangeViewHolder(view: View,
             delegate?.didSelectOpenStatus(currentExchange!!)
         }
 
-        val exchangeStatistics = view().findViewById<AppCompatButton>(R.id.exchangeStatistics)
-        exchangeStatistics.setOnClickListener {
-            delegate?.didSelectOpenStatistics(currentExchange!!)
-        }
     }
 
     interface Delegate : BaseViewHolderDelegate {
         fun didSelectOpenStatus(currentExchange: ExchangeOverviewModel.CurrentExchange)
         fun didSelectOpenStatistics(currentExchange: ExchangeOverviewModel.CurrentExchange)
+        fun didSelectOpenGallery(currentExchange: ExchangeOverviewModel.CurrentExchange)
+    }
+
+    private fun initToolbar(){
+        val menu = view().findViewById<Toolbar>(R.id.exchangeMenu)
+        menu.inflateMenu(R.menu.menu_exchange)
+        menu.setOnMenuItemClickListener { menuItem ->
+            when(menuItem.itemId) {
+                R.id.exchangeStatistics ->
+                    delegate?.didSelectOpenStatistics(currentExchange!!)
+                R.id.exchangeGallery ->
+                    delegate?.didSelectOpenGallery(currentExchange!!)
+            }
+            false
+        }
     }
 }

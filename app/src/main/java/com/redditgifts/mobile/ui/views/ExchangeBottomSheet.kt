@@ -176,12 +176,12 @@ class ExchangeBottomSheet(context: Context,
     }
 
     private fun TextView.setStatusEnabled(statusData: ExchangeStatusModel.StatusData) {
-        isEnabled = statusData.status != ExchangeStatusModel.Status.INCOMPLETE
+        isEnabled = statusData.status == ExchangeStatusModel.Status.COMPLETED
     }
 
     private fun CheckBox.setStatusEnabled(statusData: ExchangeStatusModel.StatusData) {
         text = statusData.title
-        isChecked = statusData.status != ExchangeStatusModel.Status.INCOMPLETE
+        isChecked = statusData.status == ExchangeStatusModel.Status.COMPLETED
     }
 
 }

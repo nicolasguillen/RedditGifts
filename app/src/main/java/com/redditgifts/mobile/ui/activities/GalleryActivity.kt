@@ -68,7 +68,11 @@ class GalleryActivity : BaseActivity<GalleryViewModel>() {
     @SuppressLint("SetJavaScriptEnabled")
     private fun loadViews() {
         setContentView(R.layout.activity_gallery)
-        supportActionBar?.title = getString(intent?.extras?.getInt(IntentKey.EXCHANGE_TITLE)!!)
+        val title = intent?.extras?.get(IntentKey.EXCHANGE_TITLE)
+        when(title) {
+            is String? -> supportActionBar?.title = title
+            is Int? -> supportActionBar?.title = getString(title!!)
+        }
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         webView.settings.javaScriptEnabled = true

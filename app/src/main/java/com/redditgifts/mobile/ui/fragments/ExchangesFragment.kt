@@ -17,7 +17,9 @@ import com.redditgifts.mobile.R
 import com.redditgifts.mobile.RedditGiftsApp
 import com.redditgifts.mobile.libs.ActivityRequestCodes
 import com.redditgifts.mobile.libs.ActivityRequestCodes.LOGIN_WORKFLOW
+import com.redditgifts.mobile.libs.IntentKey
 import com.redditgifts.mobile.models.ExchangesViewModel
+import com.redditgifts.mobile.ui.activities.GalleryActivity
 import com.redditgifts.mobile.ui.views.ExchangeBottomSheet
 import com.redditgifts.mobile.ui.activities.LoginActivity
 import com.redditgifts.mobile.ui.adapters.GenericAdapter
@@ -89,6 +91,15 @@ class ExchangesFragment : BaseFragment<ExchangesViewModel>() {
                 if(isAdded) {
                     StatisticsBottomSheet(context!!, exchange).show()
                 }
+            }
+
+        viewModel.outputs.showGallery()
+            .observeOn(AndroidSchedulers.mainThread())
+            .crashingSubscribe { exchange ->
+                startActivity(
+                    Intent(activity, GalleryActivity::class.java)
+                        .putExtra(IntentKey.EXCHANGE_ID, exchange.referenceId)
+                        .putExtra(IntentKey.EXCHANGE_TITLE, exchange.title))
             }
 
         exchangesLogin.setOnClickListener {

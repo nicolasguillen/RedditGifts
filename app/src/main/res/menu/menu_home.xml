@@ -4,7 +4,7 @@
     <item
             android:id="@+id/bottomBarExchanges"
             android:icon="@drawable/ic_home"
-            android:title="@string/main_exchanges"/>
+            android:title="@string/main_home"/>
 
     <item
             android:id="@+id/bottomBarGallery"
