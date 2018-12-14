@@ -11,32 +11,32 @@ import com.squareup.picasso.Picasso
 class ExchangeViewHolder(view: View,
                          private val delegate: Delegate?) : BaseViewHolder(view) {
 
-    private var exchange: ExchangeOverviewModel.Exchange? = null
+    private var currentExchange: ExchangeOverviewModel.CurrentExchange? = null
 
     override fun bindData(data: Any) {
-        exchange = data as ExchangeOverviewModel.Exchange
+        currentExchange = data as ExchangeOverviewModel.CurrentExchange
 
         val giftTitle = view().findViewById<TextView>(R.id.exchangeTitle)
-        giftTitle.text = exchange?.title
+        giftTitle.text = currentExchange?.title
 
         Picasso.get().loadUrlIntoImage(
             view().findViewById(R.id.exchangeImage),
-            exchange?.imageURL!!
+            currentExchange?.imageURL!!
         )
 
         val exchangeStatus = view().findViewById<AppCompatButton>(R.id.exchangeStatus)
         exchangeStatus.setOnClickListener {
-            delegate?.didSelectOpenStatus(exchange!!)
+            delegate?.didSelectOpenStatus(currentExchange!!)
         }
 
         val exchangeStatistics = view().findViewById<AppCompatButton>(R.id.exchangeStatistics)
         exchangeStatistics.setOnClickListener {
-            delegate?.didSelectOpenStatistics(exchange!!)
+            delegate?.didSelectOpenStatistics(currentExchange!!)
         }
     }
 
     interface Delegate : BaseViewHolderDelegate {
-        fun didSelectOpenStatus(exchange: ExchangeOverviewModel.Exchange)
-        fun didSelectOpenStatistics(exchange: ExchangeOverviewModel.Exchange)
+        fun didSelectOpenStatus(currentExchange: ExchangeOverviewModel.CurrentExchange)
+        fun didSelectOpenStatistics(currentExchange: ExchangeOverviewModel.CurrentExchange)
     }
 }

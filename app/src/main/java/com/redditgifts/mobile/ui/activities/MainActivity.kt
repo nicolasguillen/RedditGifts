@@ -6,7 +6,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import com.redditgifts.mobile.R
 import com.redditgifts.mobile.ui.fragments.AccountFragment
-import com.redditgifts.mobile.ui.fragments.GalleryFragment
+import com.redditgifts.mobile.ui.fragments.PastExchangesFragment
 import com.redditgifts.mobile.ui.fragments.ExchangesFragment
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -14,7 +14,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 class MainActivity: AppCompatActivity() {
 
     private val exchangesFragment = ExchangesFragment()
-    private val galleryFragment = GalleryFragment()
+    private val pastExchangesFragment = PastExchangesFragment()
     private val accountFragment = AccountFragment()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -27,7 +27,7 @@ class MainActivity: AppCompatActivity() {
                 R.id.bottomBarExchanges ->
                     changeFragment(exchangesFragment)
                 R.id.bottomBarGallery ->
-                    changeFragment(galleryFragment)
+                    changeFragment(pastExchangesFragment)
                 R.id.bottomBarAccount ->
                     changeFragment(accountFragment)
             }
@@ -46,16 +46,16 @@ class MainActivity: AppCompatActivity() {
 
         when(to) {
             is ExchangesFragment -> {
-                fragmentTransaction.hideIfNeeded(galleryFragment)
+                fragmentTransaction.hideIfNeeded(pastExchangesFragment)
                 fragmentTransaction.hideIfNeeded(accountFragment)
             }
-            is GalleryFragment -> {
+            is PastExchangesFragment -> {
                 fragmentTransaction.hideIfNeeded(exchangesFragment)
                 fragmentTransaction.hideIfNeeded(accountFragment)
             }
             is AccountFragment -> {
                 fragmentTransaction.hideIfNeeded(exchangesFragment)
-                fragmentTransaction.hideIfNeeded(galleryFragment)
+                fragmentTransaction.hideIfNeeded(pastExchangesFragment)
             }
         }
         fragmentTransaction.commit()

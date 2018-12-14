@@ -31,6 +31,19 @@
     <string name="state_8">8</string>
     <!-- ACCOUNT -->
     <string name="account_logout">Sign out</string>
+    <!-- PAST EXCHANGES -->
+    <string name="exchange_postcards_2018">Postcards (Zero Credit!) 2018</string>
+    <string name="exchange_funko_pop_2018">Funko Pop Exchange 2018</string>
+    <string name="exchange_coffee_and_tea_2018">Coffee and Tea 2018</string>
+    <string name="exchange_star_wars_2018">Star Wars 2018</string>
+    <string name="exchange_holiday_cards_2018">Holiday Cards 2018 (zero credit)</string>
+    <string name="exchange_secret_santa_2018">Secret Santa 10th Annual Extravaganza!</string>
+    <string name="exchange_kitchen_goods_2018">Kitchen Goods 2018</string>
+    <string name="exchange_trick_or_treat_2018">Trick or Treat 2018</string>
+    <string name="exchange_diwali_2018">Diwali 2018</string>
+    <string name="exchange_art_supplies_2018">Art Supplies 2018</string>
+    <string name="exchange_harry_potter_2018">Harry Potter 2018</string>
+    <string name="exchange_ugly_mugs_2018">Ugly Mugs 2018</string>
     <!-- ERRORS -->
     <string name="error_load_html">Whoops! Please try again later</string>
     <string name="error_unknown">Unknown error</string>

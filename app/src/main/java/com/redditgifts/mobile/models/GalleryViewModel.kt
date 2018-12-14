@@ -12,6 +12,7 @@ import io.reactivex.subjects.PublishSubject
 
 interface GalleryViewModelInputs : GalleryViewHolder.Delegate {
     fun onCreate()
+    fun exchangeId(id: String)
     fun loadPage(page: Int)
     fun didLoadHtml(html: String)
 }
@@ -28,6 +29,7 @@ class GalleryViewModel(private val htmlParser: HTMLParser,
 
     //INPUTS
     private val onCreate = PublishSubject.create<Unit>()
+    private val exchangeId = PublishSubject.create<String>()
     private val loadPage = PublishSubject.create<Int>()
     private val didLoadHtml = PublishSubject.create<String>()
 
@@ -42,7 +44,12 @@ class GalleryViewModel(private val htmlParser: HTMLParser,
 
     init {
         this.loadPage
-            .map { "https://www.redditgifts.com/gallery/#/?type=exchanges&pageNumber=$it&pageSize=25&sort=date&sortDirection=DESC&filterExchange=secret-santa-2018" }
+            .withLatestFrom(exchangeId)
+            .map { pageAndId ->
+                val page = pageAndId.first
+                val exchange = pageAndId.second
+                "https://www.redditgifts.com/gallery/#/?type=exchanges&pageNumber=$page&pageSize=25&sort=date&sortDirection=DESC&filterExchange=$exchange"
+            }
             .crashingSubscribe { url ->
                 this.isLoading.onNext(true)
                 this.loadHTML.onNext(url)
@@ -68,6 +75,7 @@ class GalleryViewModel(private val htmlParser: HTMLParser,
     }
 
     override fun onCreate() = this.onCreate.onNext(Unit)
+    override fun exchangeId(id: String) = this.exchangeId.onNext(id)
     override fun loadPage(page: Int) = this.loadPage.onNext(page)
     override fun didLoadHtml(html: String) = this.didLoadHtml.onNext(html)
     override fun didSelectGift(gift: GiftModel) = this.startGiftDetail.onNext(gift)
@@ -75,6 +83,7 @@ class GalleryViewModel(private val htmlParser: HTMLParser,
     override fun loadHTML(): Observable<String> = this.loadHTML
     override fun galleryPageData(): Observable<GalleryPageData> = this.galleryPageData
     override fun startGiftDetail(): Observable<GiftModel> = this.startGiftDetail
+
 }
 
 class GalleryPageData(val page: Int, val items: List<GiftModel>)

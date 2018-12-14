@@ -24,6 +24,9 @@ open class ModelModule {
                                               localizedErrorMessages: LocalizedErrorMessages): StatisticsViewModel =
         StatisticsViewModel(htmlParser, localizedErrorMessages)
 
+    @Provides fun providesPastExchangesViewModel(): PastExchangesViewModel =
+        PastExchangesViewModel()
+
     @Provides fun providesGalleryViewModel(htmlParser: HTMLParser,
                                            localizedErrorMessages: LocalizedErrorMessages): GalleryViewModel =
         GalleryViewModel(htmlParser, localizedErrorMessages)

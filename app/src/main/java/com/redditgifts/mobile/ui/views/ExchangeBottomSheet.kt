@@ -29,7 +29,7 @@ import kotlinx.android.synthetic.main.view_santa_status_detail.*
 import javax.inject.Inject
 
 class ExchangeBottomSheet(context: Context,
-                          private val exchange: ExchangeOverviewModel.Exchange): BottomSheetDialog(context, R.style.Theme_RedditGifts_ExchangeBottomSheet) {
+                          private val currentExchange: ExchangeOverviewModel.CurrentExchange): BottomSheetDialog(context, R.style.Theme_RedditGifts_ExchangeBottomSheet) {
 
     @Inject lateinit var viewModel: ExchangeStatusViewModel
 
@@ -137,7 +137,7 @@ class ExchangeBottomSheet(context: Context,
                 }
             }
 
-        viewModel.inputs.exchangeId(exchange.referenceId)
+        viewModel.inputs.exchangeId(currentExchange.referenceId)
 
     }
 

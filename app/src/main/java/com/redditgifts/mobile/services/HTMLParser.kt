@@ -30,7 +30,7 @@ class JsoupHTMLParser: HTMLParser {
         val credits = if(matcher.find()){
             matcher.group().toInt()
         } else { 0 }
-        val listOfExchanges = mutableListOf<ExchangeOverviewModel.Exchange>()
+        val listOfExchanges = mutableListOf<ExchangeOverviewModel.CurrentExchange>()
         val exchanges = document.select("div[class=exchange-group__exchanges]")
         for (i in exchanges.indices) {
             try {
@@ -41,7 +41,7 @@ class JsoupHTMLParser: HTMLParser {
                     continue
                 }
 
-                listOfExchanges.add(ExchangeOverviewModel.Exchange(referenceId, title, imageURL))
+                listOfExchanges.add(ExchangeOverviewModel.CurrentExchange(referenceId, title, imageURL))
             } catch (e: Exception) {  }
         }
         return Single.just(ExchangeOverviewModel(credits, listOfExchanges))

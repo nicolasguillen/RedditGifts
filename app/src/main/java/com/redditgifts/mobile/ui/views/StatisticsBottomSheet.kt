@@ -26,7 +26,7 @@ import java.util.*
 import javax.inject.Inject
 
 class StatisticsBottomSheet(context: Context,
-                            private val exchange: ExchangeOverviewModel.Exchange): BottomSheetDialog(context, R.style.Theme_RedditGifts_ExchangeBottomSheet) {
+                            private val currentExchange: ExchangeOverviewModel.CurrentExchange): BottomSheetDialog(context, R.style.Theme_RedditGifts_ExchangeBottomSheet) {
 
     @Inject lateinit var viewModel: StatisticsViewModel
 
@@ -73,7 +73,7 @@ class StatisticsBottomSheet(context: Context,
                 this.setStatisticsValue(statisticsRematches, R.string.statistics_rematch_done, statistics.rematchCompleted, statistics.rematchSignups)
             }
 
-        viewModel.inputs.exchangeId(exchange.referenceId)
+        viewModel.inputs.exchangeId(currentExchange.referenceId)
 
     }
 

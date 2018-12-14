@@ -6,13 +6,12 @@ import android.view.ViewGroup
 import androidx.annotation.LayoutRes
 import androidx.recyclerview.widget.RecyclerView
 import com.redditgifts.mobile.R
-import com.redditgifts.mobile.ui.viewholders.BaseViewHolder
-import com.redditgifts.mobile.ui.viewholders.EmptyViewHolder
-import com.redditgifts.mobile.ui.viewholders.ExchangeViewHolder
-import com.redditgifts.mobile.ui.viewholders.LoaderViewHolder
+import com.redditgifts.mobile.services.models.ExchangeOverviewModel
+import com.redditgifts.mobile.services.models.PastExchangeModel
+import com.redditgifts.mobile.ui.viewholders.*
 
-class ExchangeAdapter(private val delegate: BaseViewHolder.BaseViewHolderDelegate?,
-                      private val itemList: List<Any>): RecyclerView.Adapter<BaseViewHolder>() {
+class GenericAdapter(private val delegate: BaseViewHolder.BaseViewHolderDelegate?,
+                     private val itemList: List<Any>): RecyclerView.Adapter<BaseViewHolder>() {
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, layout: Int): BaseViewHolder {
         val layoutInflater = LayoutInflater.from(viewGroup.context)
@@ -33,13 +32,21 @@ class ExchangeAdapter(private val delegate: BaseViewHolder.BaseViewHolderDelegat
         if(this.itemList.isEmpty()){
             return R.layout.cell_loader
         }
-        return R.layout.cell_exchange
+        return when(this.itemList[0]){
+            is ExchangeOverviewModel.CurrentExchange ->
+                R.layout.cell_exchange
+            is PastExchangeModel ->
+                R.layout.cell_past_exchange
+            else -> R.layout.cell_loader
+        }
     }
 
     private fun viewHolder(@LayoutRes layout: Int, view: View): BaseViewHolder {
         return when (layout) {
             R.layout.cell_exchange ->
                 ExchangeViewHolder(view, delegate as ExchangeViewHolder.Delegate)
+            R.layout.cell_past_exchange ->
+                PastExchangeViewHolder(view, delegate as PastExchangeViewHolder.Delegate)
             R.layout.cell_loader ->
                 LoaderViewHolder(view)
             else ->

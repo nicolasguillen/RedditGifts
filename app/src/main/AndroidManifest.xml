@@ -16,7 +16,7 @@
 
         <meta-data
                 android:name="io.fabric.ApiKey"
-                android:value="" />
+                android:value="3a7cdcd3a26b7808f7831d46a692b9719bf7d8d7" />
 
         <activity
                 android:name=".ui.activities.SplashActivity"
@@ -35,6 +35,10 @@
 
         <activity
                 android:name=".ui.activities.LoginActivity"
+                android:screenOrientation="portrait" />
+
+        <activity
+                android:name=".ui.activities.GalleryActivity"
                 android:screenOrientation="portrait" />
 
         <activity

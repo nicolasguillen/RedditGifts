@@ -1,12 +1,9 @@
-package com.redditgifts.mobile.ui.fragments
+package com.redditgifts.mobile.ui.activities
 
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.webkit.WebViewClient
@@ -19,20 +16,17 @@ import com.redditgifts.mobile.libs.IntentKey
 import com.redditgifts.mobile.libs.utils.EndlessRecyclerViewScrollListener
 import com.redditgifts.mobile.models.GalleryPageData
 import com.redditgifts.mobile.models.GalleryViewModel
-import com.redditgifts.mobile.ui.activities.GiftActivity
 import com.redditgifts.mobile.ui.adapters.GalleryAdapter
 import io.reactivex.android.schedulers.AndroidSchedulers
-import kotlinx.android.synthetic.main.fragment_gallery.*
+import kotlinx.android.synthetic.main.activity_gallery.*
 
-class GalleryFragment : BaseFragment<GalleryViewModel>() {
+class GalleryActivity : BaseActivity<GalleryViewModel>() {
 
-    @SuppressLint("InflateParams")
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
         RedditGiftsApp.applicationComponent.inject(this)
-        return inflater.inflate(R.layout.fragment_gallery, null)
-    }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         loadViews()
 
         viewModel.outputs.isLoading()
@@ -59,7 +53,7 @@ class GalleryFragment : BaseFragment<GalleryViewModel>() {
             .observeOn(AndroidSchedulers.mainThread())
             .crashingSubscribe { giftSelected ->
                 startActivity(
-                    Intent(activity, GiftActivity::class.java)
+                    Intent(this, GiftActivity::class.java)
                         .putExtra(IntentKey.GIFT_ID, giftSelected.referenceId))
             }
 
@@ -67,16 +61,21 @@ class GalleryFragment : BaseFragment<GalleryViewModel>() {
             viewModel.inputs.loadPage(1)
         }
 
+        viewModel.inputs.exchangeId(intent?.extras?.getString(IntentKey.EXCHANGE_ID)!!)
         viewModel.inputs.onCreate()
     }
 
     @SuppressLint("SetJavaScriptEnabled")
     private fun loadViews() {
+        setContentView(R.layout.activity_gallery)
+        supportActionBar?.title = getString(intent?.extras?.getInt(IntentKey.EXCHANGE_TITLE)!!)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
         webView.settings.javaScriptEnabled = true
 
-        val linearLayoutManager = LinearLayoutManager(context)
+        val linearLayoutManager = LinearLayoutManager(this)
         galleryItems.layoutManager = linearLayoutManager
-        galleryItems.addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
+        galleryItems.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
         galleryItems.adapter = GalleryAdapter(this.viewModel.inputs, mutableListOf())
 
     }
@@ -92,7 +91,6 @@ class GalleryFragment : BaseFragment<GalleryViewModel>() {
         webView.webViewClient = object : WebViewClient() {
             override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest?): Boolean = true
             override fun onPageFinished(view: WebView, url: String) {
-                if(!isAdded) return
                 handler.postDelayed({
                     webView.loadUrl("javascript:window.HTMLOUT.processHTML('<html>'+document.getElementsByTagName('html')[0].innerHTML+'</html>');")
                 }, 2000)
@@ -120,6 +118,5 @@ class GalleryFragment : BaseFragment<GalleryViewModel>() {
             viewModel.inputs.didLoadHtml(html)
         }
     }
-
 
 }

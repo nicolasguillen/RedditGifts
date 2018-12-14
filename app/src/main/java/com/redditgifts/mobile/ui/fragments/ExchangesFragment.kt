@@ -20,7 +20,7 @@ import com.redditgifts.mobile.libs.ActivityRequestCodes.LOGIN_WORKFLOW
 import com.redditgifts.mobile.models.ExchangesViewModel
 import com.redditgifts.mobile.ui.views.ExchangeBottomSheet
 import com.redditgifts.mobile.ui.activities.LoginActivity
-import com.redditgifts.mobile.ui.adapters.ExchangeAdapter
+import com.redditgifts.mobile.ui.adapters.GenericAdapter
 import com.redditgifts.mobile.ui.views.StatisticsBottomSheet
 import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.cell_loader.*
@@ -66,7 +66,7 @@ class ExchangesFragment : BaseFragment<ExchangesViewModel>() {
             .crashingSubscribe { data ->
                 exchangesLogin.visibility = View.INVISIBLE
                 exchangesCredits.text = getString(R.string.exchanges_credits).format(data.credits)
-                exchangesList.adapter = ExchangeAdapter(this.viewModel.inputs, data.listExhanges)
+                exchangesList.adapter = GenericAdapter(this.viewModel.inputs, data.listCurrentExchanges)
             }
 
         viewModel.outputs.mustLogin()

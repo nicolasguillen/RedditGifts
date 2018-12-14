@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:foreground="?android:attr/selectableItemBackground"
+        android:clickable="true"
+        android:focusable="true"
+        app:cardUseCompatPadding="true"
+        app:cardBackgroundColor="@color/colorPrimary"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    <LinearLayout
+            android:orientation="horizontal"
+            android:padding="4dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:ignore="UseCompoundDrawables">
+
+        <ImageView
+                android:id="@+id/pastExchangeLogo"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:padding="4dp"
+                tools:src="@drawable/logo_harry_potter_2018"
+                android:contentDescription="@null"
+                android:background="@drawable/background_gallery_indicator" />
+
+        <TextView
+                android:id="@+id/pastExchangeTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                tools:text="Harry Potter 2018"
+                android:textColor="@color/textColor"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
+                android:padding="8dp"/>
+
+    </LinearLayout>
+</androidx.cardview.widget.CardView>
