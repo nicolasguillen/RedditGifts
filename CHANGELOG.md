@@ -1,8 +1,10 @@
 ## [Unreleased]
 
-## [0.1.8] - 2018-12-13
+## [1.1.4] - 2018-12-14
 ### Added
-- Your awesome new feature
+- Statistics of an exchange
 
-[Unreleased]: https://github.com/nicolasguillen/redditgifts/compare/master...HEAD
-[Unreleased]: https://github.com/nicolasguillen/redditgifts/compare/HEAD...bXYZ
+### Changed
+- Beautify exchange cell view
+
+[Unreleased]: https://github.com/nicolasguillen/redditgifts/compare/master...master

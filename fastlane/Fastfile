@@ -3,9 +3,14 @@ default_platform :android
 
 platform :android do
 
+  desc "Deploy to PlayStore Beta"
   lane :beta do
     gradle(
       task: 'test'
+    )
+
+    gradle(
+      task: 'clean'
     )
 
     gradle(
@@ -21,32 +26,40 @@ platform :android do
       track: "beta",
       json_key: "app/upload.json",
       aab: "app/build/outputs/bundle/release/app.aab",
-      skip_upload_metadata: true,
+      metadata_path: "fastlane/metadata/android",
+      skip_upload_metadata: false,
       skip_upload_images: true,
       skip_upload_apk: true,
       skip_upload_aab: false
     )
   end
 
-  desc "Move the release notes to the correct location"
+  desc "Move change logs into release notes"
   lane :prepare_release_notes do
     gradle(
       task: 'assemble',
       build_type: 'Release'
     )
-    androidVersion = get_android_version(apk: "app/build/outputs/apk/release/app-release.apk")
-    code = lane_context[SharedValues::GET_ANDROID_VERSION_CODE]
-    metadata_dir="metadata/android/en-GB/changelogs"
-    sh("cp ../CHANGELOG.md #{metadata_dir}/#{code}.txt")
-  end
 
-  lane :prepare_release_notes2 do
     androidVersion = get_android_version(apk: "app/build/outputs/apk/release/app-release.apk")
     name = lane_context[SharedValues::GET_ANDROID_VERSION_NAME]
+    code = lane_context[SharedValues::GET_ANDROID_VERSION_CODE]
     stamp_changelog(
       section_identifier: name, # Specify identifier to stamp the Unreleased section with
-      git_tag: 'test' # Specify reference to git tag associated with this section
+      git_tag: 'master' # Specify reference to git tag associated with this section
     )
+    sh("sed -i '' -e '$ d' ../CHANGELOG.md")
+    changelog = read_changelog(
+                  changelog_path: 'CHANGELOG.md',	# Specify path to CHANGELOG.md
+                  section_identifier: "[#{name}]"	# Specify what section to read
+                  # excluded_markdown_elements: ['-', '###']	# Specify which markdown elements should be excluded
+                )
+    metadata_dir="metadata/android/en-GB/changelogs"
+    sh("rm -rf #{metadata_dir}/*")
+    sh("cat <<EOT >> #{metadata_dir}/#{code}.txt
+#{changelog}")
+    sh("sed -i '' -e '$ d' #{metadata_dir}/#{code}.txt")
+
   end
 
 end
