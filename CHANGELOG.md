@@ -1,4 +1,7 @@
 ## [Unreleased]
+### Added
+- Introduction of past exchanges
+- Add option section to each current exchange
 
 ## [1.1.4] - 2018-12-14
 ### Added
