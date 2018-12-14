@@ -34,7 +34,7 @@ class JsoupHTMLParser: HTMLParser {
         val exchanges = document.select("div[class=exchange-group__exchanges]")
         for (i in exchanges.indices) {
             try {
-                val referenceId = exchanges[i].select("a[class=exchange-group__link]").attr("href").replace("#/status/", "")
+                val referenceId = exchanges[i].select("a[class=exchange-group__link]").attr("href").replace("#/status/", "").replace("/", "")
                 val imageURL = exchanges[i].select("div[class=exchange-group__image]").attr("background-img")
                 val title = exchanges[i].select("h3[class=exchange-group__title ng-binding]").first().text()
                 if(referenceId.isEmpty() || imageURL.isEmpty() || title.isEmpty()){
@@ -49,9 +49,13 @@ class JsoupHTMLParser: HTMLParser {
 
     override fun parseStatuses(html: String): Single<ExchangeStatusModel> {
         val document = Jsoup.parse(html)
-        val santaData = document.select("ol[class=participating-list]")[0]
+        val list = document.select("ol[class=participating-list]")
+        if(list.isEmpty()){
+            return Single.error(HTMLError.LoadHTMLError)
+        }
+        val santaData = list[0]
         val santaStatusData = this.parseStatus(santaData)
-        val gifteeData = document.select("ol[class=participating-list]")[1]
+        val gifteeData = list[1]
         val gifteeStatusData = this.parseStatus(gifteeData)
         if(santaStatusData.isEmpty() || gifteeStatusData.isEmpty()) {
             return Single.error(HTMLError.LoadHTMLError)

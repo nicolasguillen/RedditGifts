@@ -40,7 +40,7 @@ class ExchangeStatusViewModel(private val htmlParser: HTMLParser,
 
     init {
         this.exchangeId
-            .map { "https://www.redditgifts.com/exchanges/#/status/$it" }
+            .map { "https://www.redditgifts.com/exchanges/#/status/$it/" }
             .doOnNext { this.isLoading.onNext(true) }
             .crashingSubscribe { this.loadHTML.onNext(it) }
 

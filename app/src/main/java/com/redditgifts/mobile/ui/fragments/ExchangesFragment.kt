@@ -3,7 +3,6 @@ package com.redditgifts.mobile.ui.fragments
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
-import android.graphics.drawable.AnimationDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -20,17 +19,14 @@ import com.redditgifts.mobile.libs.ActivityRequestCodes.LOGIN_WORKFLOW
 import com.redditgifts.mobile.libs.IntentKey
 import com.redditgifts.mobile.models.ExchangesViewModel
 import com.redditgifts.mobile.ui.activities.GalleryActivity
-import com.redditgifts.mobile.ui.views.ExchangeBottomSheet
 import com.redditgifts.mobile.ui.activities.LoginActivity
 import com.redditgifts.mobile.ui.adapters.GenericAdapter
+import com.redditgifts.mobile.ui.views.ExchangeBottomSheet
 import com.redditgifts.mobile.ui.views.StatisticsBottomSheet
 import io.reactivex.android.schedulers.AndroidSchedulers
-import kotlinx.android.synthetic.main.cell_loader.*
 import kotlinx.android.synthetic.main.fragment_exchanges.*
 
 class ExchangesFragment : BaseFragment<ExchangesViewModel>() {
-
-    private var loaderAnimation: AnimationDrawable? = null
 
     @SuppressLint("InflateParams")
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -40,22 +36,6 @@ class ExchangesFragment : BaseFragment<ExchangesViewModel>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         loadViews()
-
-        viewModel.outputs.isLoading()
-            .observeOn(AndroidSchedulers.mainThread())
-            .crashingSubscribe { isLoading ->
-                if(isLoading){
-                    loader.visibility = View.VISIBLE
-                    loader.apply {
-                        setBackgroundResource(R.drawable.loader)
-                        loaderAnimation = background as AnimationDrawable
-                    }
-                    loaderAnimation?.start()
-                } else {
-                    loader.visibility = View.GONE
-                    loaderAnimation?.stop()
-                }
-            }
 
         viewModel.outputs.loadHTML()
             .observeOn(AndroidSchedulers.mainThread())
@@ -68,7 +48,8 @@ class ExchangesFragment : BaseFragment<ExchangesViewModel>() {
             .crashingSubscribe { data ->
                 exchangesLogin.visibility = View.INVISIBLE
                 exchangesCredits.text = getString(R.string.exchanges_credits).format(data.credits)
-                exchangesList.adapter = GenericAdapter(this.viewModel.inputs, data.listCurrentExchanges)
+                val adapter = exchangesList.adapter as GenericAdapter
+                adapter.setItems(data.listCurrentExchanges)
             }
 
         viewModel.outputs.mustLogin()
@@ -131,6 +112,7 @@ class ExchangesFragment : BaseFragment<ExchangesViewModel>() {
         val linearLayoutManager = LinearLayoutManager(context)
         exchangesList.layoutManager = linearLayoutManager
         exchangesList.addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
+        exchangesList.adapter = GenericAdapter(this.viewModel.inputs, mutableListOf())
     }
 
     private fun loadUrl(url: String) {

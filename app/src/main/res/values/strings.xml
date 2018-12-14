@@ -11,6 +11,7 @@
     <string name="exchanges_status">Status</string>
     <string name="exchanges_statistics">Statistics</string>
     <string name="exchanges_gallery">Gallery</string>
+    <string name="exchanges_empty">No exchanges here right now.\n\nIn the mean time, check out the gallery.</string>
     <!-- STATISTICS -->
     <string name="statistics_participants">Participants</string>
     <string name="statistics_matches">Matches</string>
@@ -19,6 +20,8 @@
     <string name="statistics_gift">Gift in Gallery</string>
     <string name="statistics_rematch_signups">Rematch Signups</string>
     <string name="statistics_rematch_done">Rematches</string>
+    <!-- GALLERY -->
+    <string name="gallery_empty">No items here!</string>
     <!-- STATUS -->
     <string name="state_santa">Your Santa\'s Gift to You</string>
     <string name="state_giftee">Your Gift to Your Match</string>

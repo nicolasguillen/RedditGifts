@@ -31,7 +31,8 @@ class PastExchangesFragment : BaseFragment<PastExchangesViewModel>() {
         viewModel.outputs.pastExchanges()
             .observeOn(AndroidSchedulers.mainThread())
             .crashingSubscribe { pastExchanges ->
-                pastExchangesItems.adapter = GenericAdapter(this.viewModel.inputs, pastExchanges)
+                val adapter = pastExchangesItems.adapter as GenericAdapter
+                adapter.setItems(pastExchanges)
             }
 
         viewModel.outputs.startExchangeGallery()
@@ -50,6 +51,7 @@ class PastExchangesFragment : BaseFragment<PastExchangesViewModel>() {
         val linearLayoutManager = LinearLayoutManager(context)
         pastExchangesItems.layoutManager = linearLayoutManager
         pastExchangesItems.addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
+        pastExchangesItems.adapter = GenericAdapter(this.viewModel.inputs, mutableListOf())
     }
 
 }

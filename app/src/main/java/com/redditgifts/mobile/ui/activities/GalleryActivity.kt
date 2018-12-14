@@ -32,7 +32,7 @@ class GalleryActivity : BaseActivity<GalleryViewModel>() {
         viewModel.outputs.isLoading()
             .observeOn(AndroidSchedulers.mainThread())
             .crashingSubscribe { isLoading ->
-                if(!(galleryItems.adapter as GalleryAdapter).itemList.isEmpty()) {
+                if(!(galleryItems.adapter as GalleryAdapter).isLoading) {
                     gallerySwipe.isRefreshing = isLoading
                 }
             }

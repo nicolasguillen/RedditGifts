@@ -40,7 +40,7 @@ class StatisticsViewModel(private val htmlParser: HTMLParser,
 
     init {
         this.exchangeId
-            .map { "https://www.redditgifts.com/exchanges/#/stats/$it" }
+            .map { "https://www.redditgifts.com/exchanges/#/stats/$it/" }
             .doOnNext { this.isLoading.onNext(true) }
             .crashingSubscribe { this.loadHTML.onNext(it) }
 
