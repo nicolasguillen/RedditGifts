@@ -14,6 +14,7 @@ import com.redditgifts.mobile.services.models.*
 import com.redditgifts.mobile.storage.CookieRepository
 import dagger.Module
 import io.reactivex.Single
+import okhttp3.ResponseBody
 
 class MockApp: RedditGiftsApp() {
 
@@ -45,6 +46,10 @@ class MockApp: RedditGiftsApp() {
             gson: Gson
         ): ApiRepository {
             return object : ApiRepository {
+                override fun login(user: String, password: String, cookie: String): Single<ResponseBody> {
+                    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                }
+
                 override fun getCurrentExchanges(): Single<CurrentExchangeModel> {
                     return Single.just(CurrentExchangeModel(
                         data = listOf(CurrentExchangeModel.Data(

@@ -3,6 +3,7 @@ package com.redditgifts.mobile.services
 import com.google.gson.Gson
 import com.redditgifts.mobile.libs.operators.ApiErrorOperator
 import com.redditgifts.mobile.libs.operators.Operators
+import com.redditgifts.mobile.libs.utils.getCookieValue
 import com.redditgifts.mobile.services.errors.UnauthorizedError
 import com.redditgifts.mobile.services.models.*
 import com.redditgifts.mobile.storage.CookieRepository
@@ -11,7 +12,6 @@ import io.reactivex.schedulers.Schedulers
 import okhttp3.MediaType
 import okhttp3.RequestBody
 import okhttp3.ResponseBody
-import java.net.HttpCookie
 import java.net.URLEncoder
 
 class ApiClient(private val apiService: ApiService,
@@ -73,7 +73,7 @@ class ApiClient(private val apiService: ApiService,
     }
 
     override fun login(user: String, password: String, cookie: String): Single<ResponseBody> {
-        val csrf = this.getCSRFFromCookie(cookie)
+        val csrf = cookie.getCookieValue("csrftoken")
         val encodedUser = URLEncoder.encode(user, "utf-8")
         val encodedPassword = URLEncoder.encode(password, "utf-8")
         val content = "csrfmiddlewaretoken=$csrf&username=$encodedUser&password=$encodedPassword"
@@ -94,16 +94,6 @@ class ApiClient(private val apiService: ApiService,
                 }
                 cookie
             }
-    }
-
-    private fun getCSRFFromCookie(originalCookie: String): String {
-        val cookies = HttpCookie.parse(originalCookie)
-        for(cookie in cookies){
-            if(cookie.name == "csrftoken"){
-                return cookie.value
-            }
-        }
-        return ""
     }
 
     /**

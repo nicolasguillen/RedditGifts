@@ -9,6 +9,7 @@ import android.webkit.WebView
 import android.webkit.WebViewClient
 import com.redditgifts.mobile.R
 import com.redditgifts.mobile.RedditGiftsApp
+import com.redditgifts.mobile.libs.utils.getCookieValue
 import com.redditgifts.mobile.models.LoginViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.activity_login.*
@@ -38,20 +39,20 @@ class LoginActivity : BaseActivity<LoginViewModel>() {
         setContentView(R.layout.activity_login)
         supportActionBar?.title = "Log in"
 
+        CookieManager.getInstance().setCookie("https://www.redditgifts.com/", null)
+
         webView.loadUrl("https://www.redditgifts.com/profiles/login/")
 
         webView.settings.javaScriptEnabled = true
         webView.webViewClient = object : WebViewClient() {
             override fun shouldOverrideUrlLoading(view: WebView, request: WebResourceRequest): Boolean {
                 if(request.url.toString() == "https://www.redditgifts.com/") {
-                    val cookieManager = CookieManager.getInstance()
-                    val cookie = cookieManager.getCookie(request.url.toString())
+                    val cookie = CookieManager.getInstance().getCookie(request.url.toString())
+                    cookie.getCookieValue("sessionid") ?: return true
                     viewModel.inputs.didLogin(cookie)
                 }
                 return true
             }
-
         }
-
     }
 }
