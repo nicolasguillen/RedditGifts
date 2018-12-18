@@ -1,6 +1,7 @@
 package com.redditgifts.mobile.di.modules
 
 import com.google.gson.Gson
+import com.google.gson.GsonBuilder
 import com.redditgifts.mobile.BuildConfig
 import com.redditgifts.mobile.services.ApiClient
 import com.redditgifts.mobile.services.ApiRepository
@@ -60,7 +61,9 @@ open class NetworkModule {
     @Provides
     @Singleton
     internal fun provideGson(): Gson {
-        return Gson()
+        return GsonBuilder()
+            .setDateFormat("yyyy-MM-dd'T'HH:mm:ss")
+            .create()
     }
 
     @Provides

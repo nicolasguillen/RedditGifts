@@ -35,21 +35,13 @@ class MockApp: RedditGiftsApp() {
                     TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
                 }
 
-                override fun parseGallery(html: String): Single<List<GiftModel>> {
-                    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-                }
-
-                override fun parseGift(html: String): Single<DetailedGiftModel> {
-                    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-                }
-
                 override fun parseAccount(html: String): Single<AccountModel> {
                     TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
                 }
 
-                override fun parseStatistics(html: String): Single<StatisticsModel> {
-                    return Single.just(StatisticsModel(102964, 141, 99306, 98710, 74884, 19448, 5978, 5, 2666201.99, 554581.80, 3220783.79, 30.96, 6.44))
-                }
+//                override fun parseStatistics(html: String): Single<StatisticsModel> {
+//                    return Single.just(StatisticsModel(102964, 141, 99306, 98710, 74884, 19448, 5978, 5, 2666201.99, 554581.80, 3220783.79, 30.96, 6.44))
+//                }
             }
         }
 

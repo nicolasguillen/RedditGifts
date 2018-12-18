@@ -1,11 +1,11 @@
 package com.redditgifts.mobile.ui.activities
 
-import android.annotation.SuppressLint
 import android.graphics.drawable.AnimationDrawable
+import android.os.Build
 import android.os.Bundle
+import android.text.Html
+import android.text.Spanned
 import android.view.View
-import android.webkit.WebView
-import android.webkit.WebViewClient
 import android.widget.Toast
 import com.redditgifts.mobile.R
 import com.redditgifts.mobile.RedditGiftsApp
@@ -44,12 +44,6 @@ class GiftActivity : BaseActivity<GiftViewModel>() {
                 }
             }
 
-        viewModel.outputs.loadHTML()
-            .observeOn(AndroidSchedulers.mainThread())
-            .crashingSubscribe { url ->
-                webView.loadUrl(url)
-            }
-
         viewModel.outputs.error()
             .observeOn(AndroidSchedulers.mainThread())
             .crashingSubscribe { errorMessage ->
@@ -59,41 +53,35 @@ class GiftActivity : BaseActivity<GiftViewModel>() {
         viewModel.outputs.detailedGift()
             .observeOn(AndroidSchedulers.mainThread())
             .crashingSubscribe { gift ->
-                giftTitle.text = gift.title
-                giftUpvotes.text = "+${gift.upvotes}"
-                giftTime.text = gift.timeAndSource
-                giftDescription.text = gift.description
-                giftImages.adapter = GiftImageAdapter(this, gift.images)
+                giftTitle.text = gift.data.title
+                giftUpvotes.text = "+${gift.data.votes}"
+                giftTime.text = ""
+                giftDescription.text = gift.data.bodyHTML.toSpanned()
+                giftImages.adapter = GiftImageAdapter(this, gift.data.assets)
             }
 
+        viewModel.inputs.exchangeId(intent.getStringExtra(IntentKey.EXCHANGE_ID)!!)
         viewModel.inputs.giftId(intent.getStringExtra(IntentKey.GIFT_ID)!!)
         viewModel.inputs.onCreate()
     }
 
-    @SuppressLint("SetJavaScriptEnabled")
     private fun loadViews() {
         setContentView(R.layout.activity_gift)
         supportActionBar?.title = ""
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-
-        webView.settings.javaScriptEnabled = true
-        webView.addJavascriptInterface(MyJavaScriptInterface(), "HTMLOUT")
-        webView.webViewClient = object : WebViewClient() {
-            override fun onPageFinished(view: WebView, url: String) {
-                webView.loadUrl("javascript:window.HTMLOUT.processHTML('<html>'+document.getElementsByTagName('html')[0].innerHTML+'</html>');")
-            }
-        }
 
         giftImages.clipToPadding = false
         giftImages.setPadding(50, 0, 50, 0)
         giftImages.pageMargin = 30
     }
 
-    internal inner class MyJavaScriptInterface {
-        @Suppress("unused")
-        @android.webkit.JavascriptInterface
-        fun processHTML(html: String) {
-            viewModel.inputs.didLoadHtml(html)
+    private fun String.toSpanned(): Spanned {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            return Html.fromHtml(this, Html.FROM_HTML_MODE_LEGACY)
+        } else {
+            @Suppress("DEPRECATION")
+            return Html.fromHtml(this)
         }
     }
+
 }

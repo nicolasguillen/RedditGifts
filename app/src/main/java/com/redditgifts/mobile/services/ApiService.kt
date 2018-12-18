@@ -1,5 +1,6 @@
 package com.redditgifts.mobile.services
 
+import com.redditgifts.mobile.services.models.DetailedGiftModel
 import com.redditgifts.mobile.services.models.GalleryModel
 import com.redditgifts.mobile.services.models.StatisticsModel
 import io.reactivex.Single
@@ -17,5 +18,9 @@ interface ApiService {
     fun getGallery(@Path("exchangeId") exchangeId: String,
                    @Query("page_size") pageSize: Int,
                    @Query("page_number") pageNumber: Int): Single<Response<GalleryModel>>
+
+    @GET("exchanges/{exchangeId}/gallery/gift/{giftId}/")
+    fun getDetailedGift(@Path("exchangeId") exchangeId: String,
+                        @Path("giftId") giftId: String): Single<Response<DetailedGiftModel>>
 
 }

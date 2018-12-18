@@ -32,9 +32,9 @@ open class ModelModule {
                                            localizedErrorMessages: LocalizedErrorMessages): GalleryViewModel =
         GalleryViewModel(apiRepository, localizedErrorMessages)
 
-    @Provides fun providesGiftViewModel(htmlParser: HTMLParser,
+    @Provides fun providesGiftViewModel(apiRepository: ApiRepository,
                                         localizedErrorMessages: LocalizedErrorMessages): GiftViewModel =
-        GiftViewModel(htmlParser, localizedErrorMessages)
+        GiftViewModel(apiRepository, localizedErrorMessages)
 
     @Provides fun providesAccountViewModel(htmlParser: HTMLParser,
                                            localizedErrorMessages: LocalizedErrorMessages): AccountViewModel =

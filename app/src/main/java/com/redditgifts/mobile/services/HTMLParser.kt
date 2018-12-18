@@ -9,7 +9,6 @@ import java.util.regex.Pattern
 interface HTMLParser {
     fun parseExchanges(html: String): Single<ExchangeOverviewModel>
     fun parseStatuses(html: String): Single<ExchangeStatusModel>
-    fun parseGift(html: String): Single<DetailedGiftModel>
     fun parseAccount(html: String): Single<AccountModel>
 }
 
@@ -59,47 +58,6 @@ class JsoupHTMLParser: HTMLParser {
             return Single.error(HTMLError.LoadHTMLError)
         }
         return Single.just(ExchangeStatusModel(santaStatusData, gifteeStatusData))
-    }
-
-    override fun parseGift(html: String): Single<DetailedGiftModel> {
-        val document = Jsoup.parse(html)
-        val titleElement: Element = document.select("h1[class=product-title__name]").first()
-            ?: return Single.error(HTMLError.LoadHTMLError)
-
-        val title = titleElement.text()
-        val timeAndSource = document.select("div[class=product-title__sold-by]").first().text()
-        val description = document.select("div[class=product__info__item descr-container]").first().text()
-        val upvotes = document.select("span[class=product-votes__number js-upvote-number]").first().text()
-        val images = document.select("li[class^=images-list__image js-images-list-item]")
-        val imageURLs = mutableListOf<String>()
-        if(images.isEmpty()){
-            val image = document.select("img[class=product__image js-product-image]").first().attr("src")
-            imageURLs.add(image)
-        } else {
-            for (image in images) {
-                try {
-                    val imageURL = image.attr("data-src")
-                    if (imageURL.isEmpty()) {
-                        continue
-                    }
-                    imageURLs.add(imageURL)
-                } catch (e: Exception) {
-                }
-            }
-        }
-        val comments = document.select("div[class=comment-body]")
-        val listOfComments = mutableListOf<String>()
-        for (comment in comments) {
-            try {
-                val commentText = comment.text()
-                if(commentText.isEmpty()){
-                    continue
-                }
-
-                listOfComments.add(commentText)
-            } catch (e: Exception) {  }
-        }
-        return Single.just(DetailedGiftModel(title, timeAndSource, description, upvotes, imageURLs, listOfComments))
     }
 
     private fun parseStatus(document: Element): List<ExchangeStatusModel.StatusData> {

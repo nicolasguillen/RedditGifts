@@ -3,6 +3,7 @@ package com.redditgifts.mobile.services
 import com.google.gson.Gson
 import com.redditgifts.mobile.libs.operators.ApiErrorOperator
 import com.redditgifts.mobile.libs.operators.Operators
+import com.redditgifts.mobile.services.models.DetailedGiftModel
 import com.redditgifts.mobile.services.models.GalleryModel
 import com.redditgifts.mobile.services.models.StatisticsModel
 import io.reactivex.Single
@@ -23,6 +24,13 @@ class ApiClient(private val apiService: ApiService,
                 .getGallery(exchangeId, pageSize, pageNumber)
                 .lift(apiErrorOperator())
                 .subscribeOn(Schedulers.io())
+    }
+
+    override fun getDetailedGift(exchangeId: String, giftId: String): Single<DetailedGiftModel> {
+        return apiService
+            .getDetailedGift(exchangeId, giftId)
+            .lift(apiErrorOperator())
+            .subscribeOn(Schedulers.io())
     }
 
     /**

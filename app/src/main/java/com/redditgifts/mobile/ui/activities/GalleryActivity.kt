@@ -1,6 +1,5 @@
 package com.redditgifts.mobile.ui.activities
 
-import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -44,6 +43,7 @@ class GalleryActivity : BaseActivity<GalleryViewModel>() {
             .crashingSubscribe { giftSelected ->
                 startActivity(
                     Intent(this, GiftActivity::class.java)
+                        .putExtra(IntentKey.EXCHANGE_ID, intent?.extras?.getString(IntentKey.EXCHANGE_ID))
                         .putExtra(IntentKey.GIFT_ID, giftSelected.slug))
             }
 
@@ -55,7 +55,6 @@ class GalleryActivity : BaseActivity<GalleryViewModel>() {
         viewModel.inputs.onCreate()
     }
 
-    @SuppressLint("SetJavaScriptEnabled")
     private fun loadViews() {
         setContentView(R.layout.activity_gallery)
         val title = intent?.extras?.get(IntentKey.EXCHANGE_TITLE)
