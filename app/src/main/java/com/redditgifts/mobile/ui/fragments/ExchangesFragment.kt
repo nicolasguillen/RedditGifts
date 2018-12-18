@@ -1,7 +1,6 @@
 package com.redditgifts.mobile.ui.fragments
 
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,12 +10,9 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.redditgifts.mobile.R
 import com.redditgifts.mobile.RedditGiftsApp
-import com.redditgifts.mobile.libs.ActivityRequestCodes
-import com.redditgifts.mobile.libs.ActivityRequestCodes.LOGIN_WORKFLOW
 import com.redditgifts.mobile.libs.IntentKey
 import com.redditgifts.mobile.models.ExchangesViewModel
 import com.redditgifts.mobile.ui.activities.GalleryActivity
-import com.redditgifts.mobile.ui.activities.LoginActivity
 import com.redditgifts.mobile.ui.adapters.GenericAdapter
 import com.redditgifts.mobile.ui.views.ExchangeBottomSheet
 import com.redditgifts.mobile.ui.views.StatisticsBottomSheet
@@ -37,7 +33,6 @@ class ExchangesFragment : BaseFragment<ExchangesViewModel>() {
         viewModel.outputs.exchangeOverview()
             .observeOn(AndroidSchedulers.mainThread())
             .crashingSubscribe { data ->
-                exchangesLogin.visibility = View.INVISIBLE
                 val adapter = exchangesList.adapter as GenericAdapter
                 adapter.setItems(data.data[0].exchanges)
             }
@@ -46,12 +41,6 @@ class ExchangesFragment : BaseFragment<ExchangesViewModel>() {
             .observeOn(AndroidSchedulers.mainThread())
             .crashingSubscribe { credits ->
                 exchangesCredits.text = getString(R.string.exchanges_credits).format(credits.data.credits)
-            }
-
-        viewModel.outputs.mustLogin()
-            .observeOn(AndroidSchedulers.mainThread())
-            .crashingSubscribe {
-                startActivityForResult(Intent(context, LoginActivity::class.java), LOGIN_WORKFLOW)
             }
 
         viewModel.outputs.showExchange()
@@ -79,26 +68,7 @@ class ExchangesFragment : BaseFragment<ExchangesViewModel>() {
                         .putExtra(IntentKey.EXCHANGE_TITLE, exchange.title))
             }
 
-        exchangesLogin.setOnClickListener {
-            startActivityForResult(Intent(context, LoginActivity::class.java), LOGIN_WORKFLOW)
-        }
-
         viewModel.inputs.onCreate()
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        when (requestCode) {
-            ActivityRequestCodes.LOGIN_WORKFLOW -> {
-                when (resultCode) {
-                    Activity.RESULT_OK -> {
-                        viewModel.inputs.didLogin()
-                        exchangesLogin.visibility = View.INVISIBLE
-                    }
-                    else ->
-                        exchangesLogin.visibility = View.VISIBLE
-                }
-            }
-        }
     }
 
     private fun loadViews() {

@@ -21,7 +21,7 @@ open class ApplicationModule(private val application: Application) {
     }
 
     @Provides
-    internal fun provideCookieRepository(context: Context): CookieRepository {
+    open fun provideCookieRepository(context: Context): CookieRepository {
         return RedditGiftsCookieRepository(context)
     }
 

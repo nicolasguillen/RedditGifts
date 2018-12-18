@@ -1,45 +1,88 @@
 package com.redditgifts.mobile.mocks
 
 import android.app.Application
+import android.content.Context
+import com.google.gson.Gson
 import com.redditgifts.mobile.RedditGiftsApp
 import com.redditgifts.mobile.di.ApplicationComponent
 import com.redditgifts.mobile.di.DaggerApplicationComponent
 import com.redditgifts.mobile.di.modules.ApplicationModule
+import com.redditgifts.mobile.di.modules.NetworkModule
+import com.redditgifts.mobile.services.ApiRepository
+import com.redditgifts.mobile.services.ApiService
+import com.redditgifts.mobile.services.models.*
+import com.redditgifts.mobile.storage.CookieRepository
 import dagger.Module
+import io.reactivex.Single
 
 class MockApp: RedditGiftsApp() {
 
     override fun initApplicationComponent(): ApplicationComponent {
         return DaggerApplicationComponent.builder()
                 .applicationModule(MockApplicationModule(this))
+                .networkModule(MockNetworkModule())
                 .build()
     }
 
-    @Module class MockApplicationModule(application: Application) : ApplicationModule(application)
-//    {
-//
-//        override fun provideHTMLParser(): HTMLParser {
-//            return object : HTMLParser {
-//                override fun parseExchanges(html: String): Single<ExchangeOverviewModel> {
-//                    return Single.just(ExchangeOverviewModel(
-//                        credits = 10,
-//                        listCurrentExchanges = listOf(
-//                            ExchangeOverviewModel.CurrentExchange("", "Secret Santa 10th Annual Extravaganza!", "https://static.redditgifts.com/images/uploaded/exchange-logo/2018/10/19/ss-logo-1539968633-634703081461.png")
-//                        )
-//                    ))
-//                }
-//
-//                override fun parseStatuses(html: String): Single<ExchangeStatusModel> {
-//                }
-//
-//                override fun parseAccount(html: String): Single<ProfileModel> {
-//                }
-//
-//                override fun parseStatistics(html: String): Single<StatisticsModel> {
-//                    return Single.just(StatisticsModel(102964, 141, 99306, 98710, 74884, 19448, 5978, 5, 2666201.99, 554581.80, 3220783.79, 30.96, 6.44))
-//                }
-//            }
-//        }
-//
-//    }
+    @Module class MockApplicationModule(application: Application) : ApplicationModule(application) {
+        override fun provideCookieRepository(context: Context): CookieRepository {
+            return object : CookieRepository {
+                override fun getCookie(): Single<String> {
+                    return Single.just("cookie")
+                }
+
+                override fun storeCookie(cookie: String): Single<Unit> {
+                    return Single.just(Unit)
+                }
+            }
+        }
+    }
+
+    @Module class MockNetworkModule : NetworkModule() {
+        override fun provideApiClient(
+            apiService: ApiService,
+            cookieRepository: CookieRepository,
+            gson: Gson
+        ): ApiRepository {
+            return object : ApiRepository {
+                override fun getCurrentExchanges(): Single<CurrentExchangeModel> {
+                    return Single.just(CurrentExchangeModel(
+                        data = listOf(CurrentExchangeModel.Data(
+                            exchanges = listOf(
+                                CurrentExchangeModel.Data.Exchange(
+                                    slug = "",
+                                    title = "Secret Santa 10th Annual Extravaganza!",
+                                    logoImageUrl = "https://static.redditgifts.com/images/uploaded/exchange-logo/2018/10/19/ss-logo-1539968633-634703081461.png")
+                            )))))
+                }
+
+                override fun getExchangeStatus(exchangeId: String): Single<ExchangeStatusModel> {
+                    TODO()
+                }
+
+                override fun getStatistics(exchangeId: String): Single<StatisticsModel> {
+                    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                }
+
+                override fun getGallery(exchangeId: String, pageSize: Int, pageNumber: Int): Single<GalleryModel> {
+                    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                }
+
+                override fun getDetailedGift(exchangeId: String, giftId: String): Single<DetailedGiftModel> {
+                    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                }
+
+                override fun getProfile(): Single<ProfileModel> {
+                    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                }
+
+                override fun getCredits(): Single<CreditModel> {
+                    return Single.just(
+                        CreditModel(CreditModel.Data(
+                            credits = 10
+                        )))
+                }
+            }
+        }
+    }
 }

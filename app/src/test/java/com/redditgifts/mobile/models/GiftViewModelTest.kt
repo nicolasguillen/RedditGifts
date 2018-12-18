@@ -3,7 +3,6 @@ package com.redditgifts.mobile.models
 import com.redditgifts.mobile.any
 import com.redditgifts.mobile.libs.LocalizedErrorMessages
 import com.redditgifts.mobile.services.ApiRepository
-import com.redditgifts.mobile.services.HTMLParser
 import com.redditgifts.mobile.services.models.DetailedGiftModel
 import com.redditgifts.mobile.whenever
 import io.reactivex.Single
@@ -13,6 +12,7 @@ import org.mockito.Mock
 import org.mockito.Mockito.doReturn
 import org.mockito.Mockito.verify
 import org.mockito.MockitoAnnotations
+import java.util.*
 
 class GiftViewModelTest {
 
@@ -28,44 +28,29 @@ class GiftViewModelTest {
         testee = GiftViewModel(mockApiRepository, mockLocalizedErrorMessages)
     }
 
-//    @Test
-//    fun test_onCreate_then_loadHTML(){
-//        //Arrange
-//        val test = testee.outputs.loadHTML().test()
-//
-//        //Act
-//        testee.inputs.giftId("1")
-//
-//        //Assert
-//        test.assertValueCount(1)
-//    }
-//
-//    @Test
-//    fun test_didLoadHtml_then_parseGift(){
-//        //Arrange
-//        doReturn(Single.just(DetailedGiftModel("", "", "", "", emptyList(), emptyList())))
-//            .whenever(mockHTMLParser).parseGift(any())
-//
-//        //Act
-//        testee.inputs.giftId("1")
-//        testee.inputs.didLoadHtml("<html/>")
-//
-//        //Assert
-//        verify(mockHTMLParser).parseGift(any())
-//    }
-//
-//    @Test
-//    fun test_didLoadHtml_when_didParseGift_then_emitModel(){
-//        //Arrange
-//        val test = testee.outputs.detailedGift().test()
-//        doReturn(Single.just(DetailedGiftModel("", "", "", "", emptyList(), emptyList())))
-//            .whenever(mockHTMLParser).parseGift(any())
-//
-//        //Act
-//        testee.inputs.giftId("1")
-//        testee.inputs.didLoadHtml("<html/>")
-//
-//        //Assert
-//        test.assertValueCount(1)
-//    }
+    @Test
+    fun test_giftId_then_getDetailedGift(){
+        //Act
+        testee.inputs.exchangeId("exchange")
+        testee.inputs.giftId("1")
+
+        //Assert
+        verify(mockApiRepository).getDetailedGift(any(), any())
+    }
+
+    @Test
+    fun test_giftId_when_didGetDetailedGift_then_emitModel(){
+        //Arrange
+        val test = testee.outputs.detailedGift().test()
+        doReturn(Single.just(DetailedGiftModel(DetailedGiftModel.Data("", Date(), "", 0, "", emptyList(), 0))))
+            .whenever(mockApiRepository).getDetailedGift(any(), any())
+
+        //Act
+        testee.inputs.exchangeId("exchange")
+        testee.inputs.giftId("1")
+
+        //Assert
+        test.assertValueCount(1)
+    }
+
 }

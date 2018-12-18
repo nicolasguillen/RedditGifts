@@ -1,7 +1,7 @@
 package com.redditgifts.mobile.ui.activities
 
 import android.annotation.SuppressLint
-import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.webkit.CookieManager
 import android.webkit.WebResourceRequest
@@ -26,7 +26,8 @@ class LoginActivity : BaseActivity<LoginViewModel>() {
         viewModel.outputs.finish()
             .observeOn(AndroidSchedulers.mainThread())
             .crashingSubscribe {
-                setResult(Activity.RESULT_OK)
+                val intent = Intent(this, MainActivity::class.java)
+                startActivity(intent)
                 finish()
             }
 
@@ -35,8 +36,7 @@ class LoginActivity : BaseActivity<LoginViewModel>() {
     @SuppressLint("SetJavaScriptEnabled")
     private fun loadViews() {
         setContentView(R.layout.activity_login)
-        supportActionBar?.title = ""
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.title = "Log in"
 
         webView.loadUrl("https://www.redditgifts.com/profiles/login/")
 

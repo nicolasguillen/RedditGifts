@@ -44,10 +44,6 @@ class MainActivityTest {
 
     @Test
     fun screengrabCurrentExchanges() {
-        val mainActivity = activityRule.activity as MainActivity
-        val homeFragment = mainActivity.exchangesFragment
-        homeFragment.viewModel.inputs.didLoadHtml("")
-
         SystemClock.sleep(1500)
 
         Screengrab.screenshot("01")

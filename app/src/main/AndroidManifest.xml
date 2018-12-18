@@ -38,6 +38,10 @@
                 android:screenOrientation="portrait" />
 
         <activity
+                android:name=".ui.activities.LoginActivity2"
+                android:screenOrientation="portrait" />
+
+        <activity
                 android:name=".ui.activities.GalleryActivity"
                 android:screenOrientation="portrait" />
 

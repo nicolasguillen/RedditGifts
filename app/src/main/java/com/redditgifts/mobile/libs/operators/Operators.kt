@@ -13,5 +13,6 @@ class Operators {
         fun <T> apiError(gson: Gson): ApiErrorOperator<T> {
             return ApiErrorOperator(gson)
         }
+
     }
 }

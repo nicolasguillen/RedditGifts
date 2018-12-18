@@ -10,8 +10,16 @@ import dagger.Provides
 @Module
 open class ModelModule {
 
+    @Provides fun providesSplashViewModel(cookieRepository: CookieRepository): SplashViewModel =
+        SplashViewModel(cookieRepository)
+
     @Provides fun providesLoginViewModel(cookieRepository: CookieRepository): LoginViewModel =
         LoginViewModel(cookieRepository)
+
+    @Provides fun providesLoginViewModel2(apiRepository: ApiRepository,
+                                          cookieRepository: CookieRepository,
+                                          localizedErrorMessages: LocalizedErrorMessages): LoginViewModel2 =
+        LoginViewModel2(apiRepository, cookieRepository, localizedErrorMessages)
 
     @Provides fun providesExchangesViewModel(apiRepository: ApiRepository,
                                              localizedErrorMessages: LocalizedErrorMessages): ExchangesViewModel =

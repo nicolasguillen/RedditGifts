@@ -2,11 +2,10 @@ package com.redditgifts.mobile.services
 
 import com.redditgifts.mobile.services.models.*
 import io.reactivex.Single
+import okhttp3.RequestBody
+import okhttp3.ResponseBody
 import retrofit2.Response
-import retrofit2.http.GET
-import retrofit2.http.Header
-import retrofit2.http.Path
-import retrofit2.http.Query
+import retrofit2.http.*
 
 interface ApiService {
 
@@ -35,5 +34,16 @@ interface ApiService {
 
     @GET("https://www.redditgifts.com/exchanges/mgmt/participant/")
     fun getCredits(@Header("cookie") cookie: String): Single<Response<CreditModel>>
+
+    @Headers("Cache-Control: no-cache")
+    @POST("https://www.redditgifts.com/merchant/api-auth/login/")
+    fun login(@Body data: RequestBody,
+              @Header("content-type") type: String,
+              @Header("origin") origin: String,
+              @Header("user-agent") ua: String,
+              @Header("referer") referer: String,
+              @Header("accept") accept: String,
+              @Header("upgrade-insecure-requests") uir: String,
+              @Header("cookie") cookie: String): Single<Response<ResponseBody>>
 
 }

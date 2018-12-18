@@ -9,16 +9,6 @@
     <include
             layout="@layout/cell_loader" />
 
-    <Button
-            android:id="@+id/accountLogin"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="@string/main_login"
-            android:textColor="@color/textColor"
-            android:backgroundTint="@color/colorAccent"
-            android:visibility="invisible" />
-
     <RelativeLayout
             android:id="@+id/accountData"
             android:layout_width="match_parent"
