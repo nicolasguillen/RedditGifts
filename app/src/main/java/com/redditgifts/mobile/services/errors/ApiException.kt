@@ -5,4 +5,4 @@ import com.redditgifts.mobile.services.models.ErrorEnvelope
 /**
  * An exception class wrapping an [ErrorEnvelope].
  */
-class ApiException(val errorEnvelope: ErrorEnvelope) : ResponseException()
+open class ApiException(val errorEnvelope: ErrorEnvelope) : ResponseException()

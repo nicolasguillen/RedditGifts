@@ -3,12 +3,14 @@ package com.redditgifts.mobile.ui.activities
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.os.Bundle
+import android.webkit.CookieManager
 import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import com.redditgifts.mobile.R
 import com.redditgifts.mobile.RedditGiftsApp
 import com.redditgifts.mobile.models.LoginViewModel
+import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.activity_login.*
 
 
@@ -20,6 +22,14 @@ class LoginActivity : BaseActivity<LoginViewModel>() {
         RedditGiftsApp.applicationComponent.inject(this)
 
         loadViews()
+
+        viewModel.outputs.finish()
+            .observeOn(AndroidSchedulers.mainThread())
+            .crashingSubscribe {
+                setResult(Activity.RESULT_OK)
+                finish()
+            }
+
     }
 
     @SuppressLint("SetJavaScriptEnabled")
@@ -34,11 +44,13 @@ class LoginActivity : BaseActivity<LoginViewModel>() {
         webView.webViewClient = object : WebViewClient() {
             override fun shouldOverrideUrlLoading(view: WebView, request: WebResourceRequest): Boolean {
                 if(request.url.toString() == "https://www.redditgifts.com/") {
-                    setResult(Activity.RESULT_OK)
-                    finish()
+                    val cookieManager = CookieManager.getInstance()
+                    val cookie = cookieManager.getCookie(request.url.toString())
+                    viewModel.inputs.didLogin(cookie)
                 }
                 return true
             }
+
         }
 
     }

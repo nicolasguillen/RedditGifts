@@ -7,9 +7,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.webkit.WebResourceRequest
-import android.webkit.WebView
-import android.webkit.WebViewClient
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.redditgifts.mobile.R
@@ -37,19 +34,13 @@ class ExchangesFragment : BaseFragment<ExchangesViewModel>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         loadViews()
 
-        viewModel.outputs.loadHTML()
-            .observeOn(AndroidSchedulers.mainThread())
-            .crashingSubscribe { url ->
-                this.loadUrl(url)
-            }
-
         viewModel.outputs.exchangeOverview()
             .observeOn(AndroidSchedulers.mainThread())
             .crashingSubscribe { data ->
                 exchangesLogin.visibility = View.INVISIBLE
-                exchangesCredits.text = getString(R.string.exchanges_credits).format(data.credits)
+                exchangesCredits.text = getString(R.string.exchanges_credits).format(0/*data.credits*/)
                 val adapter = exchangesList.adapter as GenericAdapter
-                adapter.setItems(data.listCurrentExchanges)
+                adapter.setItems(data.data[0].exchanges)
             }
 
         viewModel.outputs.mustLogin()
@@ -79,7 +70,7 @@ class ExchangesFragment : BaseFragment<ExchangesViewModel>() {
             .crashingSubscribe { exchange ->
                 startActivity(
                     Intent(activity, GalleryActivity::class.java)
-                        .putExtra(IntentKey.EXCHANGE_ID, exchange.referenceId)
+                        .putExtra(IntentKey.EXCHANGE_ID, exchange.slug)
                         .putExtra(IntentKey.EXCHANGE_TITLE, exchange.title))
             }
 
@@ -95,7 +86,7 @@ class ExchangesFragment : BaseFragment<ExchangesViewModel>() {
             ActivityRequestCodes.LOGIN_WORKFLOW -> {
                 when (resultCode) {
                     Activity.RESULT_OK -> {
-                        webView.reload()
+                        viewModel.inputs.didLogin()
                         exchangesLogin.visibility = View.INVISIBLE
                     }
                     else ->
@@ -105,37 +96,11 @@ class ExchangesFragment : BaseFragment<ExchangesViewModel>() {
         }
     }
 
-    @SuppressLint("SetJavaScriptEnabled")
     private fun loadViews() {
-        webView.settings.javaScriptEnabled = true
-
         val linearLayoutManager = LinearLayoutManager(context)
         exchangesList.layoutManager = linearLayoutManager
         exchangesList.addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
         exchangesList.adapter = GenericAdapter(this.viewModel.inputs, mutableListOf())
-    }
-
-    private fun loadUrl(url: String) {
-        webView.removeJavascriptInterface("HTMLOUT")
-        webView.loadUrl(url)
-
-        webView.addJavascriptInterface(MyJavaScriptInterface(), "HTMLOUT")
-        webView.webViewClient = object : WebViewClient() {
-            override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest?): Boolean =  true
-            override fun onPageFinished(view: WebView, url: String) {
-                if(isAdded){
-                    webView.loadUrl("javascript:window.HTMLOUT.processHTML('<html>'+document.getElementsByTagName('html')[0].innerHTML+'</html>');")
-                }
-            }
-        }
-    }
-
-    internal inner class MyJavaScriptInterface {
-        @Suppress("unused")
-        @android.webkit.JavascriptInterface
-        fun processHTML(html: String) {
-            viewModel.inputs.didLoadHtml(html)
-        }
     }
 
 }

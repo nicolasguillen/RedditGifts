@@ -3,82 +3,80 @@ package com.redditgifts.mobile.models
 import com.redditgifts.mobile.libs.GenericResult
 import com.redditgifts.mobile.libs.LocalizedErrorMessages
 import com.redditgifts.mobile.libs.operators.Operators
-import com.redditgifts.mobile.services.HTMLError
-import com.redditgifts.mobile.services.HTMLParser
-import com.redditgifts.mobile.services.models.ExchangeOverviewModel
+import com.redditgifts.mobile.services.ApiRepository
+import com.redditgifts.mobile.services.errors.UnauthorizedError
+import com.redditgifts.mobile.services.models.CurrentExchangeModel
 import com.redditgifts.mobile.ui.viewholders.ExchangeViewHolder
 import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
 
 interface ExchangesViewModelInputs : ExchangeViewHolder.Delegate {
     fun onCreate()
-    fun didLoadHtml(html: String)
+    fun didLogin()
 }
 
 interface ExchangesViewModelOutputs {
     fun isLoading(): Observable<Boolean>
-    fun loadHTML(): Observable<String>
-    fun exchangeOverview(): Observable<ExchangeOverviewModel>
+    fun exchangeOverview(): Observable<CurrentExchangeModel>
     fun mustLogin(): Observable<Unit>
-    fun showExchange(): Observable<ExchangeOverviewModel.CurrentExchange>
-    fun showStatistics(): Observable<ExchangeOverviewModel.CurrentExchange>
-    fun showGallery(): Observable<ExchangeOverviewModel.CurrentExchange>
+    fun showExchange(): Observable<CurrentExchangeModel.Data.Exchange>
+    fun showStatistics(): Observable<CurrentExchangeModel.Data.Exchange>
+    fun showGallery(): Observable<CurrentExchangeModel.Data.Exchange>
 }
 
-class ExchangesViewModel(private val htmlParser: HTMLParser,
+class ExchangesViewModel(private val apiRepository: ApiRepository,
                          private val localizedErrorMessages: LocalizedErrorMessages): DisposableViewModel(), ExchangesViewModelInputs, ExchangesViewModelOutputs {
 
     //INPUTS
     private val onCreate = PublishSubject.create<Unit>()
-    private val didLoadHtml = PublishSubject.create<String>()
+    private val didLogin = PublishSubject.create<Unit>()
 
     //OUTPUTS
     private val isLoading = PublishSubject.create<Boolean>()
-    private val loadHTML = PublishSubject.create<String>()
-    private val exchangeOverview = PublishSubject.create<ExchangeOverviewModel>()
+    private val exchangeOverview = PublishSubject.create<CurrentExchangeModel>()
     private val mustLogin = PublishSubject.create<Unit>()
-    private val showExchange = PublishSubject.create<ExchangeOverviewModel.CurrentExchange>()
-    private val showStatistics = PublishSubject.create<ExchangeOverviewModel.CurrentExchange>()
-    private val showGallery = PublishSubject.create<ExchangeOverviewModel.CurrentExchange>()
+    private val showExchange = PublishSubject.create<CurrentExchangeModel.Data.Exchange>()
+    private val showStatistics = PublishSubject.create<CurrentExchangeModel.Data.Exchange>()
+    private val showGallery = PublishSubject.create<CurrentExchangeModel.Data.Exchange>()
 
     val inputs: ExchangesViewModelInputs = this
     val outputs: ExchangesViewModelOutputs = this
 
     init {
         this.onCreate
-            .map { "https://www.redditgifts.com/exchanges/#/select/my-current/" }
-            .doOnNext { this.isLoading.onNext(true) }
-            .crashingSubscribe { this.loadHTML.onNext(it) }
-
-        this.didLoadHtml
-            .switchMapSingle { html ->
-                this.htmlParser.parseExchanges(html)
+            .switchMapSingle {
+                this.apiRepository.getCurrentExchanges()
                     .lift(Operators.genericResult(this.localizedErrorMessages))
+                    .doOnSubscribe { this.isLoading.onNext(true) }
                     .doOnSuccess { this.isLoading.onNext(false) }
             }
             .crashingSubscribe { when(it) {
                 is GenericResult.Successful ->
                     this.exchangeOverview.onNext(it.result)
                 is GenericResult.Failed -> {
-                    if(it.throwable is HTMLError.NeedsLogin) {
+                    if(it.throwable is UnauthorizedError) {
                         this.mustLogin.onNext(Unit)
                     }
                 }
             } }
 
+        this.didLogin
+            .crashingSubscribe {
+                this.onCreate.onNext(Unit)
+            }
+
     }
 
     override fun onCreate() = this.onCreate.onNext(Unit)
-    override fun didLoadHtml(html: String) = this.didLoadHtml.onNext(html)
+    override fun didLogin() = this.didLogin.onNext(Unit)
     override fun isLoading(): Observable<Boolean> = this.isLoading
-    override fun loadHTML(): Observable<String> = this.loadHTML
-    override fun didSelectOpenStatus(currentExchange: ExchangeOverviewModel.CurrentExchange) = this.showExchange.onNext(currentExchange)
-    override fun didSelectOpenStatistics(currentExchange: ExchangeOverviewModel.CurrentExchange) = this.showStatistics.onNext(currentExchange)
-    override fun didSelectOpenGallery(currentExchange: ExchangeOverviewModel.CurrentExchange) = this.showGallery.onNext(currentExchange)
-    override fun exchangeOverview(): Observable<ExchangeOverviewModel> = this.exchangeOverview
+    override fun didSelectOpenStatus(currentExchange: CurrentExchangeModel.Data.Exchange) = this.showExchange.onNext(currentExchange)
+    override fun didSelectOpenStatistics(currentExchange: CurrentExchangeModel.Data.Exchange) = this.showStatistics.onNext(currentExchange)
+    override fun didSelectOpenGallery(currentExchange: CurrentExchangeModel.Data.Exchange) = this.showGallery.onNext(currentExchange)
+    override fun exchangeOverview(): Observable<CurrentExchangeModel> = this.exchangeOverview
     override fun mustLogin(): Observable<Unit> = this.mustLogin
-    override fun showExchange(): Observable<ExchangeOverviewModel.CurrentExchange> = this.showExchange
-    override fun showStatistics(): Observable<ExchangeOverviewModel.CurrentExchange> = this.showStatistics
-    override fun showGallery(): Observable<ExchangeOverviewModel.CurrentExchange> = this.showGallery
+    override fun showExchange(): Observable<CurrentExchangeModel.Data.Exchange> = this.showExchange
+    override fun showStatistics(): Observable<CurrentExchangeModel.Data.Exchange> = this.showStatistics
+    override fun showGallery(): Observable<CurrentExchangeModel.Data.Exchange> = this.showGallery
 
 }

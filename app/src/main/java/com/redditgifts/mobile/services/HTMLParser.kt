@@ -1,48 +1,17 @@
 package com.redditgifts.mobile.services
 
-import com.redditgifts.mobile.services.models.*
+import com.redditgifts.mobile.services.models.AccountModel
+import com.redditgifts.mobile.services.models.ExchangeStatusModel
 import io.reactivex.Single
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Element
-import java.util.regex.Pattern
 
 interface HTMLParser {
-    fun parseExchanges(html: String): Single<ExchangeOverviewModel>
     fun parseStatuses(html: String): Single<ExchangeStatusModel>
     fun parseAccount(html: String): Single<AccountModel>
 }
 
 class JsoupHTMLParser: HTMLParser {
-
-    override fun parseExchanges(html: String): Single<ExchangeOverviewModel> {
-        val document = Jsoup.parse(html)
-        val welcomeMessage = document.select("span[class=welcome-msg]").first()
-            ?: return Single.error(HTMLError.LoadHTMLError)
-        val needsLogin = welcomeMessage.text() == "Welcome to redditgifts!"
-        if(needsLogin){
-            return Single.error(HTMLError.NeedsLogin)
-        }
-
-        val matcher = Pattern.compile("[0-9]+").matcher(document.select("h2[class=ema-select-title ng-binding]").first().text())
-        val credits = if(matcher.find()){
-            matcher.group().toInt()
-        } else { 0 }
-        val listOfExchanges = mutableListOf<ExchangeOverviewModel.CurrentExchange>()
-        val exchanges = document.select("div[class=exchange-group__exchanges]")
-        for (i in exchanges.indices) {
-            try {
-                val referenceId = exchanges[i].select("a[class=exchange-group__link]").attr("href").replace("#/status/", "").replace("/", "")
-                val imageURL = exchanges[i].select("div[class=exchange-group__image]").attr("background-img")
-                val title = exchanges[i].select("h3[class=exchange-group__title ng-binding]").first().text()
-                if(referenceId.isEmpty() || imageURL.isEmpty() || title.isEmpty()){
-                    continue
-                }
-
-                listOfExchanges.add(ExchangeOverviewModel.CurrentExchange(referenceId, title, imageURL))
-            } catch (e: Exception) {  }
-        }
-        return Single.just(ExchangeOverviewModel(credits, listOfExchanges))
-    }
 
     override fun parseStatuses(html: String): Single<ExchangeStatusModel> {
         val document = Jsoup.parse(html)

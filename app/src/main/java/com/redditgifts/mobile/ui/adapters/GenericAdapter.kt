@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import androidx.annotation.LayoutRes
 import androidx.recyclerview.widget.RecyclerView
 import com.redditgifts.mobile.R
-import com.redditgifts.mobile.services.models.ExchangeOverviewModel
+import com.redditgifts.mobile.services.models.CurrentExchangeModel
 import com.redditgifts.mobile.services.models.PastExchangeModel
 import com.redditgifts.mobile.ui.viewholders.*
 
@@ -44,7 +44,7 @@ class GenericAdapter(private val delegate: BaseViewHolder.BaseViewHolderDelegate
             return R.layout.cell_empty
         }
         return when(this.itemList[0]){
-            is ExchangeOverviewModel.CurrentExchange ->
+            is CurrentExchangeModel.Data.Exchange ->
                 R.layout.cell_exchange
             is PastExchangeModel ->
                 R.layout.cell_past_exchange

@@ -11,7 +11,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.redditgifts.mobile.R
 import com.redditgifts.mobile.RedditGiftsApp
 import com.redditgifts.mobile.models.StatisticsViewModel
-import com.redditgifts.mobile.services.models.ExchangeOverviewModel
+import com.redditgifts.mobile.services.models.CurrentExchangeModel
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -22,7 +22,7 @@ import java.util.*
 import javax.inject.Inject
 
 class StatisticsBottomSheet(context: Context,
-                            private val currentExchange: ExchangeOverviewModel.CurrentExchange): BottomSheetDialog(context, R.style.Theme_RedditGifts_ExchangeBottomSheet) {
+                            private val currentExchange: CurrentExchangeModel.Data.Exchange): BottomSheetDialog(context, R.style.Theme_RedditGifts_ExchangeBottomSheet) {
 
     @Inject lateinit var viewModel: StatisticsViewModel
 
@@ -63,7 +63,7 @@ class StatisticsBottomSheet(context: Context,
                 this.setStatisticsValue(statisticsRematches, R.string.statistics_rematch_done, statistics.data.rematches, statistics.data.rematchSignups)
             }
 
-        viewModel.inputs.exchangeId(currentExchange.referenceId)
+        viewModel.inputs.exchangeId(currentExchange.slug)
 
     }
 

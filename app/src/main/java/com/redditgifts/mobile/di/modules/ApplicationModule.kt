@@ -2,13 +2,16 @@ package com.redditgifts.mobile.di.modules
 
 import android.app.Application
 import android.content.Context
-import com.redditgifts.mobile.services.HTMLParser
-import com.redditgifts.mobile.services.JsoupHTMLParser
 import com.redditgifts.mobile.libs.LocalizedErrorMessages
 import com.redditgifts.mobile.libs.RedditGiftsErrorMessages
+import com.redditgifts.mobile.services.HTMLParser
+import com.redditgifts.mobile.services.JsoupHTMLParser
+import com.redditgifts.mobile.storage.CookieRepository
+import com.redditgifts.mobile.storage.RedditGiftsCookieRepository
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
+
 
 @Module
 open class ApplicationModule(private val application: Application) {
@@ -20,13 +23,16 @@ open class ApplicationModule(private val application: Application) {
     }
 
     @Provides
-    @Singleton
     internal open fun provideHTMLParser(): HTMLParser {
         return JsoupHTMLParser()
     }
 
     @Provides
-    @Singleton
+    internal fun provideCookieRepository(context: Context): CookieRepository {
+        return RedditGiftsCookieRepository(context)
+    }
+
+    @Provides
     internal fun provideLocalizedErrorMessages(context: Context): LocalizedErrorMessages {
         return RedditGiftsErrorMessages(context)
     }

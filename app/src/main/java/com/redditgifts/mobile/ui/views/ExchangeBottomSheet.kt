@@ -14,7 +14,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.redditgifts.mobile.R
 import com.redditgifts.mobile.RedditGiftsApp
 import com.redditgifts.mobile.models.ExchangeStatusViewModel
-import com.redditgifts.mobile.services.models.ExchangeOverviewModel
+import com.redditgifts.mobile.services.models.CurrentExchangeModel
 import com.redditgifts.mobile.services.models.ExchangeStatusModel
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -29,7 +29,7 @@ import kotlinx.android.synthetic.main.view_santa_status_detail.*
 import javax.inject.Inject
 
 class ExchangeBottomSheet(context: Context,
-                          private val currentExchange: ExchangeOverviewModel.CurrentExchange): BottomSheetDialog(context, R.style.Theme_RedditGifts_ExchangeBottomSheet) {
+                          private val currentExchange: CurrentExchangeModel.Data.Exchange): BottomSheetDialog(context, R.style.Theme_RedditGifts_ExchangeBottomSheet) {
 
     @Inject lateinit var viewModel: ExchangeStatusViewModel
 
@@ -137,7 +137,7 @@ class ExchangeBottomSheet(context: Context,
                 }
             }
 
-        viewModel.inputs.exchangeId(currentExchange.referenceId)
+        viewModel.inputs.exchangeId(currentExchange.slug)
 
     }
 

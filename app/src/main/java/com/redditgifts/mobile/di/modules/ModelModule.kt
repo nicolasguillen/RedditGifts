@@ -4,18 +4,19 @@ import com.redditgifts.mobile.libs.LocalizedErrorMessages
 import com.redditgifts.mobile.models.*
 import com.redditgifts.mobile.services.ApiRepository
 import com.redditgifts.mobile.services.HTMLParser
+import com.redditgifts.mobile.storage.CookieRepository
 import dagger.Module
 import dagger.Provides
 
 @Module
 open class ModelModule {
 
-    @Provides fun providesLoginViewModel(): LoginViewModel =
-        LoginViewModel()
+    @Provides fun providesLoginViewModel(cookieRepository: CookieRepository): LoginViewModel =
+        LoginViewModel(cookieRepository)
 
-    @Provides fun providesExchangesViewModel(htmlParser: HTMLParser,
+    @Provides fun providesExchangesViewModel(apiRepository: ApiRepository,
                                              localizedErrorMessages: LocalizedErrorMessages): ExchangesViewModel =
-        ExchangesViewModel(htmlParser, localizedErrorMessages)
+        ExchangesViewModel(apiRepository, localizedErrorMessages)
 
     @Provides fun providesExchangeStatusViewModel(htmlParser: HTMLParser,
                                                   localizedErrorMessages: LocalizedErrorMessages): ExchangeStatusViewModel =

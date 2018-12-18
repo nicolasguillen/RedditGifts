@@ -1,11 +1,14 @@
 package com.redditgifts.mobile.services
 
+import com.redditgifts.mobile.services.models.CurrentExchangeModel
 import com.redditgifts.mobile.services.models.DetailedGiftModel
 import com.redditgifts.mobile.services.models.GalleryModel
 import com.redditgifts.mobile.services.models.StatisticsModel
 import io.reactivex.Single
 
 interface ApiRepository {
+
+    fun getCurrentExchanges(): Single<CurrentExchangeModel>
 
     fun getStatistics(exchangeId: String): Single<StatisticsModel>
 

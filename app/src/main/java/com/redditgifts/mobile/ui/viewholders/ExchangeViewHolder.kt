@@ -6,27 +6,27 @@ import androidx.appcompat.widget.AppCompatButton
 import androidx.appcompat.widget.Toolbar
 import com.redditgifts.mobile.R
 import com.redditgifts.mobile.libs.utils.loadUrlIntoImage
-import com.redditgifts.mobile.services.models.ExchangeOverviewModel
+import com.redditgifts.mobile.services.models.CurrentExchangeModel
 import com.squareup.picasso.Picasso
 
 class ExchangeViewHolder(view: View,
                          private val delegate: Delegate?) : BaseViewHolder(view) {
 
-    private var currentExchange: ExchangeOverviewModel.CurrentExchange? = null
+    private var currentExchange: CurrentExchangeModel.Data.Exchange? = null
 
     init {
         initToolbar()
     }
 
     override fun bindData(data: Any) {
-        currentExchange = data as ExchangeOverviewModel.CurrentExchange
+        currentExchange = data as CurrentExchangeModel.Data.Exchange
 
         val giftTitle = view().findViewById<TextView>(R.id.exchangeTitle)
         giftTitle.text = currentExchange?.title
 
         Picasso.get().loadUrlIntoImage(
             view().findViewById(R.id.exchangeImage),
-            currentExchange?.imageURL!!
+            currentExchange?.logoImageUrl!!
         )
 
         val exchangeStatus = view().findViewById<AppCompatButton>(R.id.exchangeStatus)
@@ -37,9 +37,9 @@ class ExchangeViewHolder(view: View,
     }
 
     interface Delegate : BaseViewHolderDelegate {
-        fun didSelectOpenStatus(currentExchange: ExchangeOverviewModel.CurrentExchange)
-        fun didSelectOpenStatistics(currentExchange: ExchangeOverviewModel.CurrentExchange)
-        fun didSelectOpenGallery(currentExchange: ExchangeOverviewModel.CurrentExchange)
+        fun didSelectOpenStatus(currentExchange: CurrentExchangeModel.Data.Exchange)
+        fun didSelectOpenStatistics(currentExchange: CurrentExchangeModel.Data.Exchange)
+        fun didSelectOpenGallery(currentExchange: CurrentExchangeModel.Data.Exchange)
     }
 
     private fun initToolbar(){
