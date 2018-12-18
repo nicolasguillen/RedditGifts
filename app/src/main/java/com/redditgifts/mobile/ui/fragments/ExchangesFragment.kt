@@ -123,7 +123,9 @@ class ExchangesFragment : BaseFragment<ExchangesViewModel>() {
         webView.webViewClient = object : WebViewClient() {
             override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest?): Boolean =  true
             override fun onPageFinished(view: WebView, url: String) {
-                webView.loadUrl("javascript:window.HTMLOUT.processHTML('<html>'+document.getElementsByTagName('html')[0].innerHTML+'</html>');")
+                if(isAdded){
+                    webView.loadUrl("javascript:window.HTMLOUT.processHTML('<html>'+document.getElementsByTagName('html')[0].innerHTML+'</html>');")
+                }
             }
         }
     }

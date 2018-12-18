@@ -3,6 +3,25 @@ default_platform :android
 
 platform :android do
 
+  desc "Take screenshots"
+  lane :screenshot do
+    gradle(
+      task: 'clean assembleDebug assembleAndroidTest'
+    )
+
+    sh("adb shell pm grant com.redditgifts.mobile android.permission.WRITE_EXTERNAL_STORAGE")
+    sh("adb shell pm grant com.redditgifts.mobile android.permission.READ_EXTERNAL_STORAGE")
+
+    apk_path = Dir.glob("../**/*-debug.apk").first
+    test_apk_path = Dir.glob("../**/*-debug-androidTest.apk").first
+
+    screengrab(
+      app_package_name: 'com.redditgifts.mobile',
+      app_apk_path: File.absolute_path(apk_path),
+      tests_apk_path:  File.absolute_path(test_apk_path)
+    )
+  end
+
   desc "Deploy to PlayStore Beta"
   lane :beta do
     gradle(

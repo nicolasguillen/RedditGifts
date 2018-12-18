@@ -1,0 +1,13 @@
+android_home '~/Library/Android/sdk/'
+
+app_package_name 'com.redditgifts.mobile'
+test_instrumentation_runner 'com.redditgifts.mobile.mocks.MockTestRunner'
+
+app_apk_path('app/build/outputs/apk/debug/app-debug.apk')
+tests_apk_path('app/build/outputs/apk/androidTest/debug/app-debug-androidTest.apk')
+
+locales ['en-GB']
+
+skip_open_summary true
+
+clear_previous_screenshots true

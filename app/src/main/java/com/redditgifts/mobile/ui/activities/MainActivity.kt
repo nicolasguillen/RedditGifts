@@ -13,7 +13,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity: AppCompatActivity() {
 
-    private val exchangesFragment = ExchangesFragment()
+    val exchangesFragment = ExchangesFragment()
     private val pastExchangesFragment = PastExchangesFragment()
     private val accountFragment = AccountFragment()
 

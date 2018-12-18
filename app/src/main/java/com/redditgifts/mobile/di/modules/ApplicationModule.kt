@@ -21,7 +21,7 @@ open class ApplicationModule(private val application: Application) {
 
     @Provides
     @Singleton
-    internal fun provideHTMLParser(): HTMLParser {
+    internal open fun provideHTMLParser(): HTMLParser {
         return JsoupHTMLParser()
     }
 
