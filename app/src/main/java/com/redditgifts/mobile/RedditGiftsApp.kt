@@ -7,7 +7,7 @@ import com.redditgifts.mobile.di.ApplicationComponent
 import com.redditgifts.mobile.di.DaggerApplicationComponent
 import com.redditgifts.mobile.di.modules.ApplicationModule
 import com.redditgifts.mobile.di.modules.ModelModule
-import com.redditgifts.mobile.di.modules.UseCaseModule
+import com.redditgifts.mobile.di.modules.NetworkModule
 import io.fabric.sdk.android.Fabric
 import com.google.firebase.analytics.FirebaseAnalytics
 
@@ -39,7 +39,7 @@ open class RedditGiftsApp : Application() {
         return DaggerApplicationComponent.builder()
                 .applicationModule(ApplicationModule(this))
                 .modelModule(ModelModule())
-                .useCaseModule(UseCaseModule())
+                .networkModule(NetworkModule())
                 .build()
     }
 

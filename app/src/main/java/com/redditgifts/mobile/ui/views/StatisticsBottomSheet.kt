@@ -1,12 +1,8 @@
 package com.redditgifts.mobile.ui.views
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
 import android.view.View
-import android.webkit.WebResourceRequest
-import android.webkit.WebView
-import android.webkit.WebViewClient
 import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
@@ -47,12 +43,6 @@ class StatisticsBottomSheet(context: Context,
                 }
             }
 
-        viewModel.outputs.loadHTML()
-            .observeOn(AndroidSchedulers.mainThread())
-            .crashingSubscribe { url ->
-                this.loadUrl(url)
-            }
-
         viewModel.outputs.error()
             .observeOn(AndroidSchedulers.mainThread())
             .crashingSubscribe { errorMessage ->
@@ -64,45 +54,21 @@ class StatisticsBottomSheet(context: Context,
             .observeOn(AndroidSchedulers.mainThread())
             .crashingSubscribe { statistics ->
                 statisticsList.visibility = View.VISIBLE
-                this.setStatisticsValue(statisticsParticipants, R.string.statistics_participants, statistics.participants, statistics.participants)
-                this.setStatisticsValue(statisticsMatches, R.string.statistics_matches, statistics.matches, statistics.participants)
-                this.setStatisticsValue(statisticsRetrieved, R.string.statistics_retrieved, statistics.retrieved, statistics.participants)
-                this.setStatisticsValue(statisticsShipped, R.string.statistics_shipped, statistics.shipped, statistics.participants)
-                this.setStatisticsValue(statisticsGiftInGallery, R.string.statistics_gift, statistics.giftInGallery, statistics.participants)
-                this.setStatisticsValue(statisticsRematchSignups, R.string.statistics_rematch_signups, statistics.rematchSignups, statistics.rematchSignups)
-                this.setStatisticsValue(statisticsRematches, R.string.statistics_rematch_done, statistics.rematchCompleted, statistics.rematchSignups)
+                this.setStatisticsValue(statisticsParticipants, R.string.statistics_participants, statistics.data.participants, statistics.data.participants)
+                this.setStatisticsValue(statisticsMatches, R.string.statistics_matches, statistics.data.totalMatches, statistics.data.participants)
+                this.setStatisticsValue(statisticsRetrieved, R.string.statistics_retrieved, statistics.data.retrieved, statistics.data.participants)
+                this.setStatisticsValue(statisticsShipped, R.string.statistics_shipped, statistics.data.shipped, statistics.data.participants)
+                this.setStatisticsValue(statisticsGiftInGallery, R.string.statistics_gift, statistics.data.gifts, statistics.data.participants)
+                this.setStatisticsValue(statisticsRematchSignups, R.string.statistics_rematch_signups, statistics.data.rematchSignups, statistics.data.rematchSignups)
+                this.setStatisticsValue(statisticsRematches, R.string.statistics_rematch_done, statistics.data.rematches, statistics.data.rematchSignups)
             }
 
         viewModel.inputs.exchangeId(currentExchange.referenceId)
 
     }
 
-    @SuppressLint("SetJavaScriptEnabled")
     private fun loadViews() {
         setContentView(R.layout.sheet_statistics)
-
-        webView.settings.javaScriptEnabled = true
-    }
-
-    private fun loadUrl(url: String) {
-        webView.removeJavascriptInterface("HTMLOUT")
-        webView.loadUrl(url)
-
-        webView.addJavascriptInterface(MyJavaScriptInterface(), "HTMLOUT")
-        webView.webViewClient = object : WebViewClient() {
-            override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest?): Boolean =  true
-            override fun onPageFinished(view: WebView, url: String) {
-                webView.loadUrl("javascript:window.HTMLOUT.processHTML('<html>'+document.getElementsByTagName('html')[0].innerHTML+'</html>');")
-            }
-        }
-    }
-
-    internal inner class MyJavaScriptInterface {
-        @Suppress("unused")
-        @android.webkit.JavascriptInterface
-        fun processHTML(html: String) {
-            viewModel.inputs.didLoadHtml(html)
-        }
     }
 
     private val disposables = CompositeDisposable()

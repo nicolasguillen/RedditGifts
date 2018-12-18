@@ -2,6 +2,7 @@ package com.redditgifts.mobile.di.modules
 
 import com.redditgifts.mobile.libs.LocalizedErrorMessages
 import com.redditgifts.mobile.models.*
+import com.redditgifts.mobile.services.ApiRepository
 import com.redditgifts.mobile.services.HTMLParser
 import dagger.Module
 import dagger.Provides
@@ -20,9 +21,9 @@ open class ModelModule {
                                                   localizedErrorMessages: LocalizedErrorMessages): ExchangeStatusViewModel =
         ExchangeStatusViewModel(htmlParser, localizedErrorMessages)
 
-    @Provides fun providesStatisticsViewModel(htmlParser: HTMLParser,
+    @Provides fun providesStatisticsViewModel(apiRepository: ApiRepository,
                                               localizedErrorMessages: LocalizedErrorMessages): StatisticsViewModel =
-        StatisticsViewModel(htmlParser, localizedErrorMessages)
+        StatisticsViewModel(apiRepository, localizedErrorMessages)
 
     @Provides fun providesPastExchangesViewModel(): PastExchangesViewModel =
         PastExchangesViewModel()

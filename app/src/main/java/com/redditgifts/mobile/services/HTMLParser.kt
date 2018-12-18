@@ -12,7 +12,6 @@ interface HTMLParser {
     fun parseGallery(html: String): Single<List<GiftModel>>
     fun parseGift(html: String): Single<DetailedGiftModel>
     fun parseAccount(html: String): Single<AccountModel>
-    fun parseStatistics(html: String): Single<StatisticsModel>
 }
 
 class JsoupHTMLParser: HTMLParser {
@@ -163,25 +162,6 @@ class JsoupHTMLParser: HTMLParser {
             return Single.error(HTMLError.LoadHTMLError)
         }
         return Single.just(AccountModel(title, imageURL, description))
-    }
-
-    override fun parseStatistics(html: String): Single<StatisticsModel> {
-        val document = Jsoup.parse(html)
-        document.select("span[class=welcome-msg]").first()
-            ?: return Single.error(HTMLError.LoadHTMLError)
-        val title = document.select("p[class=ema-stats-flavor ng-binding ng-scope]").first().select("strong[class=ema-strong ng-binding]")
-        val participantsValue = title[0].text().replace(",", "")
-        val countriesValue = title[1].text()
-        val littleViews = document.select("div[class=ema-stats-minor-inner]")
-        val matches = littleViews[0].selectFirst("div[class=ema-stats-minor-number ng-binding]").text().replace(",", "")
-        val retrieved = littleViews[1].selectFirst("div[class=ema-stats-minor-number ng-binding]").text().replace(",", "")
-        val shipped = littleViews[2].selectFirst("div[class=ema-stats-minor-number ng-binding]").text().replace(",", "")
-        val gifted = littleViews[3].selectFirst("div[class=ema-stats-minor-number ng-binding]").text().replace(",", "")
-        val rematchSign = littleViews[4].selectFirst("div[class=ema-stats-minor-number ng-binding]").text().replace(",", "")
-        val rematch = littleViews[5].selectFirst("div[class=ema-stats-minor-number ng-binding]").text().replace(",", "")
-        return Single.just(StatisticsModel(
-            participantsValue.toInt(), countriesValue.toInt(), matches.toInt(), retrieved.toInt(), shipped.toInt(), gifted.toInt(), rematchSign.toInt(), rematch.toInt(), 0.0,0.0,0.0,0.0,0.0
-        ))
     }
 
 }

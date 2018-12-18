@@ -2,7 +2,7 @@ package com.redditgifts.mobile.di
 
 import com.redditgifts.mobile.di.modules.ApplicationModule
 import com.redditgifts.mobile.di.modules.ModelModule
-import com.redditgifts.mobile.di.modules.UseCaseModule
+import com.redditgifts.mobile.di.modules.NetworkModule
 import com.redditgifts.mobile.ui.activities.GalleryActivity
 import com.redditgifts.mobile.ui.activities.GiftActivity
 import com.redditgifts.mobile.ui.activities.LoginActivity
@@ -15,7 +15,7 @@ import dagger.Component
 import javax.inject.Singleton
 
 @Singleton
-@Component(modules = [ApplicationModule::class, ModelModule::class, UseCaseModule::class])
+@Component(modules = [ApplicationModule::class, ModelModule::class, NetworkModule::class])
 interface ApplicationComponent {
     fun inject(loginActivity: LoginActivity)
     fun inject(exchangesFragment: ExchangesFragment)
