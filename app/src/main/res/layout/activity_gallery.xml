@@ -5,12 +5,6 @@
         android:layout_height="match_parent"
         android:background="@color/colorPrimaryDark">
 
-    <WebView
-            android:id="@+id/webView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility="invisible"/>
-
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:id="@+id/gallerySwipe"
             android:layout_width="match_parent"

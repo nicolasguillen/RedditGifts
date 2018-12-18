@@ -3,10 +3,6 @@ package com.redditgifts.mobile.ui.activities
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
-import android.webkit.WebResourceRequest
-import android.webkit.WebView
-import android.webkit.WebViewClient
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -37,12 +33,6 @@ class GalleryActivity : BaseActivity<GalleryViewModel>() {
                 }
             }
 
-        viewModel.outputs.loadHTML()
-            .observeOn(AndroidSchedulers.mainThread())
-            .crashingSubscribe { url ->
-                this.loadUrl(url)
-            }
-
         viewModel.outputs.galleryPageData()
             .observeOn(AndroidSchedulers.mainThread())
             .crashingSubscribe { galleryPageData ->
@@ -54,7 +44,7 @@ class GalleryActivity : BaseActivity<GalleryViewModel>() {
             .crashingSubscribe { giftSelected ->
                 startActivity(
                     Intent(this, GiftActivity::class.java)
-                        .putExtra(IntentKey.GIFT_ID, giftSelected.referenceId))
+                        .putExtra(IntentKey.GIFT_ID, giftSelected.slug))
             }
 
         gallerySwipe.setOnRefreshListener {
@@ -75,31 +65,11 @@ class GalleryActivity : BaseActivity<GalleryViewModel>() {
         }
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        webView.settings.javaScriptEnabled = true
-
         val linearLayoutManager = LinearLayoutManager(this)
         galleryItems.layoutManager = linearLayoutManager
         galleryItems.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
         galleryItems.adapter = GalleryAdapter(this.viewModel.inputs, mutableListOf())
 
-    }
-
-    private fun loadUrl(url: String) {
-        webView.webViewClient = null
-        webView.removeJavascriptInterface("HTMLOUT")
-        webView.loadUrl("about:blank")
-        webView.loadUrl(url)
-
-        val handler = Handler()
-        webView.addJavascriptInterface(MyJavaScriptInterface(), "HTMLOUT")
-        webView.webViewClient = object : WebViewClient() {
-            override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest?): Boolean = true
-            override fun onPageFinished(view: WebView, url: String) {
-                handler.postDelayed({
-                    webView.loadUrl("javascript:window.HTMLOUT.processHTML('<html>'+document.getElementsByTagName('html')[0].innerHTML+'</html>');")
-                }, 2000)
-            }
-        }
     }
 
     private fun displayItems(galleryPageData: GalleryPageData) {
@@ -113,14 +83,6 @@ class GalleryActivity : BaseActivity<GalleryViewModel>() {
             })
         }
         adapter.setItems(galleryPageData)
-    }
-
-    internal inner class MyJavaScriptInterface {
-        @Suppress("unused")
-        @android.webkit.JavascriptInterface
-        fun processHTML(html: String) {
-            viewModel.inputs.didLoadHtml(html)
-        }
     }
 
 }

@@ -28,9 +28,9 @@ open class ModelModule {
     @Provides fun providesPastExchangesViewModel(): PastExchangesViewModel =
         PastExchangesViewModel()
 
-    @Provides fun providesGalleryViewModel(htmlParser: HTMLParser,
+    @Provides fun providesGalleryViewModel(apiRepository: ApiRepository,
                                            localizedErrorMessages: LocalizedErrorMessages): GalleryViewModel =
-        GalleryViewModel(htmlParser, localizedErrorMessages)
+        GalleryViewModel(apiRepository, localizedErrorMessages)
 
     @Provides fun providesGiftViewModel(htmlParser: HTMLParser,
                                         localizedErrorMessages: LocalizedErrorMessages): GiftViewModel =

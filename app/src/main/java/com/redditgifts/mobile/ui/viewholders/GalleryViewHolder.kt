@@ -4,23 +4,23 @@ import android.view.View
 import android.widget.TextView
 import com.redditgifts.mobile.R
 import com.redditgifts.mobile.libs.utils.loadUrlIntoImage
-import com.redditgifts.mobile.services.models.GiftModel
+import com.redditgifts.mobile.services.models.GalleryModel
 import com.squareup.picasso.Picasso
 
 class GalleryViewHolder(view: View,
                         private val delegate: Delegate?) : BaseViewHolder(view) {
 
-    private var post: GiftModel? = null
+    private var post: GalleryModel.Data.GiftModel? = null
 
     override fun bindData(data: Any) {
-        post = data as GiftModel
+        post = data as GalleryModel.Data.GiftModel
 
         val giftTitle = view().findViewById<TextView>(R.id.giftTitle)
         giftTitle.text = post?.title
 
         Picasso.get().loadUrlIntoImage(
             view().findViewById(R.id.giftImage),
-            post?.imageURL!!
+            post?.thumbnailUrl!!
         )
     }
 
@@ -29,6 +29,6 @@ class GalleryViewHolder(view: View,
     }
 
     interface Delegate : BaseViewHolderDelegate {
-        fun didSelectGift(gift: GiftModel)
+        fun didSelectGift(gift: GalleryModel.Data.GiftModel)
     }
 }

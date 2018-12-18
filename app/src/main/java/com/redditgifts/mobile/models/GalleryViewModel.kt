@@ -3,8 +3,8 @@ package com.redditgifts.mobile.models
 import com.redditgifts.mobile.libs.GenericResult
 import com.redditgifts.mobile.libs.LocalizedErrorMessages
 import com.redditgifts.mobile.libs.operators.Operators
-import com.redditgifts.mobile.services.HTMLParser
-import com.redditgifts.mobile.services.models.GiftModel
+import com.redditgifts.mobile.services.ApiRepository
+import com.redditgifts.mobile.services.models.GalleryModel
 import com.redditgifts.mobile.ui.viewholders.GalleryViewHolder
 import io.reactivex.Observable
 import io.reactivex.rxkotlin.withLatestFrom
@@ -14,54 +14,40 @@ interface GalleryViewModelInputs : GalleryViewHolder.Delegate {
     fun onCreate()
     fun exchangeId(id: String)
     fun loadPage(page: Int)
-    fun didLoadHtml(html: String)
 }
 
 interface GalleryViewModelOutputs {
     fun isLoading(): Observable<Boolean>
-    fun loadHTML(): Observable<String>
     fun galleryPageData(): Observable<GalleryPageData>
-    fun startGiftDetail(): Observable<GiftModel>
+    fun startGiftDetail(): Observable<GalleryModel.Data.GiftModel>
 }
 
-class GalleryViewModel(private val htmlParser: HTMLParser,
+class GalleryViewModel(private val apiRepository: ApiRepository,
                        private val localizedErrorMessages: LocalizedErrorMessages): DisposableViewModel(), GalleryViewModelInputs, GalleryViewModelOutputs {
 
     //INPUTS
     private val onCreate = PublishSubject.create<Unit>()
     private val exchangeId = PublishSubject.create<String>()
     private val loadPage = PublishSubject.create<Int>()
-    private val didLoadHtml = PublishSubject.create<String>()
 
     //OUTPUTS
     private val isLoading = PublishSubject.create<Boolean>()
-    private val loadHTML = PublishSubject.create<String>()
     private val galleryPageData = PublishSubject.create<GalleryPageData>()
-    private val startGiftDetail = PublishSubject.create<GiftModel>()
+    private val startGiftDetail = PublishSubject.create<GalleryModel.Data.GiftModel>()
 
     val inputs: GalleryViewModelInputs = this
     val outputs: GalleryViewModelOutputs = this
 
     init {
-        this.loadPage
-            .withLatestFrom(exchangeId)
-            .map { pageAndId ->
-                val page = pageAndId.first
-                val exchange = pageAndId.second
-                "https://www.redditgifts.com/gallery/#/?type=exchanges&pageNumber=$page&pageSize=25&sort=date&sortDirection=DESC&filterExchange=$exchange"
-            }
-            .crashingSubscribe { url ->
-                this.isLoading.onNext(true)
-                this.loadHTML.onNext(url)
-            }
-
         this.onCreate
             .crashingSubscribe { this.loadPage.onNext(1) }
 
-        this.didLoadHtml
-            .switchMapSingle { html ->
-                this.htmlParser.parseGallery(html)
+        this.loadPage
+            .withLatestFrom(exchangeId)
+            .switchMapSingle { pair ->
+                this.apiRepository.getGallery(pair.second, 25, pair.first)
                     .lift(Operators.genericResult(this.localizedErrorMessages))
+                    .doOnSubscribe { this.isLoading.onNext(true) }
                     .doOnSuccess { this.isLoading.onNext(false) }
             }
             .withLatestFrom(loadPage)
@@ -69,7 +55,7 @@ class GalleryViewModel(private val htmlParser: HTMLParser,
                 val result = pair.first
                 when(result) {
                     is GenericResult.Successful ->
-                        this.galleryPageData.onNext(GalleryPageData(pair.second, result.result))
+                        this.galleryPageData.onNext(GalleryPageData(pair.second, result.result.data.gifts))
                 } }
 
     }
@@ -77,13 +63,11 @@ class GalleryViewModel(private val htmlParser: HTMLParser,
     override fun onCreate() = this.onCreate.onNext(Unit)
     override fun exchangeId(id: String) = this.exchangeId.onNext(id)
     override fun loadPage(page: Int) = this.loadPage.onNext(page)
-    override fun didLoadHtml(html: String) = this.didLoadHtml.onNext(html)
-    override fun didSelectGift(gift: GiftModel) = this.startGiftDetail.onNext(gift)
+    override fun didSelectGift(gift: GalleryModel.Data.GiftModel) = this.startGiftDetail.onNext(gift)
     override fun isLoading(): Observable<Boolean> = this.isLoading
-    override fun loadHTML(): Observable<String> = this.loadHTML
     override fun galleryPageData(): Observable<GalleryPageData> = this.galleryPageData
-    override fun startGiftDetail(): Observable<GiftModel> = this.startGiftDetail
+    override fun startGiftDetail(): Observable<GalleryModel.Data.GiftModel> = this.startGiftDetail
 
 }
 
-class GalleryPageData(val page: Int, val items: List<GiftModel>)
+class GalleryPageData(val page: Int, val items: List<GalleryModel.Data.GiftModel>)

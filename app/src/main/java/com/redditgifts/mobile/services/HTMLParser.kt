@@ -9,7 +9,6 @@ import java.util.regex.Pattern
 interface HTMLParser {
     fun parseExchanges(html: String): Single<ExchangeOverviewModel>
     fun parseStatuses(html: String): Single<ExchangeStatusModel>
-    fun parseGallery(html: String): Single<List<GiftModel>>
     fun parseGift(html: String): Single<DetailedGiftModel>
     fun parseAccount(html: String): Single<AccountModel>
 }
@@ -60,25 +59,6 @@ class JsoupHTMLParser: HTMLParser {
             return Single.error(HTMLError.LoadHTMLError)
         }
         return Single.just(ExchangeStatusModel(santaStatusData, gifteeStatusData))
-    }
-
-    override fun parseGallery(html: String): Single<List<GiftModel>> {
-        val document = Jsoup.parse(html)
-        val gifts = mutableListOf<GiftModel>()
-        val links = document.select("a[href]")
-        for (i in links.indices) {
-            try {
-                val referenceId = links[i].attr("href")
-                val imageURL = links[i].attr("style").replace("background-image:url(\"", "").replace(");", "").replace("\"", "")
-                val title = links[i+1].attr("title")
-                if(referenceId.isEmpty() || imageURL.isEmpty() || title.isEmpty()){
-                    continue
-                }
-
-                gifts.add(GiftModel(referenceId, title, imageURL))
-            } catch (e: Exception) {  }
-        }
-        return Single.just(gifts)
     }
 
     override fun parseGift(html: String): Single<DetailedGiftModel> {
