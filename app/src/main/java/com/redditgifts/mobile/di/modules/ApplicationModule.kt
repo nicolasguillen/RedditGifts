@@ -4,8 +4,6 @@ import android.app.Application
 import android.content.Context
 import com.redditgifts.mobile.libs.LocalizedErrorMessages
 import com.redditgifts.mobile.libs.RedditGiftsErrorMessages
-import com.redditgifts.mobile.services.HTMLParser
-import com.redditgifts.mobile.services.JsoupHTMLParser
 import com.redditgifts.mobile.storage.CookieRepository
 import com.redditgifts.mobile.storage.RedditGiftsCookieRepository
 import dagger.Module
@@ -20,11 +18,6 @@ open class ApplicationModule(private val application: Application) {
     @Singleton
     internal fun provideContext(): Context {
         return application
-    }
-
-    @Provides
-    internal open fun provideHTMLParser(): HTMLParser {
-        return JsoupHTMLParser()
     }
 
     @Provides

@@ -5,6 +5,7 @@ import com.redditgifts.mobile.libs.LocalizedErrorMessages
 import com.redditgifts.mobile.libs.operators.Operators
 import com.redditgifts.mobile.services.ApiRepository
 import com.redditgifts.mobile.services.errors.UnauthorizedError
+import com.redditgifts.mobile.services.models.CreditModel
 import com.redditgifts.mobile.services.models.CurrentExchangeModel
 import com.redditgifts.mobile.ui.viewholders.ExchangeViewHolder
 import io.reactivex.Observable
@@ -18,6 +19,7 @@ interface ExchangesViewModelInputs : ExchangeViewHolder.Delegate {
 interface ExchangesViewModelOutputs {
     fun isLoading(): Observable<Boolean>
     fun exchangeOverview(): Observable<CurrentExchangeModel>
+    fun credits(): Observable<CreditModel>
     fun mustLogin(): Observable<Unit>
     fun showExchange(): Observable<CurrentExchangeModel.Data.Exchange>
     fun showStatistics(): Observable<CurrentExchangeModel.Data.Exchange>
@@ -34,6 +36,7 @@ class ExchangesViewModel(private val apiRepository: ApiRepository,
     //OUTPUTS
     private val isLoading = PublishSubject.create<Boolean>()
     private val exchangeOverview = PublishSubject.create<CurrentExchangeModel>()
+    private val credits = PublishSubject.create<CreditModel>()
     private val mustLogin = PublishSubject.create<Unit>()
     private val showExchange = PublishSubject.create<CurrentExchangeModel.Data.Exchange>()
     private val showStatistics = PublishSubject.create<CurrentExchangeModel.Data.Exchange>()
@@ -60,6 +63,16 @@ class ExchangesViewModel(private val apiRepository: ApiRepository,
                 }
             } }
 
+        this.exchangeOverview
+            .switchMapSingle {
+                this.apiRepository.getCredits()
+                    .lift(Operators.genericResult(this.localizedErrorMessages))
+            }
+            .crashingSubscribe { when(it) {
+                is GenericResult.Successful ->
+                    this.credits.onNext(it.result)
+            } }
+
         this.didLogin
             .crashingSubscribe {
                 this.onCreate.onNext(Unit)
@@ -74,6 +87,7 @@ class ExchangesViewModel(private val apiRepository: ApiRepository,
     override fun didSelectOpenStatistics(currentExchange: CurrentExchangeModel.Data.Exchange) = this.showStatistics.onNext(currentExchange)
     override fun didSelectOpenGallery(currentExchange: CurrentExchangeModel.Data.Exchange) = this.showGallery.onNext(currentExchange)
     override fun exchangeOverview(): Observable<CurrentExchangeModel> = this.exchangeOverview
+    override fun credits(): Observable<CreditModel> = this.credits
     override fun mustLogin(): Observable<Unit> = this.mustLogin
     override fun showExchange(): Observable<CurrentExchangeModel.Data.Exchange> = this.showExchange
     override fun showStatistics(): Observable<CurrentExchangeModel.Data.Exchange> = this.showStatistics

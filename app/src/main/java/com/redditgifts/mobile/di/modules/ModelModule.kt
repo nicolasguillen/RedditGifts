@@ -3,7 +3,6 @@ package com.redditgifts.mobile.di.modules
 import com.redditgifts.mobile.libs.LocalizedErrorMessages
 import com.redditgifts.mobile.models.*
 import com.redditgifts.mobile.services.ApiRepository
-import com.redditgifts.mobile.services.HTMLParser
 import com.redditgifts.mobile.storage.CookieRepository
 import dagger.Module
 import dagger.Provides
@@ -37,8 +36,8 @@ open class ModelModule {
                                         localizedErrorMessages: LocalizedErrorMessages): GiftViewModel =
         GiftViewModel(apiRepository, localizedErrorMessages)
 
-    @Provides fun providesAccountViewModel(htmlParser: HTMLParser,
+    @Provides fun providesAccountViewModel(apiRepository: ApiRepository,
                                            localizedErrorMessages: LocalizedErrorMessages): AccountViewModel =
-        AccountViewModel(htmlParser, localizedErrorMessages)
+        AccountViewModel(apiRepository, localizedErrorMessages)
 
 }

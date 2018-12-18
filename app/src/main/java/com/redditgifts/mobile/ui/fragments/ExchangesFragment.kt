@@ -38,9 +38,14 @@ class ExchangesFragment : BaseFragment<ExchangesViewModel>() {
             .observeOn(AndroidSchedulers.mainThread())
             .crashingSubscribe { data ->
                 exchangesLogin.visibility = View.INVISIBLE
-                exchangesCredits.text = getString(R.string.exchanges_credits).format(0/*data.credits*/)
                 val adapter = exchangesList.adapter as GenericAdapter
                 adapter.setItems(data.data[0].exchanges)
+            }
+
+        viewModel.outputs.credits()
+            .observeOn(AndroidSchedulers.mainThread())
+            .crashingSubscribe { credits ->
+                exchangesCredits.text = getString(R.string.exchanges_credits).format(credits.data.credits)
             }
 
         viewModel.outputs.mustLogin()

@@ -30,11 +30,9 @@ class MockApp: RedditGiftsApp() {
 //                }
 //
 //                override fun parseStatuses(html: String): Single<ExchangeStatusModel> {
-//                    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
 //                }
 //
-//                override fun parseAccount(html: String): Single<AccountModel> {
-//                    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+//                override fun parseAccount(html: String): Single<ProfileModel> {
 //                }
 //
 //                override fun parseStatistics(html: String): Single<StatisticsModel> {

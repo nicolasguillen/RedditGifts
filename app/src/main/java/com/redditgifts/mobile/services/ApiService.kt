@@ -30,4 +30,10 @@ interface ApiService {
     fun getDetailedGift(@Path("exchangeId") exchangeId: String,
                         @Path("giftId") giftId: String): Single<Response<DetailedGiftModel>>
 
+    @GET("profiles/me/")
+    fun getProfile(@Header("cookie") cookie: String): Single<Response<ProfileModel>>
+
+    @GET("https://www.redditgifts.com/exchanges/mgmt/participant/")
+    fun getCredits(@Header("cookie") cookie: String): Single<Response<CreditModel>>
+
 }

@@ -15,4 +15,8 @@ interface ApiRepository {
 
     fun getDetailedGift(exchangeId: String, giftId: String): Single<DetailedGiftModel>
 
+    fun getProfile(): Single<ProfileModel>
+
+    fun getCredits(): Single<CreditModel>
+
 }
