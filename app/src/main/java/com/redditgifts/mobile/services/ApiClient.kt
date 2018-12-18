@@ -4,10 +4,7 @@ import com.google.gson.Gson
 import com.redditgifts.mobile.libs.operators.ApiErrorOperator
 import com.redditgifts.mobile.libs.operators.Operators
 import com.redditgifts.mobile.services.errors.UnauthorizedError
-import com.redditgifts.mobile.services.models.CurrentExchangeModel
-import com.redditgifts.mobile.services.models.DetailedGiftModel
-import com.redditgifts.mobile.services.models.GalleryModel
-import com.redditgifts.mobile.services.models.StatisticsModel
+import com.redditgifts.mobile.services.models.*
 import com.redditgifts.mobile.storage.CookieRepository
 import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
@@ -20,6 +17,15 @@ class ApiClient(private val apiService: ApiService,
         return this.cookie()
             .flatMap { cookie ->
                 apiService.getExchanges(cookie, true)
+                    .lift(apiErrorOperator())
+                    .subscribeOn(Schedulers.io())
+            }
+    }
+
+    override fun getExchangeStatus(exchangeId: String): Single<ExchangeStatusModel> {
+        return this.cookie()
+            .flatMap { cookie ->
+                apiService.getExchangeStatus(cookie, exchangeId)
                     .lift(apiErrorOperator())
                     .subscribeOn(Schedulers.io())
             }

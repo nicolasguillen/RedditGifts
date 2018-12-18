@@ -18,9 +18,9 @@ open class ModelModule {
                                              localizedErrorMessages: LocalizedErrorMessages): ExchangesViewModel =
         ExchangesViewModel(apiRepository, localizedErrorMessages)
 
-    @Provides fun providesExchangeStatusViewModel(htmlParser: HTMLParser,
+    @Provides fun providesExchangeStatusViewModel(apiRepository: ApiRepository,
                                                   localizedErrorMessages: LocalizedErrorMessages): ExchangeStatusViewModel =
-        ExchangeStatusViewModel(htmlParser, localizedErrorMessages)
+        ExchangeStatusViewModel(apiRepository, localizedErrorMessages)
 
     @Provides fun providesStatisticsViewModel(apiRepository: ApiRepository,
                                               localizedErrorMessages: LocalizedErrorMessages): StatisticsViewModel =

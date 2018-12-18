@@ -1,15 +1,13 @@
 package com.redditgifts.mobile.ui.activities
 
 import android.graphics.drawable.AnimationDrawable
-import android.os.Build
 import android.os.Bundle
-import android.text.Html
-import android.text.Spanned
 import android.view.View
 import android.widget.Toast
 import com.redditgifts.mobile.R
 import com.redditgifts.mobile.RedditGiftsApp
 import com.redditgifts.mobile.libs.IntentKey
+import com.redditgifts.mobile.libs.utils.toSpanned
 import com.redditgifts.mobile.models.GiftViewModel
 import com.redditgifts.mobile.ui.adapters.GiftImageAdapter
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -73,15 +71,6 @@ class GiftActivity : BaseActivity<GiftViewModel>() {
         giftImages.clipToPadding = false
         giftImages.setPadding(50, 0, 50, 0)
         giftImages.pageMargin = 30
-    }
-
-    private fun String.toSpanned(): Spanned {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            return Html.fromHtml(this, Html.FROM_HTML_MODE_LEGACY)
-        } else {
-            @Suppress("DEPRECATION")
-            return Html.fromHtml(this)
-        }
     }
 
 }

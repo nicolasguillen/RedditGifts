@@ -1,9 +1,6 @@
 package com.redditgifts.mobile.services
 
-import com.redditgifts.mobile.services.models.CurrentExchangeModel
-import com.redditgifts.mobile.services.models.DetailedGiftModel
-import com.redditgifts.mobile.services.models.GalleryModel
-import com.redditgifts.mobile.services.models.StatisticsModel
+import com.redditgifts.mobile.services.models.*
 import io.reactivex.Single
 import retrofit2.Response
 import retrofit2.http.GET
@@ -16,6 +13,10 @@ interface ApiService {
     @GET("exchanges/")
     fun getExchanges(@Header("cookie") cookie: String,
                      @Query("participating") participating: Boolean): Single<Response<CurrentExchangeModel>>
+
+    @GET("exchanges/{exchangeId}/status/")
+    fun getExchangeStatus(@Header("cookie") cookie: String,
+                          @Path("exchangeId") exchangeId: String): Single<Response<ExchangeStatusModel>>
 
     @GET("exchanges/{exchangeId}/statistics/")
     fun getStatistics(@Path("exchangeId") exchangeId: String): Single<Response<StatisticsModel>>
