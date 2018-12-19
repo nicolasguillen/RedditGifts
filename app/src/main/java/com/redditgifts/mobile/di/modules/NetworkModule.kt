@@ -35,6 +35,7 @@ open class NetworkModule {
             builder.addInterceptor(httpLoggingInterceptor)
         }
         builder.connectTimeout(10, TimeUnit.SECONDS)
+        builder.followRedirects(false)
         return builder.build()
     }
 

@@ -3,10 +3,13 @@ package com.redditgifts.mobile.di
 import com.redditgifts.mobile.di.modules.ApplicationModule
 import com.redditgifts.mobile.di.modules.ModelModule
 import com.redditgifts.mobile.di.modules.NetworkModule
-import com.redditgifts.mobile.ui.activities.*
+import com.redditgifts.mobile.ui.activities.GalleryActivity
+import com.redditgifts.mobile.ui.activities.GiftActivity
+import com.redditgifts.mobile.ui.activities.LoginActivity
+import com.redditgifts.mobile.ui.activities.SplashActivity
 import com.redditgifts.mobile.ui.fragments.AccountFragment
-import com.redditgifts.mobile.ui.fragments.PastExchangesFragment
 import com.redditgifts.mobile.ui.fragments.ExchangesFragment
+import com.redditgifts.mobile.ui.fragments.PastExchangesFragment
 import com.redditgifts.mobile.ui.views.ExchangeBottomSheet
 import com.redditgifts.mobile.ui.views.StatisticsBottomSheet
 import dagger.Component
@@ -17,7 +20,6 @@ import javax.inject.Singleton
 interface ApplicationComponent {
     fun inject(splashActivity: SplashActivity)
     fun inject(loginActivity: LoginActivity)
-    fun inject(loginActivity2: LoginActivity2)
     fun inject(exchangesFragment: ExchangesFragment)
     fun inject(pastExchangesFragment: PastExchangesFragment)
     fun inject(accountFragment: AccountFragment)

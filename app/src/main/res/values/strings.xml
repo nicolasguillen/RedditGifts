@@ -1,5 +1,9 @@
 <resources>
     <string name="app_name">RedditGifts</string>
+    <!-- LOGIN -->
+    <string name="login_email">Email address</string>
+    <string name="login_password">Password</string>
+    <string name="login_action">Log in</string>
     <!-- MAIN -->
     <string name="main_home">Home</string>
     <string name="main_gallery">Gallery</string>

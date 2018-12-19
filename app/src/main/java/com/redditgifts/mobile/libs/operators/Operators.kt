@@ -14,5 +14,9 @@ class Operators {
             return ApiErrorOperator(gson)
         }
 
+        fun loginError(): LoginErrorOperator {
+            return LoginErrorOperator()
+        }
+
     }
 }

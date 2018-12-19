@@ -38,10 +38,10 @@ class ApiErrorOperator<T>(private val gson: Gson) : SingleOperator<T, Response<T
                     try {
                         val envelope = gson.fromJson(response.errorBody()?.string(), ErrorEnvelope::class.java)
                         observer.onError(ApiException(envelope))
-                    } catch (e: IOException) {
+                    } catch (e: Exception) {
                         observer.onError(ResponseException())
                     }
-
+                    return
                 }
 
                 observer.onSuccess(response.body()!!)

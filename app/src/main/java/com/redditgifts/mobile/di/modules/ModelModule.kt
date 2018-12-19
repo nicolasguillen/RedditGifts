@@ -13,13 +13,10 @@ open class ModelModule {
     @Provides fun providesSplashViewModel(cookieRepository: CookieRepository): SplashViewModel =
         SplashViewModel(cookieRepository)
 
-    @Provides fun providesLoginViewModel(cookieRepository: CookieRepository): LoginViewModel =
-        LoginViewModel(cookieRepository)
-
-    @Provides fun providesLoginViewModel2(apiRepository: ApiRepository,
-                                          cookieRepository: CookieRepository,
-                                          localizedErrorMessages: LocalizedErrorMessages): LoginViewModel2 =
-        LoginViewModel2(apiRepository, cookieRepository, localizedErrorMessages)
+    @Provides fun providesLoginViewModel(apiRepository: ApiRepository,
+                                         cookieRepository: CookieRepository,
+                                         localizedErrorMessages: LocalizedErrorMessages): LoginViewModel =
+        LoginViewModel(apiRepository, cookieRepository, localizedErrorMessages)
 
     @Provides fun providesExchangesViewModel(apiRepository: ApiRepository,
                                              localizedErrorMessages: LocalizedErrorMessages): ExchangesViewModel =
@@ -45,7 +42,8 @@ open class ModelModule {
         GiftViewModel(apiRepository, localizedErrorMessages)
 
     @Provides fun providesAccountViewModel(apiRepository: ApiRepository,
+                                           cookieRepository: CookieRepository,
                                            localizedErrorMessages: LocalizedErrorMessages): AccountViewModel =
-        AccountViewModel(apiRepository, localizedErrorMessages)
+        AccountViewModel(apiRepository, cookieRepository, localizedErrorMessages)
 
 }

@@ -2,7 +2,6 @@ package com.redditgifts.mobile.services
 
 import com.redditgifts.mobile.services.models.*
 import io.reactivex.Single
-import okhttp3.ResponseBody
 
 interface ApiRepository {
 
@@ -20,6 +19,6 @@ interface ApiRepository {
 
     fun getCredits(): Single<CreditModel>
 
-    fun login(user: String, password: String, cookie: String): Single<ResponseBody>
+    fun login(user: String, password: String, cookie: String): Single<Map<String, String>>
 
 }

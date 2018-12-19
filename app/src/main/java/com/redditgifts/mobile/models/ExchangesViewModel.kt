@@ -53,6 +53,8 @@ class ExchangesViewModel(private val apiRepository: ApiRepository,
             .crashingSubscribe { when(it) {
                 is GenericResult.Successful ->
                     this.exchangeOverview.onNext(it.result)
+                is GenericResult.Failed ->
+                    this.exchangeOverview.onNext(CurrentExchangeModel(listOf(CurrentExchangeModel.Data(emptyList()))))
             } }
 
         this.exchangeOverview

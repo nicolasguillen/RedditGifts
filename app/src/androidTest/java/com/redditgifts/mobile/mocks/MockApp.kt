@@ -14,7 +14,6 @@ import com.redditgifts.mobile.services.models.*
 import com.redditgifts.mobile.storage.CookieRepository
 import dagger.Module
 import io.reactivex.Single
-import okhttp3.ResponseBody
 
 class MockApp: RedditGiftsApp() {
 
@@ -28,6 +27,10 @@ class MockApp: RedditGiftsApp() {
     @Module class MockApplicationModule(application: Application) : ApplicationModule(application) {
         override fun provideCookieRepository(context: Context): CookieRepository {
             return object : CookieRepository {
+                override fun removeCookie(): Single<Unit> {
+                    return Single.just(Unit)
+                }
+
                 override fun getCookie(): Single<String> {
                     return Single.just("cookie")
                 }
@@ -46,7 +49,7 @@ class MockApp: RedditGiftsApp() {
             gson: Gson
         ): ApiRepository {
             return object : ApiRepository {
-                override fun login(user: String, password: String, cookie: String): Single<ResponseBody> {
+                override fun login(user: String, password: String, cookie: String): Single<Map<String, String>> {
                     TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
                 }
 

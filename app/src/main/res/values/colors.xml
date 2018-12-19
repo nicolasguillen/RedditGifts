@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <color name="ic_launcher_background">#FC461E</color>
+    <color name="mtrl_textinput_default_box_stroke_color" tools:override="true">@color/textColor</color>
 
     <color name="colorPrimary">#131214</color>
     <color name="colorPrimaryDark">#060406</color>

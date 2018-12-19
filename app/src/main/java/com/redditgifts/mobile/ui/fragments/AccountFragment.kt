@@ -1,6 +1,7 @@
 package com.redditgifts.mobile.ui.fragments
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.graphics.drawable.AnimationDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,6 +12,8 @@ import com.redditgifts.mobile.RedditGiftsApp
 import com.redditgifts.mobile.libs.utils.loadUrlIntoImage
 import com.redditgifts.mobile.libs.utils.toSpanned
 import com.redditgifts.mobile.models.AccountViewModel
+import com.redditgifts.mobile.services.models.ProfileModel
+import com.redditgifts.mobile.ui.activities.LoginActivity
 import com.squareup.picasso.Picasso
 import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.cell_loader.*
@@ -48,11 +51,27 @@ class AccountFragment : BaseFragment<AccountViewModel>() {
             .crashingSubscribe { model ->
                 accountData.visibility = View.VISIBLE
                 Picasso.get().loadUrlIntoImage(accountImage, model.data.photoUrl)
-                accountName.text = model.data.redditUsername
+                accountName.text = this.getUserName(model)
                 accountDescription.text = model.data.shortBioHtml.toSpanned()
             }
 
+        viewModel.outputs.didLogout()
+            .observeOn(AndroidSchedulers.mainThread())
+            .crashingSubscribe {
+                val intent = Intent(context, LoginActivity::class.java)
+                startActivity(intent)
+                activity?.finish()
+            }
+
+        accountLogout.setOnClickListener {
+            viewModel.inputs.didPressLogout()
+        }
+
         viewModel.inputs.onCreate()
+    }
+
+    private fun getUserName(model: ProfileModel): String {
+        return model.data.redditUsername ?: "${model.data.firstName} ${model.data.lastName}"
     }
 
 }

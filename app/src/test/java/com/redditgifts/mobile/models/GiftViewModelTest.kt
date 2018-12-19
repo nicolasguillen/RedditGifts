@@ -30,6 +30,10 @@ class GiftViewModelTest {
 
     @Test
     fun test_giftId_then_getDetailedGift(){
+        //Arrange
+        doReturn(Single.just(DetailedGiftModel(DetailedGiftModel.Data("", Date(), "", 0, "", emptyList(), 0))))
+            .whenever(mockApiRepository).getDetailedGift(any(), any())
+
         //Act
         testee.inputs.exchangeId("exchange")
         testee.inputs.giftId("1")

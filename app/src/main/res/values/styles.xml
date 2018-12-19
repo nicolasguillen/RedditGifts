@@ -16,6 +16,11 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="Theme.RedditGifts.LoginActivity" parent="Theme.RedditGifts.MainActivity">
+        <item name="colorButtonNormal">@color/colorAccent</item>
+        <item name="android:colorButtonNormal">@color/colorAccent</item>
+    </style>
+
     <style name="Theme.RedditGifts.ExchangeBottomSheet" parent="@style/Theme.Design.BottomSheetDialog">
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowContentOverlay">@null</item>
@@ -30,6 +35,14 @@
 
     <style name="SelectableTheme">
         <item name="colorControlHighlight">@color/colorAccent</item>
+    </style>
+
+    <style name="LoginTextInputLayoutStyle" parent="TextAppearance.AppCompat">
+        <item name="android:textColorHint">@color/textColor</item>
+        <item name="colorControlNormal">@color/textColor</item>
+        <item name="colorControlActivated">@color/textColor</item>
+        <item name="boxStrokeColor">@color/textColor</item>
+        <item name="colorAccent">@color/textColor</item>
     </style>
 
     <style name="ActionButton">

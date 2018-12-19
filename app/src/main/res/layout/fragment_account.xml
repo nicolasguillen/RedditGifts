@@ -14,7 +14,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="8dp"
-            android:visibility="invisible" >
+            android:visibility="visible" >
 
         <ImageView
                 android:id="@+id/accountImage"
@@ -48,15 +48,15 @@
                 android:paddingTop="8dp"
                 tools:text="Description!"/>
 
-        <!--<Button-->
-                <!--android:id="@+id/accountLogout"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_gravity="center"-->
-                <!--android:text="@string/account_logout"-->
-                <!--android:textColor="@color/textColor"-->
-                <!--android:layout_alignParentBottom="true"-->
-                <!--android:backgroundTint="@color/colorAccent"/>-->
+        <Button
+                android:id="@+id/accountLogout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@string/account_logout"
+                android:textColor="@color/textColor"
+                android:layout_alignParentBottom="true"
+                android:backgroundTint="@color/colorAccent"/>
 
     </RelativeLayout>
 
