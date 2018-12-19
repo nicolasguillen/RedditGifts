@@ -76,18 +76,10 @@ class LoginViewModel(private val apiRepository: ApiRepository,
 
     private fun performLogin(data: LoginData): Single<Unit> {
         return this.apiRepository.login(data.email, data.password, data.cookies)
-            .flatMap { newCredentials ->
-                this.storeCookieWithSessionId(newCredentials)
-            }
             .flatMap { newCookie ->
                 this.cookieRepository.storeCookie(newCookie)
             }
     }
-
-    private fun storeCookieWithSessionId(newCredentials: Map<String,String>): Single<String> {
-        return Single.just("sessionid=${newCredentials["sessionid"]}; csrftoken=${newCredentials["csrftoken"]}")
-    }
-
 
     override fun email(email: String) = this.email.onNext(email)
     override fun password(password: String) = this.password.onNext(password)

@@ -19,6 +19,6 @@ interface ApiRepository {
 
     fun getCredits(): Single<CreditModel>
 
-    fun login(user: String, password: String, cookie: String): Single<Map<String, String>>
+    fun login(user: String, password: String, cookie: String): Single<String>
 
 }

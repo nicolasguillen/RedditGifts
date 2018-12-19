@@ -72,7 +72,7 @@ class ApiClient(private val apiService: ApiService,
             }
     }
 
-    override fun login(user: String, password: String, cookie: String): Single<Map<String, String>> {
+    override fun login(user: String, password: String, cookie: String): Single<String> {
         val csrf = cookie.getCookieValue("csrftoken")
         val encodedUser = URLEncoder.encode(user, "utf-8")
         val encodedPassword = URLEncoder.encode(password, "utf-8")

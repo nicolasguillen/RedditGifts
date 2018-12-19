@@ -33,7 +33,7 @@ class LoginViewModelTest {
     @Test
     fun test_didPressLogin_then_login(){
         //Arrange
-        doReturn(Single.just(mapOf("sessionid" to "b1nc2re2b7t2epczv145vn0c0kj97p2d", "csrftoken" to "qDeOAO3JavGiqbZzfs3oGACmna0xukHg")))
+        doReturn(Single.just("sessionid=b1nc2re2b7t2epczv145vn0c0kj97p2d; csrftoken=qDeOAO3JavGiqbZzfs3oGACmna0xukHg"))
             .whenever(mockApiRepository).login(any(), any(), any())
 
         //Act
@@ -51,7 +51,7 @@ class LoginViewModelTest {
         //Arrange
         val cookie = "csrftoken=ZiVSLTKmxsKMqrpDqXd9AiOvXFhRgzGQ; ause=30076f7cc275ae786c47d700fbb5b8ad; sessionid=w03n69wkd2ksiieu7p37z4237431hbnx; __utma=81911445.1054149289.1545208111.1545208111.1545208111.1; __utmc=81911445; __utmz=81911445.1545208111.1.1.utmcsr=(direct)|utmccn=(direct)|utmcmd=(none); __adroll_fpc=ec400324776059b6f41d35fe99fca9f4; __ar_v4=%7CXNYNP5KHKJCBXOHQ4TW3VD%3A20190018%3A1%7CFFSJP3C7YNCPNDYECLA5HK%3A20190018%3A1%7CDHPD7LCWMVGA7O4O6FDS3V%3A20190018%3A1; _fbp=fb.1.1545208114539.1624750328"
         val expectedCookie = "sessionid=b1nc2re2b7t2epczv145vn0c0kj97p2d; csrftoken=qDeOAO3JavGiqbZzfs3oGACmna0xukHg"
-        doReturn(Single.just(mapOf("sessionid" to "b1nc2re2b7t2epczv145vn0c0kj97p2d", "csrftoken" to "qDeOAO3JavGiqbZzfs3oGACmna0xukHg")))
+        doReturn(Single.just("sessionid=b1nc2re2b7t2epczv145vn0c0kj97p2d; csrftoken=qDeOAO3JavGiqbZzfs3oGACmna0xukHg"))
             .whenever(mockApiRepository).login(any(), any(), any())
         doReturn(Single.just(Unit))
             .whenever(mockCookieRepository).storeCookie(any())
@@ -73,7 +73,7 @@ class LoginViewModelTest {
     fun test_didPressLogin_when_didStoreCookie_then_emitFinish(){
         //Arrange
         val test = testee.outputs.finish().test()
-        doReturn(Single.just(mapOf("sessionid" to "b1nc2re2b7t2epczv145vn0c0kj97p2d", "csrftoken" to "qDeOAO3JavGiqbZzfs3oGACmna0xukHg")))
+        doReturn(Single.just("sessionid=b1nc2re2b7t2epczv145vn0c0kj97p2d; csrftoken=qDeOAO3JavGiqbZzfs3oGACmna0xukHg"))
             .whenever(mockApiRepository).login(any(), any(), any())
         doReturn(Single.just(Unit))
             .whenever(mockCookieRepository).storeCookie(any())
