@@ -58,6 +58,9 @@ class KArgumentCaptor<out T : Any?>(
     val firstValue: T
         get() = captor.firstValue
 
+    val secondValue: T
+        get() = captor.secondValue
+
     @Suppress("UNCHECKED_CAST")
     fun capture(): T {
         return captor.capture() ?: createInstance(tClass) as T

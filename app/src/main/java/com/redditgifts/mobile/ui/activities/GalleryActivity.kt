@@ -2,6 +2,7 @@ package com.redditgifts.mobile.ui.activities
 
 import android.content.Intent
 import android.os.Bundle
+import android.widget.Toast
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -36,6 +37,12 @@ class GalleryActivity : BaseActivity<GalleryViewModel>() {
             .observeOn(AndroidSchedulers.mainThread())
             .crashingSubscribe { galleryPageData ->
                 this.displayItems(galleryPageData)
+            }
+
+        viewModel.outputs.error()
+            .observeOn(AndroidSchedulers.mainThread())
+            .crashingSubscribe { errorMessage ->
+                Toast.makeText(this, errorMessage, Toast.LENGTH_LONG).show()
             }
 
         viewModel.outputs.startGiftDetail()

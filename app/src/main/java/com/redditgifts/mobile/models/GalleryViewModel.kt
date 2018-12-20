@@ -19,6 +19,7 @@ interface GalleryViewModelInputs : GalleryViewHolder.Delegate {
 interface GalleryViewModelOutputs {
     fun isLoading(): Observable<Boolean>
     fun galleryPageData(): Observable<GalleryPageData>
+    fun error(): Observable<String>
     fun startGiftDetail(): Observable<GalleryModel.Data.GiftModel>
 }
 
@@ -33,6 +34,7 @@ class GalleryViewModel(private val apiRepository: ApiRepository,
     //OUTPUTS
     private val isLoading = PublishSubject.create<Boolean>()
     private val galleryPageData = PublishSubject.create<GalleryPageData>()
+    private val error = PublishSubject.create<String>()
     private val startGiftDetail = PublishSubject.create<GalleryModel.Data.GiftModel>()
 
     val inputs: GalleryViewModelInputs = this
@@ -43,19 +45,21 @@ class GalleryViewModel(private val apiRepository: ApiRepository,
             .crashingSubscribe { this.loadPage.onNext(1) }
 
         this.loadPage
-            .withLatestFrom(exchangeId)
-            .switchMapSingle { pair ->
-                this.apiRepository.getGallery(pair.second, 25, pair.first)
+            .withLatestFrom(exchangeId) { page, id -> PageData(page, id) }
+            .switchMapSingle { pageData ->
+                this.apiRepository.getGallery(pageData.exchangeId, 25, pageData.page)
                     .lift(Operators.genericResult(this.localizedErrorMessages))
                     .doOnSubscribe { this.isLoading.onNext(true) }
                     .doOnSuccess { this.isLoading.onNext(false) }
             }
-            .withLatestFrom(loadPage)
-            .crashingSubscribe { pair ->
-                val result = pair.first
+            .withLatestFrom(loadPage) { result, page -> GalleryResult(result, page) }
+            .crashingSubscribe { resultData ->
+                val result = resultData.result
                 when(result) {
                     is GenericResult.Successful ->
-                        this.galleryPageData.onNext(GalleryPageData(pair.second, result.result.data.gifts))
+                        this.galleryPageData.onNext(GalleryPageData(resultData.page, result.result.data.gifts))
+                    is GenericResult.Failed ->
+                        this.error.onNext(result.errorMessage)
                 } }
 
     }
@@ -66,7 +70,11 @@ class GalleryViewModel(private val apiRepository: ApiRepository,
     override fun didSelectGift(gift: GalleryModel.Data.GiftModel) = this.startGiftDetail.onNext(gift)
     override fun isLoading(): Observable<Boolean> = this.isLoading
     override fun galleryPageData(): Observable<GalleryPageData> = this.galleryPageData
+    override fun error(): Observable<String> = this.error
     override fun startGiftDetail(): Observable<GalleryModel.Data.GiftModel> = this.startGiftDetail
+
+    inner class PageData(val page: Int, val exchangeId: String)
+    inner class GalleryResult(val result: GenericResult<GalleryModel>, val page: Int)
 
 }
 
