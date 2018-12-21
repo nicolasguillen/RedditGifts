@@ -11,8 +11,7 @@ import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
 import org.mockito.Mock
-import org.mockito.Mockito.doReturn
-import org.mockito.Mockito.verify
+import org.mockito.Mockito.*
 import org.mockito.MockitoAnnotations
 
 class GalleryViewModelTest {
@@ -33,7 +32,7 @@ class GalleryViewModelTest {
     fun test_onCreate_then_loadPage1(){
         //Arrange
         doReturn(Single.just(GalleryModel(GalleryModel.Data(emptyList()))))
-            .whenever(mockApiRepository).getGallery(any(), any(), any())
+            .whenever(mockApiRepository).getGallery(any(), anyInt(), anyInt())
 
         //Act
         testee.inputs.exchangeId("exchange")
@@ -41,7 +40,7 @@ class GalleryViewModelTest {
 
         //Assert
         argumentCaptor<Int> {
-            verify(mockApiRepository).getGallery(any(), any(), capture())
+            verify(mockApiRepository).getGallery(any(), anyInt(), capture())
             assertEquals(1, firstValue)
         }
     }
@@ -50,7 +49,7 @@ class GalleryViewModelTest {
     fun test_loadPage_when_isPage2_then_loadPage2(){
         //Arrange
         doReturn(Single.just(GalleryModel(GalleryModel.Data(emptyList()))))
-            .whenever(mockApiRepository).getGallery(any(), any(), any())
+            .whenever(mockApiRepository).getGallery(any(), anyInt(), anyInt())
 
         //Act
         testee.inputs.exchangeId("exchange")
@@ -59,7 +58,7 @@ class GalleryViewModelTest {
 
         //Assert
         argumentCaptor<Int> {
-            verify(mockApiRepository).getGallery(any(), any(), capture())
+            verify(mockApiRepository, atLeastOnce()).getGallery(any(), anyInt(), capture())
             assertEquals(1, firstValue)
             assertEquals(2, secondValue)
         }
@@ -70,7 +69,7 @@ class GalleryViewModelTest {
         //Arrange
         val test = testee.outputs.galleryPageData().test()
         doReturn(Single.just(GalleryModel(GalleryModel.Data(emptyList()))))
-            .whenever(mockApiRepository).getGallery(any(), any(), any())
+            .whenever(mockApiRepository).getGallery(any(), anyInt(), anyInt())
 
         //Act
         testee.inputs.exchangeId("exchange")
