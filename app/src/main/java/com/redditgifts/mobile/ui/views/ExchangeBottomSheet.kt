@@ -1,8 +1,10 @@
 package com.redditgifts.mobile.ui.views
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
 import android.view.View
+import android.view.ViewGroup
 import android.widget.CheckBox
 import android.widget.TextView
 import com.google.android.material.bottomsheet.BottomSheetDialog
@@ -18,10 +20,6 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.exceptions.OnErrorNotImplementedException
 import io.reactivex.rxkotlin.addTo
 import kotlinx.android.synthetic.main.sheet_exchange.*
-import kotlinx.android.synthetic.main.view_giftee_status.*
-import kotlinx.android.synthetic.main.view_giftee_status_detail.*
-import kotlinx.android.synthetic.main.view_santa_status.*
-import kotlinx.android.synthetic.main.view_santa_status_detail.*
 import javax.inject.Inject
 
 class ExchangeBottomSheet(context: Context,
@@ -29,6 +27,7 @@ class ExchangeBottomSheet(context: Context,
 
     @Inject lateinit var viewModel: ExchangeStatusViewModel
 
+    @SuppressLint("InflateParams")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -51,72 +50,22 @@ class ExchangeBottomSheet(context: Context,
             .crashingSubscribe { status ->
                 exchangeStatus.visibility = View.VISIBLE
                 for (i in status.data.asGiftee.todoList) {
-                    when(i.step) {
-                        1 -> {
-                            santaStatus1.setStatusEnabled(i, status.data.asGiftee.currentStep)
-                            santaStatusDetailed1.setStatusEnabled(i, status.data.asGiftee.currentStep)
-                        }
-                        2 -> {
-                            santaStatus2.setStatusEnabled(i, status.data.asGiftee.currentStep)
-                            santaStatusDetailed2.setStatusEnabled(i, status.data.asGiftee.currentStep)
-                        }
-                        3 -> {
-                            santaStatus3.setStatusEnabled(i, status.data.asGiftee.currentStep)
-                            santaStatusDetailed3.setStatusEnabled(i, status.data.asGiftee.currentStep)
-                        }
-                        4 -> {
-                            santaStatus4.setStatusEnabled(i, status.data.asGiftee.currentStep)
-                            santaStatusDetailed4.setStatusEnabled(i, status.data.asGiftee.currentStep)
-                        }
-                        5 -> {
-                            santaStatus5.setStatusEnabled(i, status.data.asGiftee.currentStep)
-                            santaStatusDetailed5.setStatusEnabled(i, status.data.asGiftee.currentStep)
-                        }
-                        6 -> {
-                            santaStatus6.setStatusEnabled(i, status.data.asGiftee.currentStep)
-                            santaStatusDetailed6.setStatusEnabled(i, status.data.asGiftee.currentStep)
-                        }
-                        7 -> {
-                            santaStatus7.setStatusEnabled(i, status.data.asGiftee.currentStep)
-                            santaStatusDetailed7.setStatusEnabled(i, status.data.asGiftee.currentStep)
-                        }
-                    }
+                    val inflatedView = layoutInflater.inflate(R.layout.view_status_step, null)
+                    val stepBubble = inflatedView.findViewById<TextView>(R.id.statusStep)
+                    stepBubble.setStatusEnabled(i, status.data.asGiftee.currentStep)
+                    exchangeStatusAsGiftee.findViewById<ViewGroup>(R.id.exchangeStatusList).addView(inflatedView)
+                    val inflatedDetailedView = layoutInflater.inflate(R.layout.view_status_detailed_step, null) as CheckBox
+                    inflatedDetailedView.setStatusEnabled(i, status.data.asGiftee.currentStep)
+                    exchangeDetailedStatusAsGiftee.addView(inflatedDetailedView)
                 }
                 for (i in status.data.asSanta.todoList) {
-                    when(i.step) {
-                        1 -> {
-                            gifteeStatus1.setStatusEnabled(i, status.data.asSanta.currentStep)
-                            gifteeStatusDetailed1.setStatusEnabled(i, status.data.asSanta.currentStep)
-                        }
-                        2 -> {
-                            gifteeStatus2.setStatusEnabled(i, status.data.asSanta.currentStep)
-                            gifteeStatusDetailed2.setStatusEnabled(i, status.data.asSanta.currentStep)
-                        }
-                        3 -> {
-                            gifteeStatus3.setStatusEnabled(i, status.data.asSanta.currentStep)
-                            gifteeStatusDetailed3.setStatusEnabled(i, status.data.asSanta.currentStep)
-                        }
-                        4 -> {
-                            gifteeStatus4.setStatusEnabled(i, status.data.asSanta.currentStep)
-                            gifteeStatusDetailed4.setStatusEnabled(i, status.data.asSanta.currentStep)
-                        }
-                        5 -> {
-                            gifteeStatus5.setStatusEnabled(i, status.data.asSanta.currentStep)
-                            gifteeStatusDetailed5.setStatusEnabled(i, status.data.asSanta.currentStep)
-                        }
-                        6 -> {
-                            gifteeStatus6.setStatusEnabled(i, status.data.asSanta.currentStep)
-                            gifteeStatusDetailed6.setStatusEnabled(i, status.data.asSanta.currentStep)
-                        }
-                        7 -> {
-                            gifteeStatus7.setStatusEnabled(i, status.data.asSanta.currentStep)
-                            gifteeStatusDetailed7.setStatusEnabled(i, status.data.asSanta.currentStep)
-                        }
-                        8 -> {
-                            gifteeStatus8.setStatusEnabled(i, status.data.asSanta.currentStep)
-                            gifteeStatusDetailed8.setStatusEnabled(i, status.data.asSanta.currentStep)
-                        }
-                    }
+                    val inflatedView = layoutInflater.inflate(R.layout.view_status_step, null)
+                    val stepBubble = inflatedView.findViewById<TextView>(R.id.statusStep)
+                    stepBubble.setStatusEnabled(i, status.data.asSanta.currentStep)
+                    exchangeStatusAsSanta.findViewById<ViewGroup>(R.id.exchangeStatusList).addView(inflatedView)
+                    val inflatedDetailedView = layoutInflater.inflate(R.layout.view_status_detailed_step, null) as CheckBox
+                    inflatedDetailedView.setStatusEnabled(i, status.data.asSanta.currentStep)
+                    exchangeDetailedStatusAsSanta.addView(inflatedDetailedView)
                 }
             }
 
@@ -135,12 +84,13 @@ class ExchangeBottomSheet(context: Context,
     }
 
     private fun TextView.setStatusEnabled(todoList: ExchangeStatusModel.Data.Info.TodoList, currentStep: Int) {
-        isEnabled = todoList.step < currentStep
+        text = todoList.step.toString()
+        isEnabled = todoList.step <= currentStep
     }
 
     private fun CheckBox.setStatusEnabled(todoList: ExchangeStatusModel.Data.Info.TodoList, currentStep: Int) {
         text = todoList.title.toSpanned()
-        isChecked = todoList.step < currentStep
+        isChecked = todoList.step <= currentStep
     }
 
 }

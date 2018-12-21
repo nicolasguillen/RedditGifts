@@ -33,8 +33,17 @@
                     android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
                     android:text="@string/state_santa"/>
 
-            <include layout="@layout/view_santa_status" />
-            <include layout="@layout/view_santa_status_detail" />
+            <include
+                    android:id="@+id/exchangeStatusAsGiftee"
+                    layout="@layout/view_exchange_status" />
+
+            <LinearLayout
+                    android:id="@+id/exchangeDetailedStatusAsGiftee"
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/colorPrimaryDark"
+                    android:padding="16dp" />
 
             <TextView
                     android:layout_width="match_parent"
@@ -44,8 +53,17 @@
                     android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
                     android:text="@string/state_giftee"/>
 
-            <include layout="@layout/view_giftee_status" />
-            <include layout="@layout/view_giftee_status_detail" />
+            <include
+                    android:id="@+id/exchangeStatusAsSanta"
+                    layout="@layout/view_exchange_status" />
+
+            <LinearLayout
+                    android:id="@+id/exchangeDetailedStatusAsSanta"
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/colorPrimaryDark"
+                    android:padding="16dp" />
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
