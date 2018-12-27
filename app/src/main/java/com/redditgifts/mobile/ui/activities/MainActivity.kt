@@ -1,5 +1,6 @@
 package com.redditgifts.mobile.ui.activities
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
@@ -40,6 +41,10 @@ class MainActivity: BaseActivity<MainViewModel>() {
             true
         }
         mainBottomNavigation.selectedItemId = R.id.bottomBarExchanges
+
+        mainMessage.setOnClickListener {
+            startActivity(Intent(this, MessagesActivity::class.java))
+        }
 
         viewModel.outputs.amountOfUnreadMessages()
             .observeOn(AndroidSchedulers.mainThread())

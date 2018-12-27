@@ -46,6 +46,10 @@
                 android:name=".ui.activities.GiftActivity"
                 android:screenOrientation="portrait" />
 
+        <activity
+                android:name=".ui.activities.MessagesActivity"
+                android:screenOrientation="portrait" />
+
     </application>
 
 </manifest>

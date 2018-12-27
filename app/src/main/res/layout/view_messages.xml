@@ -2,14 +2,15 @@
 <RelativeLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
-        android:background="@color/colorPrimaryDark"
+        android:id="@+id/mainMessage"
+        android:background="@color/colorPrimary"
         android:padding="8dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
 
     <ImageView
-            android:layout_width="35dp"
-            android:layout_height="35dp"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
             android:layout_centerInParent="true"
             android:tint="@color/textColor"
             android:src="@drawable/ic_message"

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:foreground="?android:attr/selectableItemBackground"
+        android:clickable="true"
+        android:focusable="true"
+        app:cardBackgroundColor="@color/colorPrimary"
+        app:cardUseCompatPadding="true"
+        tools:ignore="UnusedAttribute">
+
+    <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="16dp">
+
+        <ImageView
+                android:id="@+id/messageIcon"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginEnd="12dp"
+                android:layout_alignTop="@+id/messageTitle"
+                android:layout_alignBottom="@+id/messageTitle"
+                android:src="@drawable/ic_message"
+                android:tint="@color/textColorDarker"
+                android:contentDescription="@null"/>
+
+        <TextView
+                android:id="@+id/messageTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@+id/messageIcon"
+                android:gravity="center_vertical"
+                android:lines="1"
+                android:textColor="@color/textColor"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+                tools:text="Secret Santa"/>
+
+        <TextView
+                android:id="@+id/messageSender"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/messageTitle"
+                android:layout_toEndOf="@+id/messageIcon"
+                android:gravity="center_vertical"
+                android:lines="2"
+                android:textColor="@color/textColorDarker"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
+                android:ellipsize="end"
+                tools:text="From: you"/>
+
+        <TextView
+                android:id="@+id/messageTime"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/messageSender"
+                android:layout_toEndOf="@+id/messageIcon"
+                android:gravity="center_vertical"
+                android:paddingTop="4dp"
+                android:lines="1"
+                android:textColor="@color/textColorDarker"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
+                tools:text="10 months ago"/>
+
+    </RelativeLayout>
+</androidx.cardview.widget.CardView>

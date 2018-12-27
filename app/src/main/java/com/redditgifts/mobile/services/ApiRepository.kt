@@ -21,6 +21,8 @@ interface ApiRepository {
 
     fun login(user: String, password: String, cookie: String): Single<String>
 
+    fun getAllMessages(pageNumber: Int): Single<MessageModel>
+
     fun getUnreadMessages(): Single<MessageModel>
 
 }

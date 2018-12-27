@@ -50,4 +50,8 @@ open class ModelModule {
                                            localizedErrorMessages: LocalizedErrorMessages): AccountViewModel =
         AccountViewModel(apiRepository, cookieRepository, localizedErrorMessages)
 
+    @Provides fun providesMessagesViewModel(apiRepository: ApiRepository,
+                                            localizedErrorMessages: LocalizedErrorMessages): MessagesViewModel =
+        MessagesViewModel(apiRepository, localizedErrorMessages)
+
 }

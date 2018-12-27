@@ -26,6 +26,10 @@
     <string name="statistics_rematch_done">Rematches</string>
     <!-- GALLERY -->
     <string name="gallery_empty">No items here!</string>
+    <!-- MESSAGES -->
+    <string name="messages_title">Messages</string>
+    <string name="messages_empty">No messages!</string>
+    <string name="messages_sender">From: %s</string>
     <!-- STATUS -->
     <string name="state_santa">Your Santa\'s Gift to You</string>
     <string name="state_giftee">Your Gift to Your Match</string>

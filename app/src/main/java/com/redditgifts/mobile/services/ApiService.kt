@@ -47,6 +47,10 @@ interface ApiService {
               @Header("cookie") cookie: String): Single<Response<ResponseBody>>
 
     @GET("messages/")
+    fun getAllMessages(@Header("cookie") cookie: String,
+                       @Query("page_number") pageNumber: Int): Single<Response<MessageModel>>
+
+    @GET("messages/unread")
     fun getUnreadMessages(@Header("cookie") cookie: String): Single<Response<MessageModel>>
 
 }
