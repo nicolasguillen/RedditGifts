@@ -88,6 +88,15 @@ class ApiClient(private val apiService: ApiService,
             .subscribeOn(Schedulers.io())
     }
 
+    override fun getUnreadMessages(): Single<MessageModel> {
+        return this.cookie()
+            .flatMap { cookie ->
+                apiService.getUnreadMessages(cookie)
+                    .lift(apiErrorOperator())
+                    .subscribeOn(Schedulers.io())
+            }
+    }
+
     private fun cookie(): Single<String> {
         return this.cookieRepository.getCookie()
             .map { cookie ->

@@ -1,17 +1,21 @@
 package com.redditgifts.mobile.ui.activities
 
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
+import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import com.redditgifts.mobile.R
+import com.redditgifts.mobile.RedditGiftsApp
+import com.redditgifts.mobile.models.MainViewModel
 import com.redditgifts.mobile.ui.fragments.AccountFragment
-import com.redditgifts.mobile.ui.fragments.PastExchangesFragment
 import com.redditgifts.mobile.ui.fragments.ExchangesFragment
+import com.redditgifts.mobile.ui.fragments.PastExchangesFragment
+import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.view_messages.*
 
 
-class MainActivity: AppCompatActivity() {
+class MainActivity: BaseActivity<MainViewModel>() {
 
     val exchangesFragment = ExchangesFragment()
     private val pastExchangesFragment = PastExchangesFragment()
@@ -19,6 +23,8 @@ class MainActivity: AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        RedditGiftsApp.applicationComponent.inject(this)
 
         setContentView(R.layout.activity_main)
 
@@ -34,6 +40,19 @@ class MainActivity: AppCompatActivity() {
             true
         }
         mainBottomNavigation.selectedItemId = R.id.bottomBarExchanges
+
+        viewModel.outputs.amountOfUnreadMessages()
+            .observeOn(AndroidSchedulers.mainThread())
+            .crashingSubscribe { amount ->
+                if(amount > 0) {
+                    mainMessageCounter.visibility = View.VISIBLE
+                    mainMessageCounter.text = amount.toString()
+                } else {
+                    mainMessageCounter.visibility = View.INVISIBLE
+                }
+            }
+
+        viewModel.inputs.onCreate()
     }
 
     private fun changeFragment(to: Fragment) {

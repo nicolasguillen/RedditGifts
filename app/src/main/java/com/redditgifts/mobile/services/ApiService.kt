@@ -46,4 +46,7 @@ interface ApiService {
               @Header("upgrade-insecure-requests") uir: String,
               @Header("cookie") cookie: String): Single<Response<ResponseBody>>
 
+    @GET("messages/")
+    fun getUnreadMessages(@Header("cookie") cookie: String): Single<Response<MessageModel>>
+
 }
