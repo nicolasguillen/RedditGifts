@@ -13,7 +13,9 @@ class MessageModel(
             val id: Int,
             val subject: String,
             val createdAt: Date,
-            val sender: String
+            val sender: String,
+            val recipient: String,
+            val messageHTML: String
         )
     }
 }

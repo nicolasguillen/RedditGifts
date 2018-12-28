@@ -1,5 +1,6 @@
 package com.redditgifts.mobile.ui.activities
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -7,6 +8,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.redditgifts.mobile.R
 import com.redditgifts.mobile.RedditGiftsApp
+import com.redditgifts.mobile.libs.IntentKey
 import com.redditgifts.mobile.libs.utils.EndlessRecyclerViewScrollListener
 import com.redditgifts.mobile.models.MessagePageData
 import com.redditgifts.mobile.models.MessagesViewModel
@@ -41,6 +43,14 @@ class MessagesActivity : BaseActivity<MessagesViewModel>() {
             .observeOn(AndroidSchedulers.mainThread())
             .crashingSubscribe { errorMessage ->
                 Toast.makeText(this, errorMessage, Toast.LENGTH_LONG).show()
+            }
+
+        viewModel.outputs.startDetailedMessage()
+            .observeOn(AndroidSchedulers.mainThread())
+            .crashingSubscribe { data ->
+                startActivity(Intent(this, DetailedMessagesActivity::class.java)
+                    .putExtra(IntentKey.MESSAGE_ID, data.messageId)
+                    .putExtra(IntentKey.MESSAGE_TITLE, data.title))
             }
 
         messagesSwipe.setOnRefreshListener {

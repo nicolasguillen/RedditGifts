@@ -10,6 +10,7 @@
     <color name="textColor">#ffffff</color>
     <color name="textColorDark">#dddddd</color>
     <color name="textColorDarker">#aaaaaa</color>
+    <color name="divider">#343434</color>
 
     <color name="white">#ffffff</color>
 </resources>

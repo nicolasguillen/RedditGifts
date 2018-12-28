@@ -7,6 +7,7 @@ import androidx.annotation.LayoutRes
 import androidx.recyclerview.widget.RecyclerView
 import com.redditgifts.mobile.R
 import com.redditgifts.mobile.services.models.CurrentExchangeModel
+import com.redditgifts.mobile.services.models.MessageModel
 import com.redditgifts.mobile.services.models.PastExchangeModel
 import com.redditgifts.mobile.ui.viewholders.*
 
@@ -48,6 +49,8 @@ class GenericAdapter(private val delegate: BaseViewHolder.BaseViewHolderDelegate
                 R.layout.cell_exchange
             is PastExchangeModel ->
                 R.layout.cell_past_exchange
+            is MessageModel.Data.Message ->
+                R.layout.cell_detailed_message
             else ->
                 R.layout.cell_empty
         }
@@ -59,6 +62,8 @@ class GenericAdapter(private val delegate: BaseViewHolder.BaseViewHolderDelegate
                 ExchangeViewHolder(view, delegate as ExchangeViewHolder.Delegate)
             R.layout.cell_past_exchange ->
                 PastExchangeViewHolder(view, delegate as PastExchangeViewHolder.Delegate)
+            R.layout.cell_detailed_message ->
+                DetailedMessageViewHolder(view)
             R.layout.cell_loader ->
                 LoaderViewHolder(view)
             R.layout.cell_empty ->

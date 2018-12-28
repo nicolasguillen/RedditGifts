@@ -19,6 +19,7 @@ interface MessagesViewModelOutputs {
     fun isLoading(): Observable<Boolean>
     fun messages(): Observable<MessagePageData>
     fun error(): Observable<String>
+    fun startDetailedMessage(): Observable<StartDetailMessageData>
 }
 
 class MessagesViewModel(private val apiRepository: ApiRepository,
@@ -26,13 +27,13 @@ class MessagesViewModel(private val apiRepository: ApiRepository,
 
     //INPUTS
     private val onCreate = PublishSubject.create<Unit>()
-    private val didSelectMessage = PublishSubject.create<MessageModel.Data.Message>()
     private val loadPage = PublishSubject.create<Int>()
 
     //OUTPUTS
     private val isLoading = PublishSubject.create<Boolean>()
     private val messages = PublishSubject.create<MessagePageData>()
     private val error = PublishSubject.create<String>()
+    private val startDetailedMessage = PublishSubject.create<StartDetailMessageData>()
 
     val inputs: MessagesViewModelInputs = this
     val outputs: MessagesViewModelOutputs = this
@@ -61,13 +62,15 @@ class MessagesViewModel(private val apiRepository: ApiRepository,
 
     override fun onCreate() = this.onCreate.onNext(Unit)
     override fun loadPage(page: Int) = this.loadPage.onNext(page)
-    override fun didSelectMessage(gift: MessageModel.Data.Message) = this.didSelectMessage.onNext(gift)
+    override fun didSelectMessage(gift: MessageModel.Data.Message) = this.startDetailedMessage.onNext(StartDetailMessageData(gift.id, gift.subject))
     override fun isLoading(): Observable<Boolean> = this.isLoading
     override fun messages(): Observable<MessagePageData> = this.messages
     override fun error(): Observable<String> = this.error
+    override fun startDetailedMessage(): Observable<StartDetailMessageData> = this.startDetailedMessage
 
     inner class GalleryResult(val result: GenericResult<MessageModel>, val page: Int)
 
 }
 
 class MessagePageData(val page: Int, val items: List<MessageModel.Data.Message>)
+class StartDetailMessageData(val messageId: Int, val title: String)

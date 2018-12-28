@@ -26,4 +26,5 @@ interface ApplicationComponent {
     fun inject(statisticsBottomSheet: StatisticsBottomSheet)
     fun inject(galleryActivity: GalleryActivity)
     fun inject(messagesActivity: MessagesActivity)
+    fun inject(detailedMessagesActivity: DetailedMessagesActivity)
 }

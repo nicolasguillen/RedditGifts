@@ -7,6 +7,7 @@ import androidx.annotation.LayoutRes
 import androidx.recyclerview.widget.RecyclerView
 import com.redditgifts.mobile.R
 import com.redditgifts.mobile.models.MessagePageData
+import com.redditgifts.mobile.services.models.MessageModel
 import com.redditgifts.mobile.ui.viewholders.BaseViewHolder
 import com.redditgifts.mobile.ui.viewholders.EmptyViewHolder
 import com.redditgifts.mobile.ui.viewholders.LoaderViewHolder

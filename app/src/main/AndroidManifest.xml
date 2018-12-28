@@ -50,6 +50,10 @@
                 android:name=".ui.activities.MessagesActivity"
                 android:screenOrientation="portrait" />
 
+        <activity
+                android:name=".ui.activities.DetailedMessagesActivity"
+                android:screenOrientation="portrait" />
+
     </application>
 
 </manifest>

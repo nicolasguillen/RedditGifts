@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:background="@color/colorPrimaryDark"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="8dp"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:paddingBottom="25dp"
+        tools:ignore="UnusedAttribute">
+
+    <TextView
+            android:id="@+id/messageSender"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:lines="2"
+            android:textColor="@color/textColorDarker"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
+            android:ellipsize="end"
+            tools:text="you"/>
+
+    <TextView
+            android:id="@+id/messageTime"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/messageSender"
+            android:gravity="center_vertical"
+            android:lines="1"
+            android:textColor="@color/textColorDarker"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
+            tools:text="10 months ago"/>
+
+    <TextView
+            android:id="@+id/messageBody"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:paddingTop="4dp"
+            android:layout_below="@+id/messageTime"
+            android:textColor="@color/textColor"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+            tools:text="Secret Santa"/>
+
+</RelativeLayout>

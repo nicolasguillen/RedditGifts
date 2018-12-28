@@ -106,6 +106,15 @@ class ApiClient(private val apiService: ApiService,
             }
     }
 
+    override fun getDetailedMessages(messageId: Int): Single<MessageModel> {
+        return this.cookie()
+            .flatMap { cookie ->
+                apiService.getDetailedMessages(cookie, messageId)
+                    .lift(apiErrorOperator())
+                    .subscribeOn(Schedulers.io())
+            }
+    }
+
     private fun cookie(): Single<String> {
         return this.cookieRepository.getCookie()
             .map { cookie ->

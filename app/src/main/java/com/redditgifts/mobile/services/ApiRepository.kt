@@ -25,4 +25,6 @@ interface ApiRepository {
 
     fun getUnreadMessages(): Single<MessageModel>
 
+    fun getDetailedMessages(messageId: Int): Single<MessageModel>
+
 }
