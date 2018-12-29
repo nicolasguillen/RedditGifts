@@ -50,11 +50,15 @@ interface ApiService {
     fun getAllMessages(@Header("cookie") cookie: String,
                        @Query("page_number") pageNumber: Int): Single<Response<MessageModel>>
 
-    @GET("messages/unread")
+    @GET("messages/unread/")
     fun getUnreadMessages(@Header("cookie") cookie: String): Single<Response<MessageModel>>
 
     @GET("messages/{messageId}/")
     fun getDetailedMessages(@Header("cookie") cookie: String,
                             @Path("messageId") messageId: Int): Single<Response<MessageModel>>
+
+//    @POST("messages/{messageId}/toggle-read")
+//    fun toggleRead(@Header("cookie") cookie: String,
+//                   @Path("messageId") messageId: Int): Single<Response<MessageModel>>
 
 }

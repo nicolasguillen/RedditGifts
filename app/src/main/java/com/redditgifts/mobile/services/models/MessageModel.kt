@@ -14,6 +14,7 @@ class MessageModel(
             val subject: String,
             val createdAt: Date,
             val sender: String,
+            val unread: Boolean,
             val recipient: String,
             val messageHTML: String
         )

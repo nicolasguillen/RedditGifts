@@ -1,5 +1,6 @@
 package com.redditgifts.mobile.ui.activities
 
+import android.app.Activity
 import android.os.Bundle
 import android.widget.Toast
 import androidx.core.content.ContextCompat
@@ -51,6 +52,11 @@ class DetailedMessagesActivity : BaseActivity<DetailedMessagesViewModel>() {
         val linearLayoutManager = LinearLayoutManager(this)
         messagesItems.layoutManager = linearLayoutManager
         messagesItems.adapter = GenericAdapter(this.viewModel.inputs, mutableListOf())
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        setResult(Activity.RESULT_OK)
     }
 
 }

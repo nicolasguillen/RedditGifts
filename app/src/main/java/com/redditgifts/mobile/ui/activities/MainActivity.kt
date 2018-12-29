@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import com.redditgifts.mobile.R
 import com.redditgifts.mobile.RedditGiftsApp
+import com.redditgifts.mobile.libs.ActivityRequestCodes
 import com.redditgifts.mobile.models.MainViewModel
 import com.redditgifts.mobile.ui.fragments.AccountFragment
 import com.redditgifts.mobile.ui.fragments.ExchangesFragment
@@ -43,7 +44,8 @@ class MainActivity: BaseActivity<MainViewModel>() {
         mainBottomNavigation.selectedItemId = R.id.bottomBarExchanges
 
         mainMessage.setOnClickListener {
-            startActivity(Intent(this, MessagesActivity::class.java))
+            startActivityForResult(Intent(this, MessagesActivity::class.java),
+                ActivityRequestCodes.READ_MESSAGE)
         }
 
         viewModel.outputs.amountOfUnreadMessages()
@@ -88,6 +90,16 @@ class MainActivity: BaseActivity<MainViewModel>() {
     private fun FragmentTransaction.hideIfNeeded(fragment: Fragment) {
         if(fragment.isAdded) {
             hide(fragment)
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        when(requestCode) {
+            ActivityRequestCodes.READ_MESSAGE -> {
+                viewModel.inputs.onCreate()
+            }
         }
     }
 

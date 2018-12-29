@@ -3,6 +3,7 @@ package com.redditgifts.mobile.ui.viewholders
 import android.text.format.DateUtils
 import android.view.View
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import com.redditgifts.mobile.R
 import com.redditgifts.mobile.services.models.MessageModel
 
@@ -16,6 +17,8 @@ class MessageViewHolder(view: View,
 
         val messageTitle = view().findViewById<TextView>(R.id.messageTitle)
         messageTitle.text = post?.subject
+        val textColor = if(post?.unread!!) R.color.colorAccent else R.color.textColor
+        messageTitle.setTextColor(ContextCompat.getColor(context(), textColor))
 
         val messageSender = view().findViewById<TextView>(R.id.messageSender)
         messageSender.text = context().getString(R.string.messages_sender).format(post?.sender)

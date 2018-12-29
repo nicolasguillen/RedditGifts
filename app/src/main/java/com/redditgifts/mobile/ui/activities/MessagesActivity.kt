@@ -1,5 +1,6 @@
 package com.redditgifts.mobile.ui.activities
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
@@ -8,6 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.redditgifts.mobile.R
 import com.redditgifts.mobile.RedditGiftsApp
+import com.redditgifts.mobile.libs.ActivityRequestCodes
 import com.redditgifts.mobile.libs.IntentKey
 import com.redditgifts.mobile.libs.utils.EndlessRecyclerViewScrollListener
 import com.redditgifts.mobile.models.MessagePageData
@@ -48,9 +50,9 @@ class MessagesActivity : BaseActivity<MessagesViewModel>() {
         viewModel.outputs.startDetailedMessage()
             .observeOn(AndroidSchedulers.mainThread())
             .crashingSubscribe { data ->
-                startActivity(Intent(this, DetailedMessagesActivity::class.java)
+                startActivityForResult(Intent(this, DetailedMessagesActivity::class.java)
                     .putExtra(IntentKey.MESSAGE_ID, data.messageId)
-                    .putExtra(IntentKey.MESSAGE_TITLE, data.title))
+                    .putExtra(IntentKey.MESSAGE_TITLE, data.title), ActivityRequestCodes.READ_MESSAGE)
             }
 
         messagesSwipe.setOnRefreshListener {
@@ -83,6 +85,17 @@ class MessagesActivity : BaseActivity<MessagesViewModel>() {
             })
         }
         adapter.setItems(messagePageData)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        when(requestCode) {
+            ActivityRequestCodes.READ_MESSAGE -> {
+                viewModel.inputs.loadPage(1)
+                setResult(Activity.RESULT_OK)
+            }
+        }
     }
 
 }
