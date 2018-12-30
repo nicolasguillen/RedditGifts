@@ -35,16 +35,12 @@ interface ApiService {
     @GET("https://www.redditgifts.com/exchanges/mgmt/participant/")
     fun getCredits(@Header("cookie") cookie: String): Single<Response<CreditModel>>
 
-    @Headers("Cache-Control: no-cache")
     @POST("https://www.redditgifts.com/merchant/api-auth/login/")
-    fun login(@Body data: RequestBody,
-              @Header("content-type") type: String,
-              @Header("origin") origin: String,
-              @Header("user-agent") ua: String,
-              @Header("referer") referer: String,
-              @Header("accept") accept: String,
-              @Header("upgrade-insecure-requests") uir: String,
-              @Header("cookie") cookie: String): Single<Response<ResponseBody>>
+    fun login(@Header("cookie") cookie: String,
+              @Body data: RequestBody,
+              @Header("referer") referer: String = "https://www.redditgifts.com/merchant/api-auth/login/",
+              @Header("accept") accept: String = "application/json",
+              @Header("content-type") type: String = "application/x-www-form-urlencoded"): Single<Response<ResponseBody>>
 
     @GET("messages/")
     fun getAllMessages(@Header("cookie") cookie: String,
@@ -57,8 +53,11 @@ interface ApiService {
     fun getDetailedMessages(@Header("cookie") cookie: String,
                             @Path("messageId") messageId: Int): Single<Response<MessageModel>>
 
-//    @POST("messages/{messageId}/toggle-read")
-//    fun toggleRead(@Header("cookie") cookie: String,
-//                   @Path("messageId") messageId: Int): Single<Response<MessageModel>>
+    @POST("messages/")
+    fun sendMessage(@Header("cookie") cookie: String,
+                    @Body data: RequestBody,
+                    @Header("referer") referer: String = "https://www.redditgifts.com/api/v1/messages/",
+                    @Header("accept") accept: String = "application/json",
+                    @Header("content-type") type: String = "application/x-www-form-urlencoded"): Single<Response<SendMessageModel>>
 
 }

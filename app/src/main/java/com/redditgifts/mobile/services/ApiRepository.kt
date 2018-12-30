@@ -27,4 +27,6 @@ interface ApiRepository {
 
     fun getDetailedMessages(messageId: Int): Single<MessageModel>
 
+    fun sendMessage(to: String, subject: String, message: String): Single<SendMessageModel>
+
 }

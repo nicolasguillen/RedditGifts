@@ -12,6 +12,7 @@ import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
 import okhttp3.MediaType
 import okhttp3.RequestBody
+import org.intellij.lang.annotations.Language
 import java.net.URLEncoder
 
 class ApiClient(private val apiService: ApiService,
@@ -80,10 +81,7 @@ class ApiClient(private val apiService: ApiService,
         val encodedNext = URLEncoder.encode("/api/v1/", "utf-8")
         val content = "csrfmiddlewaretoken=$csrf&username=$encodedUser&password=$encodedPassword&next=$encodedNext&submit=$encodedSubmit"
         val body = RequestBody.create(MediaType.parse("application/x-www-form-urlencoded"), content)
-        return apiService.login(body,
-            "application/x-www-form-urlencoded", "https://www.redditgifts.com", "Mozilla/5.0 (Linux; Android 8.0.0; Pixel XL Build/OPR3.170623.007; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/71.0.3578.98 Mobile Safari/537.36",
-            "https://www.redditgifts.com/merchant/api-auth/login/" , "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8",
-            "1", cookie)
+        return apiService.login(cookie, body)
             .lift(loginError())
             .subscribeOn(Schedulers.io())
     }
@@ -110,6 +108,27 @@ class ApiClient(private val apiService: ApiService,
         return this.cookie()
             .flatMap { cookie ->
                 apiService.getDetailedMessages(cookie, messageId)
+                    .lift(apiErrorOperator())
+                    .subscribeOn(Schedulers.io())
+            }
+    }
+
+    override fun sendMessage(to: String, subject: String, message: String): Single<SendMessageModel> {
+        @Language("JSON") val content = """
+{
+"to_reddit_username": "$to",
+"subject": "$subject",
+"message": "$message"
+}
+            """
+        val encodedContentType = URLEncoder.encode("application/json", "utf-8")
+        val encodedContent = URLEncoder.encode(content, "utf-8")
+        return this.cookie()
+            .flatMap { cookie ->
+                val csrf = cookie.getCookieValue("csrftoken")
+                val contentOfBody = "csrfmiddlewaretoken=$csrf&_content_type=$encodedContentType&_content=$encodedContent"
+                val body = RequestBody.create(MediaType.parse("application/json"), contentOfBody)
+                apiService.sendMessage(cookie, body)
                     .lift(apiErrorOperator())
                     .subscribeOn(Schedulers.io())
             }

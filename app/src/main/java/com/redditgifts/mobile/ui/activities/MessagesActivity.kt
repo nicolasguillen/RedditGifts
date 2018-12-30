@@ -59,6 +59,11 @@ class MessagesActivity : BaseActivity<MessagesViewModel>() {
             viewModel.inputs.loadPage(1)
         }
 
+        messagesNew.setOnClickListener {
+            startActivityForResult(Intent(this, SendMessageActivity::class.java),
+                ActivityRequestCodes.SEND_MESSAGE)
+        }
+
         viewModel.inputs.onCreate()
     }
 
@@ -94,6 +99,11 @@ class MessagesActivity : BaseActivity<MessagesViewModel>() {
             ActivityRequestCodes.READ_MESSAGE -> {
                 viewModel.inputs.loadPage(1)
                 setResult(Activity.RESULT_OK)
+            }
+            ActivityRequestCodes.SEND_MESSAGE -> {
+                if(resultCode == Activity.RESULT_OK) {
+                    viewModel.inputs.loadPage(1)
+                }
             }
         }
     }

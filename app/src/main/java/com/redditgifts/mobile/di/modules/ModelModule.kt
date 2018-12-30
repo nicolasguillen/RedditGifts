@@ -58,4 +58,8 @@ open class ModelModule {
                                                     localizedErrorMessages: LocalizedErrorMessages): DetailedMessagesViewModel =
         DetailedMessagesViewModel(apiRepository, localizedErrorMessages)
 
+    @Provides fun providesSendMessageViewModel(apiRepository: ApiRepository,
+                                               localizedErrorMessages: LocalizedErrorMessages): SendMessageViewModel =
+        SendMessageViewModel(apiRepository, localizedErrorMessages)
+
 }

@@ -27,4 +27,5 @@ interface ApplicationComponent {
     fun inject(galleryActivity: GalleryActivity)
     fun inject(messagesActivity: MessagesActivity)
     fun inject(detailedMessagesActivity: DetailedMessagesActivity)
+    fun inject(sendMessageActivity: SendMessageActivity)
 }

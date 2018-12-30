@@ -30,17 +30,16 @@
     <string name="messages_title">Messages</string>
     <string name="messages_empty">No messages!</string>
     <string name="messages_sender">From: %s</string>
+    <string name="messages_sending">Sending message…</string>
+    <!-- SEND MESSAGE -->
+    <string name="send_message_title">New message</string>
+    <string name="send_message_action">Send</string>
+    <string name="send_message_to">To:</string>
+    <string name="send_message_subject">Subject:</string>
+    <string name="send_message_message">Message:</string>
     <!-- STATUS -->
     <string name="state_santa">Your Santa\'s Gift to You</string>
     <string name="state_giftee">Your Gift to Your Match</string>
-    <string name="state_1">1</string>
-    <string name="state_2">2</string>
-    <string name="state_3">3</string>
-    <string name="state_4">4</string>
-    <string name="state_5">5</string>
-    <string name="state_6">6</string>
-    <string name="state_7">7</string>
-    <string name="state_8">8</string>
     <!-- ACCOUNT -->
     <string name="account_logout">Sign out</string>
     <!-- PAST EXCHANGES -->
