@@ -1,14 +1,71 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
+<RelativeLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/colorPrimaryDark">
 
-    <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/messagesItems"
+    <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:contentDescription="@null"/>
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_above="@+id/messagesReplySector">
 
-</FrameLayout>
+        <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/messagesItems"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:contentDescription="@null"/>
+
+    </androidx.core.widget.NestedScrollView>
+
+    <RelativeLayout
+            android:id="@+id/messagesReplySector"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true">
+
+        <View
+                android:id="@+id/messagesReplyDivider"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="@color/textColor" />
+
+        <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/messagesReplyMessageWrapper"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColorHint="@color/textColor"
+                android:layout_below="@+id/messagesReplyDivider"
+                android:padding="8dp"
+                style="@style/LoginTextInputLayoutStyle">
+
+            <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/messagesReplyMessage"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/textColor"
+                    android:importantForAutofill="no"
+                    android:gravity="top"
+                    android:lines="3"
+                    android:background="@android:color/transparent"
+                    android:inputType="textMultiLine"
+                    android:hint="@string/messages_reply"
+                    tools:ignore="UnusedAttribute"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/messagesReplyAction"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:layout_marginEnd="16dp"
+                android:src="@drawable/ic_send"
+                android:tint="@color/textColor"
+                android:layout_below="@+id/messagesReplyMessageWrapper"
+                android:layout_alignParentEnd="true"/>
+    </RelativeLayout>
+
+</RelativeLayout>

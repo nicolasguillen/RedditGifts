@@ -134,6 +134,19 @@ class ApiClient(private val apiService: ApiService,
             }
     }
 
+    override fun sendReplyMessage(messageId: Int, message: String): Single<SendMessageModel> {
+        val encodedMessage = URLEncoder.encode(message, "utf-8")
+        return this.cookie()
+            .flatMap { cookie ->
+                val csrf = cookie.getCookieValue("csrftoken")
+                val contentOfBody = "csrfmiddlewaretoken=$csrf&message=$encodedMessage"
+                val body = RequestBody.create(MediaType.parse("application/json"), contentOfBody)
+                apiService.sendReplyMessage(cookie, messageId, body)
+                    .lift(apiErrorOperator())
+                    .subscribeOn(Schedulers.io())
+            }
+    }
+
     private fun cookie(): Single<String> {
         return this.cookieRepository.getCookie()
             .map { cookie ->

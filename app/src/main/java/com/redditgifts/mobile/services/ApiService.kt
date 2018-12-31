@@ -60,4 +60,12 @@ interface ApiService {
                     @Header("accept") accept: String = "application/json",
                     @Header("content-type") type: String = "application/x-www-form-urlencoded"): Single<Response<SendMessageModel>>
 
+    @POST("messages/{messageId}/")
+    fun sendReplyMessage(@Header("cookie") cookie: String,
+                         @Path("messageId") messageId: Int,
+                         @Body data: RequestBody,
+                         @Header("referer") referer: String = "https://www.redditgifts.com/api/v1/messages/",
+                         @Header("accept") accept: String = "application/json",
+                         @Header("content-type") type: String = "application/x-www-form-urlencoded"): Single<Response<SendMessageModel>>
+
 }

@@ -31,6 +31,8 @@
     <string name="messages_empty">No messages!</string>
     <string name="messages_sender">From: %s</string>
     <string name="messages_sending">Sending message…</string>
+    <string name="messages_reply">Reply</string>
+    <string name="messages_did_reply">Message successfully sent</string>
     <!-- SEND MESSAGE -->
     <string name="send_message_title">New message</string>
     <string name="send_message_action">Send</string>
