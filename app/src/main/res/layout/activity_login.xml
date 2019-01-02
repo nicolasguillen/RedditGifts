@@ -73,6 +73,7 @@
                     android:layout_height="wrap_content"
                     android:textColorHint="@color/textColor"
                     android:padding="8dp"
+                    app:passwordToggleDrawable="@null"
                     style="@style/LoginTextInputLayoutStyle"
                     android:hint="@string/login_password" >
 
