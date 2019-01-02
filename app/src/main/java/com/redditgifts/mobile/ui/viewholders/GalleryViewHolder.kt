@@ -18,6 +18,9 @@ class GalleryViewHolder(view: View,
         val giftTitle = view().findViewById<TextView>(R.id.giftTitle)
         giftTitle.text = post?.title
 
+        val giftSender = view().findViewById<TextView>(R.id.giftSender)
+        giftSender.text = context().getString(R.string.gallery_sender).format(post?.postedBy)
+
         Picasso.get().loadUrlIntoImage(
             view().findViewById(R.id.giftImage),
             post?.thumbnailUrl!!

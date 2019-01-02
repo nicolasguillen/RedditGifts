@@ -13,7 +13,9 @@ interface ApiRepository {
 
     fun getGallery(exchangeId: String, pageSize: Int, pageNumber: Int): Single<GalleryModel>
 
-    fun getDetailedGift(exchangeId: String, giftId: String): Single<DetailedGiftModel>
+    fun getDetailedGift(exchangeId: String, giftSlug: String): Single<DetailedGiftModel>
+
+    fun upvoteGift(giftSlug: String): Single<UpvoteGiftModel>
 
     fun getProfile(): Single<ProfileModel>
 

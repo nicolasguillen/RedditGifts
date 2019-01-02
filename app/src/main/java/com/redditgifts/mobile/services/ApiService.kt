@@ -25,9 +25,18 @@ interface ApiService {
                    @Query("page_size") pageSize: Int,
                    @Query("page_number") pageNumber: Int): Single<Response<GalleryModel>>
 
-    @GET("exchanges/{exchangeId}/gallery/gift/{giftId}/")
-    fun getDetailedGift(@Path("exchangeId") exchangeId: String,
-                        @Path("giftId") giftId: String): Single<Response<DetailedGiftModel>>
+    @GET("exchanges/{exchangeId}/gallery/gift/{giftSlug}/")
+    fun getDetailedGift(@Header("cookie") cookie: String,
+                        @Path("exchangeId") exchangeId: String,
+                        @Path("giftSlug") giftSlug: String): Single<Response<DetailedGiftModel>>
+
+    @POST("exchanges/gallery/gift/{giftSlug}/vote/")
+    fun upvoteGift(@Header("cookie") cookie: String,
+                   @Path("giftSlug") giftSlug: String,
+                   @Body data: RequestBody,
+                   @Header("referer") referer: String = "https://www.redditgifts.com/api/v1/exchanges/",
+                   @Header("accept") accept: String = "application/json",
+                   @Header("content-type") type: String = "application/x-www-form-urlencoded"): Single<Response<UpvoteGiftModel>>
 
     @GET("profiles/me/")
     fun getProfile(@Header("cookie") cookie: String): Single<Response<ProfileModel>>

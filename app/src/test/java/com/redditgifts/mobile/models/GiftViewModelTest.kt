@@ -31,12 +31,12 @@ class GiftViewModelTest {
     @Test
     fun test_giftId_then_getDetailedGift(){
         //Arrange
-        doReturn(Single.just(DetailedGiftModel(DetailedGiftModel.Data("", Date(), "", 0, "", emptyList(), 0))))
+        doReturn(Single.just(DetailedGiftModel(DetailedGiftModel.Data(0, "", Date(), "", "", 0, "", false, emptyList(), 0))))
             .whenever(mockApiRepository).getDetailedGift(any(), any())
 
         //Act
         testee.inputs.exchangeId("exchange")
-        testee.inputs.giftId("1")
+        testee.inputs.giftSlug("1")
 
         //Assert
         verify(mockApiRepository).getDetailedGift(any(), any())
@@ -46,12 +46,12 @@ class GiftViewModelTest {
     fun test_giftId_when_didGetDetailedGift_then_emitModel(){
         //Arrange
         val test = testee.outputs.detailedGift().test()
-        doReturn(Single.just(DetailedGiftModel(DetailedGiftModel.Data("", Date(), "", 0, "", emptyList(), 0))))
+        doReturn(Single.just(DetailedGiftModel(DetailedGiftModel.Data(0, "", Date(), "", "", 0, "", false, emptyList(), 0))))
             .whenever(mockApiRepository).getDetailedGift(any(), any())
 
         //Act
         testee.inputs.exchangeId("exchange")
-        testee.inputs.giftId("1")
+        testee.inputs.giftSlug("1")
 
         //Assert
         test.assertValueCount(1)

@@ -13,6 +13,8 @@ import com.redditgifts.mobile.ui.adapters.GiftImageAdapter
 import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.activity_gift.*
 import kotlinx.android.synthetic.main.cell_loader.*
+import java.text.SimpleDateFormat
+import java.util.*
 
 
 class GiftActivity : BaseActivity<GiftViewModel>() {
@@ -51,15 +53,38 @@ class GiftActivity : BaseActivity<GiftViewModel>() {
         viewModel.outputs.detailedGift()
             .observeOn(AndroidSchedulers.mainThread())
             .crashingSubscribe { gift ->
+                giftData.visibility = View.VISIBLE
                 giftTitle.text = gift.data.title
-                giftUpvotes.text = "+${gift.data.votes}"
-                giftTime.text = ""
+                giftPoster.text = getString(R.string.gallery_sender).format(gift.data.postedBy)
+                giftUpvotes.text = resources.getQuantityString(R.plurals.likes, gift.data.votes, gift.data.votes)
+                val dateFormat = SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.getDefault())
+                giftTime.text = dateFormat.format(gift.data.createdAt)
                 giftDescription.text = gift.data.bodyHTML.toSpanned()
                 giftImages.adapter = GiftImageAdapter(this, gift.data.assets)
+                if(gift.data.hasVoted){
+                    giftUpvoteAction.setImageResource(R.drawable.ic_upvote)
+                } else {
+                    giftUpvoteAction.setImageResource(R.drawable.ic_vote)
+                }
             }
 
+        viewModel.outputs.upvoteData()
+            .observeOn(AndroidSchedulers.mainThread())
+            .crashingSubscribe { data ->
+                if(data.didVote) {
+                    giftUpvoteAction.setImageResource(R.drawable.ic_upvote)
+                } else {
+                    giftUpvoteAction.setImageResource(R.drawable.ic_vote)
+                }
+                giftUpvotes.text = resources.getQuantityString(R.plurals.likes, data.votes, data.votes)
+            }
+
+        giftUpvoteAction.setOnClickListener {
+            viewModel.inputs.upvote()
+        }
+
         viewModel.inputs.exchangeId(intent.getStringExtra(IntentKey.EXCHANGE_ID)!!)
-        viewModel.inputs.giftId(intent.getStringExtra(IntentKey.GIFT_ID)!!)
+        viewModel.inputs.giftSlug(intent.getStringExtra(IntentKey.GIFT_SLUG)!!)
         viewModel.inputs.onCreate()
     }
 

@@ -49,10 +49,25 @@ class ApiClient(private val apiService: ApiService,
             .subscribeOn(Schedulers.io())
     }
 
-    override fun getDetailedGift(exchangeId: String, giftId: String): Single<DetailedGiftModel> {
-        return apiService.getDetailedGift(exchangeId, giftId)
-            .lift(apiErrorOperator())
-            .subscribeOn(Schedulers.io())
+    override fun getDetailedGift(exchangeId: String, giftSlug: String): Single<DetailedGiftModel> {
+        return this.cookie()
+            .flatMap { cookie ->
+                apiService.getDetailedGift(cookie, exchangeId, giftSlug)
+                    .lift(apiErrorOperator())
+                    .subscribeOn(Schedulers.io())
+            }
+    }
+
+    override fun upvoteGift(giftSlug: String): Single<UpvoteGiftModel> {
+        return this.cookie()
+            .flatMap { cookie ->
+                val csrf = cookie.getCookieValue("csrftoken")
+                val contentOfBody = "csrfmiddlewaretoken=$csrf"
+                val body = RequestBody.create(MediaType.parse("application/json"), contentOfBody)
+                apiService.upvoteGift(cookie, giftSlug, body)
+                    .lift(apiErrorOperator())
+                    .subscribeOn(Schedulers.io())
+            }
     }
 
     override fun getProfile(): Single<ProfileModel> {

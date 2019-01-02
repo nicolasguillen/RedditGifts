@@ -26,6 +26,17 @@
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
                 tools:text="Sample"/>
 
+        <TextView
+                android:id="@+id/giftSender"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingStart="8dp"
+                android:paddingEnd="8dp"
+                android:paddingBottom="8dp"
+                android:textColor="@color/textColor"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
+                tools:text="By a person"/>
+
         <ImageView
                 android:id="@+id/giftImage"
                 android:layout_width="match_parent"

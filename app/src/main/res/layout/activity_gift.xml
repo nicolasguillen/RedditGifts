@@ -21,9 +21,29 @@
                 android:layout_height="match_parent">
 
             <LinearLayout
+                    android:id="@+id/giftData"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:visibility="invisible"
                     android:orientation="vertical">
+
+                <TextView
+                        android:id="@+id/giftTitle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/textColor"
+                        android:padding="8dp"
+                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
+                        tools:text="MERRY CHRISTMAS!"/>
+
+                <TextView
+                        android:id="@+id/giftPoster"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/textColor"
+                        android:padding="8dp"
+                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
+                        tools:text="By a giftee"/>
 
                 <RelativeLayout
                         android:layout_width="match_parent"
@@ -36,42 +56,55 @@
                 </RelativeLayout>
 
                 <TextView
-                        android:id="@+id/giftTitle"
+                        android:id="@+id/giftTime"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/textColorDark"
+                        android:padding="8dp"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                        tools:text="4 minutes ago"/>
+
+                <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/divider"/>
+
+                <TextView
+                        android:id="@+id/giftUpvotes"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/textColorDark"
+                        android:padding="8dp"
+                        android:gravity="end"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                        tools:text="1 upvote"/>
+
+                <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/divider"/>
+
+                <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textColor="@color/textColor"
+                        android:orientation="horizontal"
                         android:padding="8dp"
-                        android:gravity="center"
-                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
-                        tools:text="MERRY CHRISTMAS!"/>
+                        android:gravity="center">
 
-                <RelativeLayout
+                    <ImageView
+                            android:id="@+id/giftUpvoteAction"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:adjustViewBounds="true"
+                            tools:src="@drawable/ic_vote"
+                            android:contentDescription="@null"/>
+
+                </LinearLayout>
+
+                <View
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-
-                    <TextView
-                            android:id="@+id/giftUpvotes"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textColor="@color/textColorDark"
-                            android:layout_alignParentEnd="true"
-                            android:padding="8dp"
-                            android:gravity="end"
-                            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                            tools:text="+1"/>
-
-                    <TextView
-                            android:id="@+id/giftTime"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textColor="@color/textColorDark"
-                            android:padding="8dp"
-                            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                            android:layout_toStartOf="@id/giftUpvotes"
-                            android:layout_alignParentStart="true"
-                            tools:text="4 minutes ago"/>
-
-                </RelativeLayout>
+                        android:layout_height="1dp"
+                        android:background="@color/divider"/>
 
                 <TextView
                         android:id="@+id/giftDescription"
@@ -81,6 +114,11 @@
                         android:padding="8dp"
                         android:textAppearance="@style/Base.TextAppearance.AppCompat.Subhead"
                         tools:text="I received a very warm and cozy Swedish Christmas postcard, which I now put on my fridge panel! I look at it every day and it makes me very happy and creates Christmas mood in the entire house!"/>
+
+                <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/divider"/>
             </LinearLayout>
 
         </ScrollView>

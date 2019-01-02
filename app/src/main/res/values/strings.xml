@@ -26,6 +26,7 @@
     <string name="statistics_rematch_done">Rematches</string>
     <!-- GALLERY -->
     <string name="gallery_empty">No items here!</string>
+    <string name="gallery_sender">Posted by %s</string>
     <!-- MESSAGES -->
     <string name="messages_title">Messages</string>
     <string name="messages_empty">No messages!</string>
@@ -60,4 +61,9 @@
     <!-- ERRORS -->
     <string name="error_load_html">Whoops! Please try again later</string>
     <string name="error_unknown">Unknown error</string>
+    <!--LIKES-->
+    <plurals name="likes">
+        <item quantity="one">%d like</item>
+        <item quantity="other">%d likes</item>
+    </plurals>
 </resources>

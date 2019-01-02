@@ -51,7 +51,7 @@ class GalleryActivity : BaseActivity<GalleryViewModel>() {
                 startActivity(
                     Intent(this, GiftActivity::class.java)
                         .putExtra(IntentKey.EXCHANGE_ID, intent?.extras?.getString(IntentKey.EXCHANGE_ID))
-                        .putExtra(IntentKey.GIFT_ID, giftSelected.slug))
+                        .putExtra(IntentKey.GIFT_SLUG, giftSelected.slug))
             }
 
         gallerySwipe.setOnRefreshListener {
