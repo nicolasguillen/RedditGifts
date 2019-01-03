@@ -44,7 +44,7 @@ open class NetworkModule {
                                    okHttpClient: OkHttpClient): ApiService {
         return Retrofit.Builder()
             .client(okHttpClient)
-            .baseUrl("https://www.redditgifts.com/api/v1/")
+            .baseUrl("https://www.redditgifts.com/")
             .addConverterFactory(GsonConverterFactory.create(gson))
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
             .build()
