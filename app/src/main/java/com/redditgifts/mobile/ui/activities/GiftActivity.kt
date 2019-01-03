@@ -61,6 +61,7 @@ class GiftActivity : BaseActivity<GiftViewModel>() {
                 giftTime.text = dateFormat.format(gift.data.createdAt)
                 giftDescription.text = gift.data.bodyHTML.toSpanned()
                 giftImages.adapter = GiftImageAdapter(this, gift.data.assets)
+                giftImagesIndicator.setupWithViewPager(giftImages, true)
                 if(gift.data.hasVoted){
                     giftUpvoteAction.setImageResource(R.drawable.ic_upvote)
                 } else {
